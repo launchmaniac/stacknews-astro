@@ -26,52 +26,49 @@ const LiveWire: React.FC = () => {
   const [sourceFilter, setSourceFilter] = useState('ALL');
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // Fetch and aggregate all feeds
+  // Fetch aggregated feed stream from API
   useEffect(() => {
     const loadFeeds = async () => {
       setLoading(true);
       try {
-        // Fetch all categories to get a complete stream
-        const categories = [
-          'TREASURY', 'FEDERAL RESERVE', 'ENERGY', 'EUROZONE', 'GLOBAL_MACRO',
-          'ASIA_PACIFIC', 'UK', 'CRYPTO', 'MILITARY', 'NEWS', 'RESEARCH'
-        ];
+        // Single request to get aggregated stream from all categories
+        const response = await fetch('/api/feeds.json?category=ALL');
 
-        const responses = await Promise.allSettled(
-          categories.map(cat =>
-            fetch(`/api/feeds.json?category=${encodeURIComponent(cat)}`)
-              .then(r => r.ok ? r.json() : null)
-          )
-        );
-
-        // Aggregate all items from all feeds
-        const allItems: RSSItem[] = [];
-        for (const result of responses) {
-          if (result.status === 'fulfilled' && result.value?.feeds) {
-            for (const [feedId, feedItems] of Object.entries(result.value.feeds)) {
-              if (Array.isArray(feedItems)) {
-                allItems.push(...(feedItems as RSSItem[]));
-              }
-            }
-          }
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
         }
 
-        // Sort by publication date (newest first)
-        allItems.sort((a, b) => {
-          const dateA = new Date(a.pubDate || 0).getTime();
-          const dateB = new Date(b.pubDate || 0).getTime();
-          return dateB - dateA;
-        });
+        const data: APIResponse = await response.json();
 
-        // Deduplicate by link
-        const seen = new Set<string>();
-        const uniqueItems = allItems.filter(item => {
-          if (seen.has(item.link)) return false;
-          seen.add(item.link);
-          return true;
-        });
+        // Use the pre-built stream if available, otherwise aggregate from feeds
+        if (data.stream && data.stream.length > 0) {
+          setItems(data.stream);
+        } else if (data.feeds) {
+          // Fallback: aggregate from feeds object
+          const allItems: RSSItem[] = [];
+          for (const feedItems of Object.values(data.feeds)) {
+            if (Array.isArray(feedItems)) {
+              allItems.push(...feedItems);
+            }
+          }
 
-        setItems(uniqueItems);
+          // Sort by publication date (newest first)
+          allItems.sort((a, b) => {
+            const dateA = new Date(a.pubDate || 0).getTime();
+            const dateB = new Date(b.pubDate || 0).getTime();
+            return dateB - dateA;
+          });
+
+          // Deduplicate by link
+          const seen = new Set<string>();
+          const uniqueItems = allItems.filter(item => {
+            if (seen.has(item.link)) return false;
+            seen.add(item.link);
+            return true;
+          });
+
+          setItems(uniqueItems);
+        }
       } catch (error) {
         console.error('[LiveWire] Failed to fetch feeds:', error);
       }
