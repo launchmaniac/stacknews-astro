@@ -1,6 +1,6 @@
 # StackNews
 
-Real-time financial news aggregator with cyber-terminal aesthetic.
+Real-time information aggregator with cyber-terminal aesthetic.
 
 Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200 support@launchmaniac.com
 
