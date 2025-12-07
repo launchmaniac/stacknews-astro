@@ -1,43 +1,50 @@
-# Astro Starter Kit: Minimal
+# StackNews
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Real-time financial news aggregator with cyber-terminal aesthetic.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200 support@launchmaniac.com
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Project Structure
 
 ```text
 /
 ├── public/
 ├── src/
-│   └── pages/
-│       └── index.astro
+│   ├── components/
+│   │   ├── astro/       # Astro components (Header, FeedPanel, StatCard, etc.)
+│   │   └── react/       # React islands (Ticker, Clock, FeedLoader, etc.)
+│   ├── layouts/
+│   │   └── BaseLayout.astro
+│   ├── lib/
+│   │   ├── constants.ts # Feed configurations
+│   │   ├── feeds.ts     # RSS feed fetching logic
+│   │   └── types.ts     # TypeScript interfaces
+│   ├── pages/
+│   │   ├── api/         # Server-side API endpoints
+│   │   └── index.astro  # Main dashboard
+│   └── styles/
+│       └── global.css   # Design system tokens and styles
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+All commands are run from the root of the project:
 
-Any static assets, like images, can be placed in the `public/` directory.
+| Command           | Action                                       |
+| :---------------- | :------------------------------------------- |
+| `npm install`     | Install dependencies                         |
+| `npm run dev`     | Start local dev server at `localhost:4321`   |
+| `npm run build`   | Build production site to `./dist/`           |
+| `npm run preview` | Preview build locally before deploying       |
 
-## 🧞 Commands
+## Deployment
 
-All commands are run from the root of the project, from a terminal:
+Deployed to Cloudflare Pages at stacknews.org
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Tech Stack
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Astro (SSR mode)
+- React (client islands)
+- Tailwind CSS v4
+- Cloudflare Pages/Workers
