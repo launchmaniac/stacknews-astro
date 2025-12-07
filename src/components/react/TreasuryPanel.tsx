@@ -2,7 +2,6 @@
 // Client-side Treasury data display - fetches from server API (no CORS proxies)
 
 import React, { useState, useEffect } from 'react';
-import { Activity, ArrowUpRight, ArrowDownRight, RefreshCw } from 'lucide-react';
 
 interface TreasuryData {
   debt: number;
@@ -58,7 +57,9 @@ function StatCard({ label, value, prefix, subValue, trend, color, children, tool
   return (
     <div className="glass-panel p-4 rounded-xl relative overflow-hidden group font-mono flex flex-col justify-between h-full min-h-[140px]">
       <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
-        <Activity size={64} color={accentColor} />
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
       </div>
 
       <div className="relative z-10 flex flex-col h-full justify-between">
@@ -79,8 +80,18 @@ function StatCard({ label, value, prefix, subValue, trend, color, children, tool
 
         {(subValue || trend) && (
           <div className="flex items-center gap-2 text-sm mt-auto pt-1">
-            {trend === 'up' && <ArrowUpRight size={16} className="text-red-400 shrink-0" />}
-            {trend === 'down' && <ArrowDownRight size={16} className="text-green-400 shrink-0" />}
+            {trend === 'up' && (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-red-400 shrink-0">
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            )}
+            {trend === 'down' && (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-green-400 shrink-0">
+                <line x1="7" y1="7" x2="17" y2="17" />
+                <polyline points="17 7 17 17 7 17" />
+              </svg>
+            )}
             <span className="text-gray-400 font-thin text-xs opacity-80 truncate">{subValue}</span>
           </div>
         )}
@@ -160,7 +171,10 @@ export default function TreasuryPanel() {
             onClick={() => loadData(true)}
             className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded text-cyan-400 text-sm flex items-center gap-2 mx-auto"
           >
-            <RefreshCw size={14} />
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+              <path d="M21 3v5h-5" />
+            </svg>
             Retry
           </button>
         </div>

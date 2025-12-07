@@ -2,7 +2,6 @@
 // React island - Refresh button with loading state
 
 import React from 'react';
-import { RefreshCw } from 'lucide-react';
 
 interface RefreshButtonProps {
   isLoading?: boolean;
@@ -26,7 +25,10 @@ const RefreshButton: React.FC<RefreshButtonProps> = ({
       }`}
       title="Refresh all feeds"
     >
-      <RefreshCw size={12} className={isLoading ? 'animate-spin' : ''} />
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isLoading ? 'animate-spin' : ''}>
+        <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+        <path d="M21 3v5h-5" />
+      </svg>
       {isLoading ? `${loadProgress}%` : 'REFRESH'}
     </button>
   );

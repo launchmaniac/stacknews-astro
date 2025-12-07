@@ -3,7 +3,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { ExternalLink, Wifi, WifiOff, RefreshCw, Clock } from 'lucide-react';
 
 interface RSSItem {
   title: string;
@@ -59,7 +58,24 @@ function FeedPanel({ title, color, items, loading, error }: {
           <span className={`w-1.5 h-1.5 rounded-full ${loading ? 'animate-pulse' : ''}`} style={{ backgroundColor: color }} />
           {title}
         </h3>
-        {error ? <WifiOff size={12} className="text-red-400" /> : <Wifi size={12} className="text-green-400/60" />}
+        {error ? (
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-400">
+            <line x1="1" y1="1" x2="23" y2="23" />
+            <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55" />
+            <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39" />
+            <path d="M10.71 5.05A16 16 0 0 1 22.58 9" />
+            <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88" />
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+            <line x1="12" y1="20" x2="12.01" y2="20" />
+          </svg>
+        ) : (
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-400/60">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+            <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+            <line x1="12" y1="20" x2="12.01" y2="20" />
+          </svg>
+        )}
       </div>
       <div className="flex-1 overflow-y-auto scrollbar-thin">
         {loading && items.length === 0 && (
@@ -89,7 +105,9 @@ function FeedPanel({ title, color, items, loading, error }: {
                   {formatDistanceToNow(new Date(item.pubDate), { addSuffix: true })}
                 </p>
               </div>
-              <ExternalLink size={10} className="text-gray-600 opacity-0 group-hover/item:opacity-100 transition-opacity shrink-0 mt-1" />
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600 opacity-0 group-hover/item:opacity-100 transition-opacity shrink-0 mt-1">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
+              </svg>
             </div>
           </a>
         ))}
@@ -211,7 +229,10 @@ export default function FeedLoader({ feeds, category }: { feeds: FeedConfig[]; c
       <div className="flex items-center gap-4 mb-4">
         {isLoading ? (
           <div className="flex items-center gap-2 text-cyan-400 text-xs">
-            <RefreshCw size={12} className="animate-spin" />
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin">
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+              <path d="M21 3v5h-5" />
+            </svg>
             <span>SYNCING FEEDS...</span>
           </div>
         ) : (
@@ -223,7 +244,10 @@ export default function FeedLoader({ feeds, category }: { feeds: FeedConfig[]; c
             )}
             {lastUpdate && (
               <span className="flex items-center gap-1">
-                <Clock size={10} />
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
                 {formatDistanceToNow(lastUpdate, { addSuffix: true })}
               </span>
             )}
@@ -238,7 +262,10 @@ export default function FeedLoader({ feeds, category }: { feeds: FeedConfig[]; c
           disabled={isLoading}
           title="Force refresh"
         >
-          <RefreshCw size={14} className={isLoading ? 'animate-spin' : ''} />
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isLoading ? 'animate-spin' : ''}>
+            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+            <path d="M21 3v5h-5" />
+          </svg>
         </button>
       </div>
 

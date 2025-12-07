@@ -2,7 +2,6 @@
 // React island - Search bar with URL state sync
 
 import React, { useState, useCallback } from 'react';
-import { Search, RefreshCw } from 'lucide-react';
 
 interface SearchBarProps {
   initialValue?: string;
@@ -41,7 +40,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div className="p-4 border-b border-white/5 flex items-center gap-4 bg-white/[0.02] relative">
       <div className="relative flex-1 max-w-2xl">
-        <Search className="absolute left-3 top-2.5 text-gray-500 w-4 h-4" />
+        <svg className="absolute left-3 top-2.5 text-gray-500 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
         <input
           type="text"
           placeholder="SEARCH DATA STREAMS..."
@@ -62,7 +64,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
           }`}
           title="Refresh all feeds"
         >
-          <RefreshCw size={12} className={isLoading ? 'animate-spin' : ''} />
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isLoading ? 'animate-spin' : ''}>
+            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+            <path d="M21 3v5h-5" />
+          </svg>
           {isLoading ? `${loadProgress}%` : 'REFRESH'}
         </button>
       )}

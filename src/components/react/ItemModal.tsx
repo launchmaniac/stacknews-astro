@@ -2,7 +2,6 @@
 // React island - Article detail modal with client:idle hydration
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { X, ExternalLink, Copy, Check } from 'lucide-react';
 import { format, isValid } from 'date-fns';
 import type { RSSItem } from '../../lib/types';
 
@@ -74,7 +73,9 @@ const ItemModal: React.FC<ItemModalProps> = ({ item, onClose }) => {
             onClick={onClose}
             className="p-2 hover:bg-white/10 rounded-full text-gray-400 hover:text-white transition-colors"
           >
-            <X size={20} />
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
           </button>
         </div>
 
@@ -97,12 +98,17 @@ const ItemModal: React.FC<ItemModalProps> = ({ item, onClose }) => {
             {copyFeedback ? (
               <>
                 <span>Copied!</span>
-                <Check size={14} />
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
               </>
             ) : (
               <>
                 <span>Copy Link</span>
-                <Copy size={14} />
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                </svg>
               </>
             )}
           </button>
@@ -114,7 +120,9 @@ const ItemModal: React.FC<ItemModalProps> = ({ item, onClose }) => {
             className="flex items-center gap-2 bg-cyan-600 hover:bg-cyan-500 text-white px-6 py-2 rounded-lg font-bold transition-colors text-xs uppercase tracking-widest"
           >
             <span>Open Source Document</span>
-            <ExternalLink size={14} />
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
+            </svg>
           </a>
         </div>
       </div>

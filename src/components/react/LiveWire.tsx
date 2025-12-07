@@ -2,7 +2,6 @@
 // React island - Live feed stream sidebar with client:idle hydration
 
 import React, { useState, useMemo, useCallback } from 'react';
-import { Filter, Link as LinkIcon, Check } from 'lucide-react';
 import { format, isValid } from 'date-fns';
 import type { RSSItem } from '../../lib/types';
 
@@ -51,7 +50,9 @@ const LiveWire: React.FC<LiveWireProps> = ({ items, onItemClick }) => {
 
         {/* Filter Dropdown */}
         <div className="relative">
-          <Filter className="absolute left-2 top-2 text-cyan-500/50" size={12} />
+          <svg className="absolute left-2 top-2 text-cyan-500/50" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+          </svg>
           <select
             value={sourceFilter}
             onChange={(e) => setSourceFilter(e.target.value)}
@@ -93,9 +94,14 @@ const LiveWire: React.FC<LiveWireProps> = ({ items, onItemClick }) => {
               title="Copy Link"
             >
               {copiedId === item.guid ? (
-                <Check size={12} className="text-green-400" />
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-400">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
               ) : (
-                <LinkIcon size={12} />
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                </svg>
               )}
             </button>
           </div>
