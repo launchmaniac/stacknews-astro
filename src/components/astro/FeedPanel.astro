@@ -1,0 +1,103 @@
+---
+// Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200 support@launchmaniac.com
+// Static feed panel component - renders feed items at build time
+
+import type { RSSItem } from '../../lib/types';
+import { format, isValid } from 'date-fns';
+
+interface Props {
+  title: string;
+  color?: string;
+  items: RSSItem[];
+  loading?: boolean;
+  error?: boolean;
+  class?: string;
+}
+
+const { title, color = '#22d3ee', items = [], loading = false, error = false, class: className = '' } = Astro.props;
+
+function safeDate(dateStr: string): Date {
+  if (!dateStr) return new Date();
+  const d = new Date(dateStr);
+  return isValid(d) ? d : new Date();
+}
+---
+
+<div
+  class:list={['glass-panel rounded-lg flex flex-col overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-opacity-30 group relative font-mono h-[400px]', className]}
+  style={`border-color: rgba(255,255,255,0.08);`}
+  data-feed-panel
+>
+  <!-- Decorative Top Line -->
+  <div class="h-0.5 w-full bg-gradient-to-r from-transparent via-current to-transparent opacity-50" style={`color: ${color}`} />
+
+  <!-- Header -->
+  <div class="flex-none p-2.5 flex justify-between items-center border-b border-white/5 bg-white/5 backdrop-blur-sm">
+    <h3 class="text-[10px] font-extrabold tracking-widest uppercase flex items-center gap-2 text-gray-200">
+      <span
+        class:list={['w-1.5 h-1.5 rounded-full shadow-[0_0_8px_currentColor]', loading && 'animate-pulse']}
+        style={`color: ${color}; background-color: ${color}`}
+      />
+      {title}
+    </h3>
+    {items.length > 0 && (
+      <div class="text-[10px] font-medium opacity-50 tracking-wide">{items.length} LOGS</div>
+    )}
+  </div>
+
+  <!-- Content -->
+  <div class="flex-1 overflow-hidden relative min-h-0 bg-gradient-to-b from-transparent to-black/20">
+    {error ? (
+      <div class="h-full flex flex-col items-center justify-center text-red-500 gap-2">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        <span class="text-xs font-medium tracking-widest">CONNECTION LOST</span>
+      </div>
+    ) : (
+      <div class="h-full overflow-y-auto scrollbar-thin flex flex-col">
+        {items.slice(0, 50).map((item, idx) => (
+          <a
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex gap-3 px-3 py-2 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer group/item relative"
+            data-feed-item
+          >
+            <!-- Date Column -->
+            <div class="flex flex-col items-end shrink-0 w-12 pt-0.5">
+              <span class="text-[10px] font-bold tracking-tighter" style={`color: ${color}; opacity: 0.8`}>
+                {isValid(safeDate(item.pubDate)) ? format(safeDate(item.pubDate), 'MM.dd') : '--.--'}
+              </span>
+              <span class="text-[9px] text-gray-600 font-mono">
+                {isValid(safeDate(item.pubDate)) ? format(safeDate(item.pubDate), 'HH:mm') : '--:--'}
+              </span>
+            </div>
+
+            <!-- Title Column -->
+            <div class="flex-1 min-w-0 pr-6">
+              <div class="text-xs font-normal text-gray-300 group-hover/item:text-cyan-50 leading-tight line-clamp-2 tracking-tight">
+                {item.title}
+              </div>
+            </div>
+
+            <!-- External Link Icon -->
+            <div class="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover/item:opacity-100 transition-opacity">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
+              </svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+
+    {loading && (
+      <div class="absolute inset-0 flex items-center justify-center bg-black/60 z-10 backdrop-blur-[2px]">
+        <div class="text-xs animate-pulse tracking-widest font-medium" style={`color: ${color}`}>SYNCING...</div>
+      </div>
+    )}
+  </div>
+</div>

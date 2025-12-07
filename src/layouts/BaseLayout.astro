@@ -1,0 +1,66 @@
+---
+// Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200 support@launchmaniac.com
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'StackNews | Data Terminal',
+  description = 'Real-time financial data terminal aggregating Treasury, Federal Reserve, market data, and global news feeds.'
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#030712" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Preconnect to API domains -->
+    <link rel="preconnect" href="https://api.fiscaldata.treasury.gov" />
+    <link rel="preconnect" href="https://api.stlouisfed.org" />
+    <link rel="preconnect" href="https://query1.finance.yahoo.com" />
+
+    <!-- Optimized Font Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&family=VT323&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&family=VT323&display=swap" rel="stylesheet" />
+    </noscript>
+
+    <title>{title}</title>
+
+    <!-- Critical CSS Inline -->
+    <style is:inline>
+      :root {
+        --bg-depth: #030712;
+        --surface: #0f172a;
+      }
+      html { background: var(--bg-depth); }
+      body {
+        background: linear-gradient(180deg, var(--bg-depth) 0%, #0a0e17 100%);
+        color: #e2e8f0;
+        margin: 0;
+        font-family: 'Inter', system-ui, sans-serif;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen text-gray-200 font-sans antialiased">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

@@ -1,0 +1,49 @@
+---
+// Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200 support@launchmaniac.com
+// Pure SVG sparkline component - zero JavaScript
+
+interface Props {
+  data: { value: number }[];
+  color?: string;
+  height?: number;
+}
+
+const { data, color = '#22d3ee', height = 48 } = Astro.props;
+
+function generatePath(values: number[], h: number): string {
+  if (!values || values.length < 2) return '';
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const range = max - min || 1;
+  const width = 100;
+  const padding = 2;
+
+  const points = values.map((val, i) => {
+    const x = (i / (values.length - 1)) * width;
+    const y = h - padding - ((val - min) / range) * (h - padding * 2);
+    return `${x},${y}`;
+  });
+
+  return `M ${points.join(' L ')}`;
+}
+
+const values = data?.map(d => d.value) || [];
+const pathD = generatePath(values, height);
+---
+
+{data && data.length >= 2 && (
+  <div class="w-full mt-2 opacity-80" style={`height: ${height}px`}>
+    <svg viewBox={`0 0 100 ${height}`} preserveAspectRatio="none" class="w-full h-full">
+      <path
+        d={pathD}
+        fill="none"
+        stroke={color}
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        vector-effect="non-scaling-stroke"
+      />
+    </svg>
+  </div>
+)}

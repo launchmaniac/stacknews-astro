@@ -1,0 +1,116 @@
+---
+// Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200 support@launchmaniac.com
+// Static stat card component for dashboard metrics
+
+interface Props {
+  label: string;
+  value: string;
+  prefix?: string;
+  subValue?: string;
+  trend?: 'up' | 'down' | 'neutral';
+  color?: string;
+  valueColor?: string;
+  isLive?: boolean;
+  tooltip?: string;
+  class?: string;
+}
+
+const {
+  label,
+  value,
+  prefix,
+  subValue,
+  trend = 'neutral',
+  color = '#22d3ee',
+  valueColor,
+  isLive = false,
+  tooltip,
+  class: className = ''
+} = Astro.props;
+
+// Check if wide layout
+const isWide = className.includes('col-span');
+
+// Dynamic font sizing based on value length
+function getFontSize(length: number): string {
+  if (length > 18) {
+    if (isWide) return 'text-2xl md:text-4xl lg:text-3xl xl:text-4xl 2xl:text-5xl tracking-tighter';
+    return 'text-lg md:text-xl lg:text-sm xl:text-lg 2xl:text-2xl tracking-tighter';
+  }
+  if (length > 14) return 'text-xl md:text-2xl lg:text-base xl:text-xl 2xl:text-3xl tracking-tight';
+  if (length > 9) return 'text-2xl md:text-3xl lg:text-xl xl:text-2xl 2xl:text-3xl';
+  return 'text-3xl md:text-4xl lg:text-2xl xl:text-4xl 2xl:text-5xl';
+}
+
+const fontSizeClass = getFontSize(value.length + (prefix?.length || 0));
+const displayColor = valueColor || 'white';
+const textShadow = valueColor ? `0 0 20px ${valueColor}40` : `0 0 20px ${color}40`;
+---
+
+<div class:list={['glass-panel p-4 rounded-xl relative overflow-hidden group font-mono flex flex-col justify-between h-full min-h-[140px]', className]}>
+  <!-- Background Icon -->
+  <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={color} stroke-width="1.5">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+    </svg>
+  </div>
+
+  <div class="relative z-10 flex flex-col h-full justify-between">
+    <!-- Label with Tooltip -->
+    <div class="group/label relative flex items-center gap-2 mb-2 w-fit">
+      <span class="w-1 h-4 rounded-full" style={`background-color: ${color}`} />
+      <h4
+        class:list={[
+          'text-[11px] font-thin uppercase tracking-widest text-cyan-400/80 truncate',
+          tooltip && 'cursor-help border-b border-dashed border-cyan-500/20 hover:border-cyan-500/50 hover:text-cyan-300 transition-colors'
+        ]}
+      >
+        {label}
+      </h4>
+
+      {tooltip && (
+        <div class="absolute top-6 left-0 w-48 p-3 bg-black/95 border border-white/20 rounded shadow-xl backdrop-blur-md opacity-0 group-hover/label:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+          <div class="text-[10px] leading-relaxed text-gray-300 font-sans normal-case tracking-normal">
+            <span class="text-cyan-500 font-bold block mb-1">INFO_NODE</span>
+            {tooltip}
+          </div>
+        </div>
+      )}
+    </div>
+
+    <!-- Value -->
+    <div
+      class:list={['font-medium mb-1 whitespace-nowrap overflow-hidden text-ellipsis', isLive && 'tabular-nums', fontSizeClass]}
+      style={`color: ${displayColor}; text-shadow: ${textShadow}`}
+      title={prefix ? `${prefix}${value}` : value}
+    >
+      {prefix && <span class="text-[0.7em] opacity-60 mr-1 align-top font-normal">{prefix}</span>}
+      {value}
+    </div>
+
+    <!-- Sub Value & Trend -->
+    {(subValue || trend !== 'neutral') && (
+      <div class="flex items-center gap-2 text-sm mt-auto pt-1">
+        {trend === 'up' && (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-400 shrink-0">
+            <line x1="7" y1="17" x2="17" y2="7" />
+            <polyline points="7 7 17 7 17 17" />
+          </svg>
+        )}
+        {trend === 'down' && (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400 shrink-0">
+            <line x1="7" y1="7" x2="17" y2="17" />
+            <polyline points="17 7 17 17 7 17" />
+          </svg>
+        )}
+        <span class="text-gray-400 font-thin text-xs opacity-80 truncate">{subValue}</span>
+      </div>
+    )}
+  </div>
+
+  <!-- Sparkline Slot -->
+  <slot />
+
+  <!-- Ambient Glow -->
+  <div class="absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] opacity-20 pointer-events-none" style={`background-color: ${color}`} />
+</div>

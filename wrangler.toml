@@ -1,0 +1,21 @@
+# Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200 support@launchmaniac.com
+# Cloudflare Pages configuration for StackNews Astro
+
+name = "stacknews"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Build settings handled by Pages, not Workers
+# This file is for reference when using wrangler CLI
+
+[site]
+bucket = "./dist"
+
+# KV Namespace for sessions (optional)
+# [[kv_namespaces]]
+# binding = "SESSION"
+# id = "your-kv-namespace-id"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"

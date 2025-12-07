@@ -1,0 +1,114 @@
+---
+// Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200 support@launchmaniac.com
+// Main dashboard page - Static shell with React islands for data loading
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/astro/Header.astro';
+import Sidebar from '../components/astro/Sidebar.astro';
+
+// React Islands (client-side data loading)
+import Clock from '../components/react/Clock.tsx';
+import SearchBar from '../components/react/SearchBar.tsx';
+import TreasuryPanel from '../components/react/TreasuryPanel.tsx';
+import FeedLoader from '../components/react/FeedLoader.tsx';
+import LiveWire from '../components/react/LiveWire.tsx';
+
+// Constants for static rendering
+import { FEEDS, CATEGORIES } from '../lib/constants';
+
+// Get category from URL (for static page, will be enhanced client-side)
+const url = Astro.url;
+const category = url.searchParams.get('category') || 'ALL';
+---
+
+<BaseLayout>
+  <div class="w-full h-screen flex flex-col text-gray-200 font-mono font-thin selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- Header with Clock Island -->
+    <Header>
+      <div slot="ticker" class="flex-1 flex items-center">
+        <div class="w-full h-8 bg-black/40 flex items-center px-4 text-xs text-gray-500">
+          <span class="animate-pulse">Loading market data...</span>
+        </div>
+      </div>
+      <Clock client:load slot="clock" />
+    </Header>
+
+    <!-- Stock Ticker Bar -->
+    <div class="flex-none bg-[#020617] border-b border-white/5 z-40 h-9 flex items-center px-4">
+      <span class="text-xs text-gray-600 animate-pulse">Market indices loading...</span>
+    </div>
+
+    <div class="flex-1 flex overflow-hidden">
+
+      <!-- Sidebar (Static) -->
+      <Sidebar activeCategory={category} debtValue={0} />
+
+      <!-- Main Content -->
+      <main class="flex-1 flex flex-col min-w-0 bg-gradient-to-b from-transparent to-black/40 relative">
+
+        <!-- Search Bar Island -->
+        <SearchBar
+          client:load
+          initialValue=""
+          feedCount={FEEDS.length}
+        />
+
+        <div class="flex-1 overflow-y-auto p-6 scrollbar-thin">
+
+          <!-- Treasury Hero Row (React Island) -->
+          <TreasuryPanel client:load />
+
+          <!-- Feed Grid (React Island with client-side loading) -->
+          <FeedLoader
+            client:load
+            feeds={FEEDS}
+            category={category}
+          />
+
+        </div>
+      </main>
+
+      <!-- Live Wire Sidebar (placeholder until feeds load) -->
+      <aside class="hidden xl:flex w-80 flex-col border-l border-white/5 bg-black/30">
+        <div class="p-3 border-b border-white/5 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+          <span class="text-[10px] font-bold tracking-widest uppercase text-gray-400">LIVE WIRE</span>
+        </div>
+        <div class="flex-1 overflow-y-auto scrollbar-thin p-2">
+          <div class="text-xs text-gray-600 text-center py-4 animate-pulse">
+            Connecting to feeds...
+          </div>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- Bottom Tickers -->
+    <div class="flex-none z-50 flex flex-col">
+      <div class="h-8 bg-[#0f172a] border-t border-white/10 flex items-center px-4">
+        <span class="text-xs text-gray-600">Crypto ticker loading...</span>
+      </div>
+      <div class="h-8 bg-[#030712] border-t border-white/10 flex items-center px-4">
+        <span class="text-xs text-gray-600">Military feed loading...</span>
+      </div>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+</style>
