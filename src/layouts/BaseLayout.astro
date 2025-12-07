@@ -1,5 +1,6 @@
 ---
 // Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200 support@launchmaniac.com
+// BaseLayout - Cyber-Bloomberg Terminal aesthetic
 interface Props {
   title?: string;
   description?: string;
@@ -12,52 +13,88 @@ const {
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#030712" />
+    <meta name="color-scheme" content="dark" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Preconnect to API domains -->
-    <link rel="preconnect" href="https://api.fiscaldata.treasury.gov" />
     <link rel="preconnect" href="https://api.stlouisfed.org" />
-    <link rel="preconnect" href="https://query1.finance.yahoo.com" />
+    <link rel="dns-prefetch" href="https://api.stlouisfed.org" />
 
-    <!-- Optimized Font Loading -->
+    <!-- Font Loading - VT323 (Display) + JetBrains Mono (Data) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=VT323&display=swap"
       rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
     />
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&family=VT323&display=swap" rel="stylesheet" />
-    </noscript>
 
     <title>{title}</title>
 
-    <!-- Critical CSS Inline -->
+    <!-- Critical CSS - Prevent FOUC -->
     <style is:inline>
       :root {
         --bg-depth: #030712;
-        --surface: #0f172a;
+        --bg-atmosphere: #0f172a;
+        --cyan-primary: #06b6d4;
       }
-      html { background: var(--bg-depth); }
+
+      html {
+        background: var(--bg-depth);
+        color-scheme: dark;
+      }
+
       body {
-        background: linear-gradient(180deg, var(--bg-depth) 0%, #0a0e17 100%);
+        background:
+          radial-gradient(ellipse 80% 50% at 50% -20%, rgba(30, 41, 59, 0.5), transparent),
+          radial-gradient(ellipse 60% 40% at 80% 100%, rgba(15, 23, 42, 0.8), transparent),
+          linear-gradient(180deg, var(--bg-depth) 0%, #0a0e17 100%);
         color: #e2e8f0;
         margin: 0;
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: 'JetBrains Mono', 'Consolas', monospace;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* Prevent layout shift from font loading */
+      .font-display {
+        font-family: 'VT323', monospace;
+      }
+
+      /* Initial loading state */
+      .loading-pulse {
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
       }
     </style>
   </head>
-  <body class="min-h-screen text-gray-200 font-sans antialiased">
-    <slot />
+
+  <body class="min-h-screen text-slate-200 antialiased noise-overlay">
+    <!-- Ambient Background Glow -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+      <div class="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-[100px]"></div>
+      <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-[100px]"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10">
+      <slot />
+    </div>
+
+    <!-- Scanline Overlay (subtle CRT effect) -->
+    <div class="fixed inset-0 pointer-events-none z-50 opacity-[0.02]" aria-hidden="true">
+      <div class="h-full w-full" style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px);"></div>
+    </div>
   </body>
 </html>
 
