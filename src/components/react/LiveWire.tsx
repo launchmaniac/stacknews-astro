@@ -138,22 +138,14 @@ const LiveWire: React.FC = () => {
       </div>
 
       {/* Stream */}
-      <div className="flex-1 overflow-y-auto p-0 scrollbar-thin">
-        {loading && items.length === 0 && (
-          <div className="flex items-center justify-center h-32">
-            <span className="text-xs text-cyan-400 animate-pulse">SYNCING FEEDS...</span>
-          </div>
-        )}
-        {!loading && items.length === 0 && (
-          <div className="flex items-center justify-center h-32">
-            <span className="text-xs text-gray-500">NO FEEDS AVAILABLE</span>
-          </div>
-        )}
-        {filteredItems.slice(0, 100).map((item, idx) => (
-          <a
-            key={`${item.link}-${idx}`}
-            href={item.link}
-            target="_blank"
+          <div className="flex-1 overflow-y-auto p-0 scrollbar-thin">
+            {/* No placeholders: render nothing until real data exists */}
+            {items.length === 0 ? null : null}
+            {filteredItems.slice(0, 100).map((item, idx) => (
+              <a
+                key={`${item.link}-${idx}`}
+                href={item.link}
+                target="_blank"
             rel="noopener noreferrer"
             className="block p-3 border-b border-white/5 hover:bg-white/5 cursor-pointer transition-colors group relative"
           >

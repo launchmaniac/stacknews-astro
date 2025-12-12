@@ -1,0 +1,38 @@
+{
+  "name": "Default",
+  "kind": "zone",
+  "phase": "http_response_headers_transform",
+  "rules": [
+    {
+      "description": "SN: Core security headers",
+      "expression": "true",
+      "action": "rewrite",
+      "action_parameters": {
+        "headers": {
+          "set": [
+            { "name": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" },
+            { "name": "X-Content-Type-Options", "value": "nosniff" },
+            { "name": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+            { "name": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+            { "name": "X-Frame-Options", "value": "SAMEORIGIN" }
+          ]
+        }
+      }
+    },
+    {
+      "description": "SN: CSP for HTML",
+      "expression": "http.response.headers[\"content-type\"][*] contains \"text/html\"",
+      "action": "rewrite",
+      "action_parameters": {
+        "headers": {
+          "set": [
+            {
+              "name": "Content-Security-Policy",
+              "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

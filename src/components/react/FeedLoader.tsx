@@ -47,6 +47,8 @@ function FeedPanel({ title, color, items, loading, error }: {
   loading: boolean;
   error: boolean;
 }) {
+  // Do not render anything when there is no real data
+  if (!items || items.length === 0) return null;
   return (
     <div
       className="glass-panel rounded-lg flex flex-col overflow-hidden h-64 font-mono group"
@@ -77,23 +79,13 @@ function FeedPanel({ title, color, items, loading, error }: {
           </svg>
         )}
       </div>
-      <div className="flex-1 overflow-y-auto scrollbar-thin">
-        {loading && items.length === 0 && (
-          <div className="flex items-center justify-center h-full">
-            <span className="text-xs animate-pulse" style={{ color }}>SYNCING...</span>
-          </div>
-        )}
-        {error && items.length === 0 && (
-          <div className="flex items-center justify-center h-full text-red-400/80 text-[10px]">
-            CONNECTION LOST
-          </div>
-        )}
-        {items.slice(0, 10).map((item, idx) => (
-          <a
-            key={item.guid || idx}
-            href={item.link}
-            target="_blank"
-            rel="noopener noreferrer"
+          <div className="flex-1 overflow-y-auto scrollbar-thin">
+            {items.slice(0, 10).map((item, idx) => (
+              <a
+                key={item.guid || idx}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
             className="block p-2 border-b border-white/5 hover:bg-white/5 transition-colors group/item"
           >
             <div className="flex items-start gap-2">
@@ -134,49 +126,15 @@ export default function FeedLoader({ feeds, category }: { feeds: FeedConfig[]; c
     setFeedStates(initial);
 
     try {
-      if (category !== 'ALL') {
-        // Single category - simple fetch
-        const params = new URLSearchParams({ category });
-        if (forceRefresh) params.set('refresh', 'true');
+      // Single API request - server handles category=ALL efficiently with caching
+      const params = new URLSearchParams({ category });
+      if (forceRefresh) params.set('refresh', 'true');
 
-        const response = await fetch(`/api/feeds.json?${params.toString()}`);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const response = await fetch(`/api/feeds.json?${params.toString()}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        const data: APIResponse = await response.json();
-        updateStatesFromData(data);
-      } else {
-        // ALL categories - fetch each category to populate cache
-        // Get unique categories from feeds
-        const categories = [...new Set(feeds.map(f => f.category))];
-
-        // Fetch categories in parallel (each stays under subrequest limit)
-        const responses = await Promise.allSettled(
-          categories.map(cat =>
-            fetch(`/api/feeds.json?category=${encodeURIComponent(cat)}${forceRefresh ? '&refresh=true' : ''}`)
-              .then(r => r.ok ? r.json() : null)
-          )
-        );
-
-        // Aggregate all responses
-        const aggregatedFeeds: Record<string, RSSItem[]> = {};
-        let latestTimestamp = new Date().toISOString();
-
-        for (const result of responses) {
-          if (result.status === 'fulfilled' && result.value) {
-            Object.assign(aggregatedFeeds, result.value.feeds || {});
-            if (result.value.timestamp) {
-              latestTimestamp = result.value.timestamp;
-            }
-          }
-        }
-
-        updateStatesFromData({
-          feeds: aggregatedFeeds,
-          stream: [],
-          timestamp: latestTimestamp,
-          _cache: { hit: false }
-        });
-      }
+      const data: APIResponse = await response.json();
+      updateStatesFromData(data);
     } catch (error) {
       console.error('[FeedLoader] Failed to fetch feeds:', error);
 
@@ -225,49 +183,39 @@ export default function FeedLoader({ feeds, category }: { feeds: FeedConfig[]; c
 
   return (
     <div className="space-y-8">
-      {/* Status Bar */}
-      <div className="flex items-center gap-4 mb-4">
-        {isLoading ? (
-          <div className="flex items-center gap-2 text-cyan-400 text-xs">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin">
-              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-              <path d="M21 3v5h-5" />
-            </svg>
-            <span>SYNCING FEEDS...</span>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2 text-gray-400 text-xs">
-            {cacheInfo?.hit && (
-              <span className="text-green-400/60">
-                CACHED {cacheInfo.age ? `(${cacheInfo.age}s)` : ''}
-              </span>
-            )}
-            {lastUpdate && (
-              <span className="flex items-center gap-1">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
+          {/* Status Bar: render nothing until real data exists */}
+          {Object.values(feedStates).some(s => s?.items?.length) && (
+            <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-2 text-gray-400 text-xs">
+                {cacheInfo?.hit && (
+                  <span className="text-green-400/60">
+                    CACHED {cacheInfo.age ? `(${cacheInfo.age}s)` : ''}
+                  </span>
+                )}
+                {lastUpdate && (
+                  <span className="flex items-center gap-1">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    {formatDistanceToNow(lastUpdate, { addSuffix: true })}
+                  </span>
+                )}
+              </div>
+              <div className="flex-1" />
+              <button
+                onClick={() => loadFeeds(true)}
+                className="p-1.5 rounded hover:bg-white/10 text-gray-400 hover:text-cyan-400 transition-colors"
+                disabled={isLoading}
+                title="Force refresh"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+                  <path d="M21 3v5h-5" />
                 </svg>
-                {formatDistanceToNow(lastUpdate, { addSuffix: true })}
-              </span>
-            )}
-          </div>
-        )}
-
-        <div className="flex-1" />
-
-        <button
-          onClick={() => loadFeeds(true)}
-          className="p-1.5 rounded hover:bg-white/10 text-gray-400 hover:text-cyan-400 transition-colors"
-          disabled={isLoading}
-          title="Force refresh"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isLoading ? 'animate-spin' : ''}>
-            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-            <path d="M21 3v5h-5" />
-          </svg>
-        </button>
-      </div>
+              </button>
+            </div>
+          )}
 
       {/* Feed Panels by Category */}
       {filteredCategories.map(cat => {
@@ -280,14 +228,15 @@ export default function FeedLoader({ feeds, category }: { feeds: FeedConfig[]; c
               <div className="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {categoryFeeds.map(feed => {
-                const state = feedStates[feed.id] || { items: [], loading: true, error: false };
-                return (
-                  <FeedPanel
-                    key={feed.id}
-                    title={feed.name}
-                    color={feed.color}
-                    items={state.items}
+                  {categoryFeeds.map(feed => {
+                    const state = feedStates[feed.id] || { items: [], loading: true, error: false };
+                    if (!state.items || state.items.length === 0) return null;
+                    return (
+                      <FeedPanel
+                        key={feed.id}
+                        title={feed.name}
+                        color={feed.color}
+                        items={state.items}
                     loading={state.loading}
                     error={state.error}
                   />

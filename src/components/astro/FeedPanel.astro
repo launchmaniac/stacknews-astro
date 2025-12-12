@@ -15,6 +15,10 @@ interface Props {
 }
 
 const { title, color = '#22d3ee', items = [], loading = false, error = false, class: className = '' } = Astro.props;
+// Do not render anything when there is no real data
+if (!items || items.length === 0) {
+  return null;
+}
 
 function safeDate(dateStr: string): Date {
   if (!dateStr) return new Date();
@@ -52,20 +56,7 @@ function safeDate(dateStr: string): Date {
 
   <!-- Content -->
   <div class="flex-1 overflow-hidden relative min-h-0 bg-gradient-to-b from-transparent to-black/30">
-    {error ? (
-      <div class="h-full flex flex-col items-center justify-center gap-3 text-red-500">
-        <div class="relative">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="animate-pulse">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-          <div class="absolute inset-0 blur-lg bg-red-500/30"></div>
-        </div>
-        <span class="text-[10px] font-bold tracking-[0.2em] text-red-400">CONNECTION_LOST</span>
-        <span class="text-[9px] font-mono text-gray-600">ERR::TIMEOUT</span>
-      </div>
-    ) : (
+    {!error && (
       <div class="h-full overflow-y-auto scrollbar-cyber flex flex-col">
         {items.slice(0, 50).map((item, idx) => (
           <a
@@ -104,25 +95,11 @@ function safeDate(dateStr: string): Date {
           </a>
         ))}
 
-        {items.length === 0 && !loading && (
-          <div class="h-full flex flex-col items-center justify-center gap-2 text-gray-600">
-            <span class="text-[10px] font-mono tracking-widest">NO_DATA</span>
-            <span class="text-[9px] font-mono text-gray-700">Awaiting feed...</span>
-          </div>
-        )}
+            
       </div>
     )}
 
-    {loading && (
-      <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-10 backdrop-blur-sm gap-2">
-        <div class="flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full animate-pulse" style={`background-color: ${color}; animation-delay: 0s`}></span>
-          <span class="w-1.5 h-1.5 rounded-full animate-pulse" style={`background-color: ${color}; animation-delay: 0.2s`}></span>
-          <span class="w-1.5 h-1.5 rounded-full animate-pulse" style={`background-color: ${color}; animation-delay: 0.4s`}></span>
-        </div>
-        <div class="text-[10px] tracking-[0.3em] font-bold font-display" style={`color: ${color}`}>SYNCING</div>
-      </div>
-    )}
+        
   </div>
 
   <!-- Bottom fade -->

@@ -1,0 +1,124 @@
+{
+  "result": {
+    "description": "",
+    "id": "211d568c89404072bb4a08b7f6f8047a",
+    "kind": "zone",
+    "last_updated": "2025-12-09T00:34:26.354858Z",
+    "name": "default",
+    "phase": "http_response_headers_transform",
+    "rules": [
+      {
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "Strict-Transport-Security": {
+              "operation": "set",
+              "value": "max-age=31536000; includeSubDomains; preload"
+            }
+          }
+        },
+        "description": "SN: HSTS",
+        "enabled": true,
+        "expression": "true",
+        "id": "0d3596a5b6194b708e54d68d3b236eb3",
+        "last_updated": "2025-12-09T00:34:26.354858Z",
+        "ref": "0d3596a5b6194b708e54d68d3b236eb3",
+        "version": "1"
+      },
+      {
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "X-Content-Type-Options": {
+              "operation": "set",
+              "value": "nosniff"
+            }
+          }
+        },
+        "description": "SN: X-Content-Type-Options",
+        "enabled": true,
+        "expression": "true",
+        "id": "494af380137d4f7895c2b8e646c71ac8",
+        "last_updated": "2025-12-09T00:34:26.354858Z",
+        "ref": "494af380137d4f7895c2b8e646c71ac8",
+        "version": "1"
+      },
+      {
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "Referrer-Policy": {
+              "operation": "set",
+              "value": "strict-origin-when-cross-origin"
+            }
+          }
+        },
+        "description": "SN: Referrer-Policy",
+        "enabled": true,
+        "expression": "true",
+        "id": "2050dccf7b394a90abd082d50a892b1f",
+        "last_updated": "2025-12-09T00:34:26.354858Z",
+        "ref": "2050dccf7b394a90abd082d50a892b1f",
+        "version": "1"
+      },
+      {
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "Permissions-Policy": {
+              "operation": "set",
+              "value": "camera=(), microphone=(), geolocation=()"
+            }
+          }
+        },
+        "description": "SN: Permissions-Policy",
+        "enabled": true,
+        "expression": "true",
+        "id": "8338fb6d5e8d4a3b86a40e5c66f04fc4",
+        "last_updated": "2025-12-09T00:34:26.354858Z",
+        "ref": "8338fb6d5e8d4a3b86a40e5c66f04fc4",
+        "version": "1"
+      },
+      {
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "X-Frame-Options": {
+              "operation": "set",
+              "value": "SAMEORIGIN"
+            }
+          }
+        },
+        "description": "SN: X-Frame-Options",
+        "enabled": true,
+        "expression": "true",
+        "id": "c64540dd2ead4d33849d04b60e944dcd",
+        "last_updated": "2025-12-09T00:34:26.354858Z",
+        "ref": "c64540dd2ead4d33849d04b60e944dcd",
+        "version": "1"
+      },
+      {
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "Content-Security-Policy": {
+              "operation": "set",
+              "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'"
+            }
+          }
+        },
+        "description": "SN: CSP for HTML",
+        "enabled": true,
+        "expression": "len(http.response.headers[\"content-type\"]) \u003e 0 and lower(http.response.headers[\"content-type\"][0]) contains \"text/html\"",
+        "id": "f7dfbfee12e34ff5a600429dd1b04c53",
+        "last_updated": "2025-12-09T00:34:26.354858Z",
+        "ref": "f7dfbfee12e34ff5a600429dd1b04c53",
+        "version": "1"
+      }
+    ],
+    "version": "5"
+  },
+  "success": true,
+  "errors": [],
+  "messages": []
+}

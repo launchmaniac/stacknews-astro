@@ -10,6 +10,10 @@ import Sidebar from '../components/astro/Sidebar.astro';
 import Clock from '../components/react/Clock.tsx';
 import SearchBar from '../components/react/SearchBar.tsx';
 import TreasuryPanel from '../components/react/TreasuryPanel.tsx';
+import MarketPanel from '../components/react/MarketPanel.tsx';
+import CryptoPanel from '../components/react/CryptoPanel.tsx';
+import CommoditiesPanel from '../components/react/CommoditiesPanel.tsx';
+import YieldCurvePanel from '../components/react/YieldCurvePanel.tsx';
 import FeedLoader from '../components/react/FeedLoader.tsx';
 import LiveWire from '../components/react/LiveWire.tsx';
 
@@ -27,17 +31,13 @@ const category = url.searchParams.get('category') || 'ALL';
     <!-- Header with Clock Island -->
     <Header>
       <div slot="ticker" class="flex-1 flex items-center">
-        <div class="w-full h-8 bg-black/40 flex items-center px-4 text-xs text-gray-500">
-          <span class="animate-pulse">Loading market data...</span>
-        </div>
+          <div class="w-full h-8 bg-black/40 flex items-center px-4 text-xs text-gray-500"></div>
       </div>
       <Clock client:load slot="clock" />
     </Header>
 
     <!-- Stock Ticker Bar -->
-    <div class="flex-none bg-[#020617] border-b border-white/5 z-40 h-9 flex items-center px-4">
-      <span class="text-xs text-gray-600 animate-pulse">Market indices loading...</span>
-    </div>
+        <div class="flex-none bg-[#020617] border-b border-white/5 z-40 h-9 flex items-center px-4"></div>
 
     <div class="flex-1 flex overflow-hidden">
 
@@ -59,6 +59,14 @@ const category = url.searchParams.get('category') || 'ALL';
           <!-- Treasury Hero Row (React Island) -->
           <TreasuryPanel client:load />
 
+          <!-- Data Windows Section -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <MarketPanel client:load />
+            <YieldCurvePanel client:load />
+            <CryptoPanel client:load />
+            <CommoditiesPanel client:load />
+          </div>
+
           <!-- Feed Grid (React Island with client-side loading) -->
           <FeedLoader
             client:load
@@ -70,20 +78,16 @@ const category = url.searchParams.get('category') || 'ALL';
       </main>
 
       <!-- Live Wire Sidebar (React Island - fetches own data) -->
-      <aside class="hidden xl:flex w-80 flex-col border-l border-white/5 bg-black/30">
-        <LiveWire client:load />
-      </aside>
+          <aside class="hidden xl:flex w-80 flex-col border-l border-white/5 bg-black/30">
+            <LiveWire client:load />
+          </aside>
 
     </div>
 
     <!-- Bottom Tickers -->
     <div class="flex-none z-50 flex flex-col">
-      <div class="h-8 bg-[#0f172a] border-t border-white/10 flex items-center px-4">
-        <span class="text-xs text-gray-600">Crypto ticker loading...</span>
-      </div>
-      <div class="h-8 bg-[#030712] border-t border-white/10 flex items-center px-4">
-        <span class="text-xs text-gray-600">Military feed loading...</span>
-      </div>
+          <div class="h-8 bg-[#0f172a] border-t border-white/10 flex items-center px-4"></div>
+          <div class="h-8 bg-[#030712] border-t border-white/10 flex items-center px-4"></div>
     </div>
 
   </div>

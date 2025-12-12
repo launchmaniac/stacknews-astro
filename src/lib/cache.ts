@@ -31,19 +31,23 @@ export const FEED_CATEGORIES = [
   'ENERGY',
   'EUROZONE',
   'ASIA_PACIFIC',
+  'CHINA',
   'GLOBAL_MACRO',
   'CRYPTO',
   'STATE_DEPT',
   'MILITARY',
   'UK',
+  'BULGARIA',
+  'AFRICA',
   'RESEARCH',
   'MORTGAGE',
   'REAL ESTATE',
-  'LEGISLATION',
+  'US CONGRESS',
   'REGULATION',
   'EXECUTIVE',
   'NEWS',
-  'CANADA'
+  'CANADA',
+  'JAPAN'
 ] as const;
 
 // Feed cache operations

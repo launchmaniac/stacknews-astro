@@ -1,0 +1,13 @@
+{
+  "name": "Default",
+  "kind": "zone",
+  "phase": "http_response_headers_transform",
+  "rules": [
+    { "description": "SN: HSTS", "expression": "true", "action": "set_http_response_header", "action_parameters": { "name": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" } },
+    { "description": "SN: X-Content-Type-Options", "expression": "true", "action": "set_http_response_header", "action_parameters": { "name": "X-Content-Type-Options", "value": "nosniff" } },
+    { "description": "SN: Referrer-Policy", "expression": "true", "action": "set_http_response_header", "action_parameters": { "name": "Referrer-Policy", "value": "strict-origin-when-cross-origin" } },
+    { "description": "SN: Permissions-Policy", "expression": "true", "action": "set_http_response_header", "action_parameters": { "name": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" } },
+    { "description": "SN: X-Frame-Options", "expression": "true", "action": "set_http_response_header", "action_parameters": { "name": "X-Frame-Options", "value": "SAMEORIGIN" } },
+    { "description": "SN: CSP for HTML", "expression": "http.response.headers[\"content-type\"][*] contains \"text/html\"", "action": "set_http_response_header", "action_parameters": { "name": "Content-Security-Policy", "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'" } }
+  ]
+}

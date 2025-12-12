@@ -146,7 +146,7 @@ export default function TreasuryPanel() {
   }, []);
 
   const formatDebt = (value: number) => {
-    if (value === 0) return 'LOADING...';
+    if (value === 0) return '';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -155,57 +155,40 @@ export default function TreasuryPanel() {
   };
 
   const formatCash = (value: number) => {
-    if (value === 0) return 'LOADING...';
+    if (value === 0) return '';
     return new Intl.NumberFormat('en-US', {
       notation: 'compact',
       maximumFractionDigits: 1
     }).format(value);
   };
 
-  if (error && !data) {
-    return (
-      <div className="mb-8 animate-fade-in">
-        <div className="glass-panel p-6 rounded-xl text-center">
-          <p className="text-red-400/80 text-sm mb-4">Failed to load Treasury data</p>
-          <button
-            onClick={() => loadData(true)}
-            className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded text-cyan-400 text-sm flex items-center gap-2 mx-auto"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-              <path d="M21 3v5h-5" />
-            </svg>
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // No placeholders: show nothing when there is no real data
+  if ((error && !data) || (loading && !data)) return null;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 animate-fade-in">
       <div className="md:col-span-2">
-        <StatCard
-          label="Total Public Debt"
-          value={data ? formatDebt(data.debt) : 'LOADING...'}
-          trend="up"
-          color="#ef4444"
-          tooltip="The total money the U.S. government owes."
-        >
-          {data && data.debtHistory.length > 0 && (
-            <Sparkline data={data.debtHistory} color="#ef4444" />
-          )}
-        </StatCard>
+            <StatCard
+              label="Total Public Debt"
+              value={data ? formatDebt(data.debt) : ''}
+              trend="up"
+              color="#ef4444"
+              tooltip="The total money the U.S. government owes."
+            >
+              {data && data.debtHistory.length > 0 && (
+                <Sparkline data={data.debtHistory} color="#ef4444" />
+              )}
+            </StatCard>
       </div>
 
-      <StatCard
-        label="Operating Cash"
-        value={data ? formatCash(data.cash) : 'LOADING...'}
-        prefix="$"
-        subValue="LIQUID ASSETS"
-        trend="neutral"
-        color="#22c55e"
-      />
+          <StatCard
+            label="Operating Cash"
+            value={data ? formatCash(data.cash) : ''}
+            prefix="$"
+            subValue="LIQUID ASSETS"
+            trend="neutral"
+            color="#22c55e"
+          />
 
       <StatCard
         label="Avg Interest Rate"

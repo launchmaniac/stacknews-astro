@@ -2,7 +2,7 @@
 // Yahoo Finance API wrapper for market data
 
 import type { MarketData } from './types';
-import { EDGE_PROXY_URL, RSS_PROXIES } from './constants';
+import { EDGE_PROXY_URL } from './constants';
 
 interface YahooChartResult {
   chart?: {
@@ -57,7 +57,7 @@ const TICKER_SYMBOLS = [
 async function fetchSymbol(symbol: { id: string; name: string; type: MarketData['type'] }): Promise<MarketData | null> {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol.id}?interval=1d&range=1d`;
 
-  // Try edge proxy
+  // Route only through our edge proxy
   try {
     const proxyUrl = `${EDGE_PROXY_URL}?url=${encodeURIComponent(url)}`;
     const response = await fetch(proxyUrl);
@@ -78,41 +78,6 @@ async function fetchSymbol(symbol: { id: string; name: string; type: MarketData[
       }
     }
   } catch {}
-
-  // Try CORS proxies as fallback
-  for (const proxyBase of RSS_PROXIES) {
-    try {
-      const proxyUrl = proxyBase.includes('corsproxy.io')
-        ? `${proxyBase}${url}`
-        : `${proxyBase}${encodeURIComponent(url)}`;
-
-      const response = await fetch(proxyUrl);
-      if (!response.ok) continue;
-
-      let text = await response.text();
-      if (text.trim().startsWith('{')) {
-        try {
-          const json = JSON.parse(text);
-          if (json.contents) text = json.contents;
-        } catch {}
-      }
-
-      const data: YahooChartResult = JSON.parse(text);
-      const meta = data.chart?.result?.[0]?.meta;
-      if (meta) {
-        const change = meta.regularMarketPrice - meta.previousClose;
-        const percentChange = (change / meta.previousClose) * 100;
-        return {
-          symbol: symbol.id,
-          name: symbol.name,
-          price: meta.regularMarketPrice,
-          change,
-          percentChange,
-          type: symbol.type
-        };
-      }
-    } catch {}
-  }
 
   return null;
 }

@@ -1,16 +1,21 @@
 {
-	"main": "dist/_worker.js/index.js",
-	"name": "stacknews-astro",
-  "compatibility_date": "2025-12-07",
-  "compatibility_flags": [
-    "nodejs_compat",
-    "global_fetch_strictly_public"
-  ],
-	"assets": {
-		"binding": "ASSETS",
-		"directory": "./dist"
-	},
-	"observability": {
+  "name": "stacknews-astro",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2024-12-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
     "enabled": true
-  }
+  },
+  "services": [
+    {
+      "binding": "COORDINATOR",
+      "service": "stacknews-coordinator"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "STACKNEWS_KV",
+      "id": "8f9f004bf39a4e92ac3c21ebf1545d68"
+    }
+  ]
 }

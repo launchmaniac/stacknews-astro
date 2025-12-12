@@ -4,13 +4,14 @@
 
 import type { APIRoute } from 'astro';
 import type { TreasuryData } from '../../lib/types';
-import { FRED_API_KEY } from '../../lib/constants';
+// FRED API key is provided via Cloudflare environment bindings
 import {
   getTreasuryCache,
   setTreasuryCache,
   isTreasuryCacheStale,
   getTreasuryCacheAge
 } from '../../lib/cache';
+import { getKV, kvGetJSON, kvPutJSON } from '../../lib/kv';
 
 export const prerender = false;
 
@@ -25,8 +26,8 @@ const FRED_SERIES = {
   dgs2: 'DGS2',             // 2-Year Treasury Constant Maturity Rate
 };
 
-async function fetchFredSeries(seriesId: string, limit: number = 10): Promise<any> {
-  const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&sort_order=desc&limit=${limit}`;
+async function fetchFredSeries(seriesId: string, apiKey: string, limit: number = 10): Promise<any> {
+  const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${apiKey}&file_type=json&sort_order=desc&limit=${limit}`;
 
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
@@ -52,13 +53,13 @@ async function fetchFredSeries(seriesId: string, limit: number = 10): Promise<an
   return [];
 }
 
-async function fetchTreasuryData(): Promise<TreasuryData> {
+async function fetchTreasuryData(apiKey: string): Promise<TreasuryData> {
   console.log('[Treasury] Fetching data from FRED API...');
 
   const [debtData, rateData, spreadData] = await Promise.all([
-    fetchFredSeries(FRED_SERIES.debt, 20),
-    fetchFredSeries(FRED_SERIES.dgs10, 15),
-    fetchFredSeries(FRED_SERIES.t10y2y, 15)
+    fetchFredSeries(FRED_SERIES.debt, apiKey, 20),
+    fetchFredSeries(FRED_SERIES.dgs10, apiKey, 15),
+    fetchFredSeries(FRED_SERIES.t10y2y, apiKey, 15)
   ]);
 
   const result: TreasuryData = {
@@ -98,10 +99,34 @@ async function fetchTreasuryData(): Promise<TreasuryData> {
   return result;
 }
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ request, url, locals }) => {
   const forceRefresh = url.searchParams.get('refresh') === 'true';
+  const isWarm = url.searchParams.get('warm') === 'true';
+  const apiKey = (locals as any)?.runtime?.env?.FRED_API_KEY as string | undefined;
+
+  if (!apiKey) {
+    console.error('[Treasury] Missing FRED_API_KEY binding');
+  }
+
+  const cache = caches.default;
+  const cacheKey = new Request(request.url, request);
+  const kv = getKV(locals);
+
+  // If this is a coordinator warm request, require warm secret header
+  if (isWarm) {
+    const secret = (locals as any)?.runtime?.env?.WARM_SECRET || (typeof process !== 'undefined' ? (process.env as any)?.WARM_SECRET : undefined);
+    const token = request.headers.get('X-Stacknews-Warm') || '';
+    if (!secret || token !== String(secret)) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 403, headers: { 'Content-Type': 'application/json' } });
+    }
+  }
 
   try {
+    // Edge cache fast path (skip when forceRefresh is requested)
+    if (!forceRefresh) {
+      const cached = await cache.match(cacheKey);
+      if (cached) return cached;
+    }
     // Check cache first
     const cached = getTreasuryCache();
     const isStale = isTreasuryCacheStale();
@@ -112,14 +137,16 @@ export const GET: APIRoute = async ({ url }) => {
       // If stale, trigger background refresh
       if (isStale) {
         console.log('[Treasury] Cache stale, refreshing in background');
-        fetchTreasuryData().then(data => {
-          setTreasuryCache(data);
-        }).catch(err => {
-          console.error('[Treasury] Background refresh failed:', err);
-        });
+        if (apiKey) {
+          fetchTreasuryData(apiKey).then(data => {
+            setTreasuryCache(data);
+          }).catch(err => {
+            console.error('[Treasury] Background refresh failed:', err);
+          });
+        }
       }
 
-      return new Response(
+      const res = new Response(
         JSON.stringify({
           ...cached,
           _cache: {
@@ -133,22 +160,33 @@ export const GET: APIRoute = async ({ url }) => {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+            'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600, stale-if-error=86400',
             'X-Cache': 'HIT',
             'X-Cache-Age': String(cacheAge)
           }
         }
       );
+      locals?.runtime?.ctx?.waitUntil(cache.put(cacheKey, res.clone()));
+      return res;
     }
 
     // Cache miss or force refresh
     console.log(`[Treasury] Cache ${cached ? 'force refresh' : 'miss'}`);
-    const data = await fetchTreasuryData();
+    if (!apiKey) {
+      return new Response(
+        JSON.stringify({ error: 'Missing FRED_API_KEY', message: 'Configure FRED_API_KEY as a Cloudflare secret/binding.' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const data = await fetchTreasuryData(apiKey);
 
     // Store in cache
     setTreasuryCache(data);
+    // Store in KV as durable fallback
+    await kvPutJSON(kv, 'treasury:v1', { data, ts: Date.now() }, 60 * 60); // 1h TTL
 
-    return new Response(
+    const res = new Response(
       JSON.stringify({
         ...data,
         _cache: { hit: false },
@@ -158,15 +196,17 @@ export const GET: APIRoute = async ({ url }) => {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600, stale-if-error=86400',
           'X-Cache': 'MISS'
         }
       }
     );
+    locals?.runtime?.ctx?.waitUntil(cache.put(cacheKey, res.clone()));
+    return res;
   } catch (error: any) {
     console.error('[Treasury] Fatal error:', error);
 
-    // Try to return stale cache
+    // Try to return stale cache from memory, then KV
     const cached = getTreasuryCache();
     if (cached) {
       return new Response(
@@ -181,6 +221,21 @@ export const GET: APIRoute = async ({ url }) => {
             'Content-Type': 'application/json',
             'X-Cache': 'STALE-ERROR'
           }
+        }
+      );
+    }
+
+    const kvData = await kvGetJSON<{ data: TreasuryData }>(kv, 'treasury:v1');
+    if (kvData?.data) {
+      return new Response(
+        JSON.stringify({
+          ...kvData.data,
+          _cache: { hit: true, stale: true, error: true, source: 'kv' },
+          timestamp: new Date().toISOString()
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json', 'X-Cache': 'STALE-KV' }
         }
       );
     }

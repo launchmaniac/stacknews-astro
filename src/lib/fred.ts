@@ -2,10 +2,12 @@
 // FRED API wrapper for macroeconomic data
 
 import type { MacroData, CentralBankRate, FredObservation } from './types';
-import { FRED_API_KEY, FRED_BASE_URL, EDGE_PROXY_URL } from './constants';
+import { FRED_BASE_URL, EDGE_PROXY_URL } from './constants';
 
-async function getFredSeries(seriesId: string, limit: number = 1): Promise<FredObservation[] | null> {
-  const url = `${FRED_BASE_URL}?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&sort_order=desc&limit=${limit}`;
+async function getFredSeries(seriesId: string, limit: number = 1, apiKey?: string): Promise<FredObservation[] | null> {
+  const resolvedKey = apiKey || (typeof process !== 'undefined' ? (process.env as any)?.FRED_API_KEY : undefined);
+  if (!resolvedKey) return null;
+  const url = `${FRED_BASE_URL}?series_id=${seriesId}&api_key=${resolvedKey}&file_type=json&sort_order=desc&limit=${limit}`;
 
   try {
     // Try direct fetch first
@@ -29,11 +31,11 @@ async function getFredSeries(seriesId: string, limit: number = 1): Promise<FredO
   return null;
 }
 
-export async function getMacroData(): Promise<MacroData> {
+export async function getMacroData(apiKey?: string): Promise<MacroData> {
   const [fundsData, spreadData, cpiData] = await Promise.all([
-    getFredSeries('DFF', 30),        // Daily Federal Funds Rate
-    getFredSeries('T10Y2Y', 30),     // 10Y-2Y Treasury Spread
-    getFredSeries('CPIAUCSL_PC1', 13) // CPI YoY
+    getFredSeries('DFF', 30, apiKey),        // Daily Federal Funds Rate
+    getFredSeries('T10Y2Y', 30, apiKey),     // 10Y-2Y Treasury Spread
+    getFredSeries('CPIAUCSL_PC1', 13, apiKey) // CPI YoY
   ]);
 
   const result: MacroData = {
@@ -75,7 +77,7 @@ export async function getMacroData(): Promise<MacroData> {
   return result;
 }
 
-export async function getCentralBankRates(): Promise<CentralBankRate[]> {
+export async function getCentralBankRates(apiKey?: string): Promise<CentralBankRate[]> {
   const series = [
     { id: 'DFF', country: 'USA', bank: 'FED' },
     { id: 'ECBMRRFR', country: 'EUR', bank: 'ECB' },
@@ -95,7 +97,7 @@ export async function getCentralBankRates(): Promise<CentralBankRate[]> {
 
   const results = await Promise.all(
     series.map(async ({ id, country, bank }) => {
-      const data = await getFredSeries(id);
+      const data = await getFredSeries(id, 1, apiKey);
       if (data && data.length > 0) {
         return { country, bank, rate: parseFloat(data[0].value) };
       }

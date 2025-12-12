@@ -2,7 +2,7 @@
 # Cloudflare Pages configuration for StackNews Astro
 
 name = "stacknews"
-compatibility_date = "2024-01-01"
+compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 
 # Build settings handled by Pages, not Workers
@@ -11,10 +11,18 @@ compatibility_flags = ["nodejs_compat"]
 [site]
 bucket = "./dist"
 
-# KV Namespace for sessions (optional)
-# [[kv_namespaces]]
-# binding = "SESSION"
-# id = "your-kv-namespace-id"
+# Production bindings for Pages Functions
+# Service Binding: Coordinator Durable Object Worker
+[[services]]
+binding = "COORDINATOR"
+service = "stacknews-coordinator"
+
+# KV Namespace binding: durable cache fallback
+[[kv_namespaces]]
+binding = "STACKNEWS_KV"
+# NOTE: This is the namespace ID discovered in your account for STACKNEWS_KV
+# If you recreate the namespace, update this ID accordingly.
+id = "8f9f004bf39a4e92ac3c21ebf1545d68"
 
 # Environment variables
 [vars]

@@ -13,7 +13,7 @@ const { activeCategory = 'ALL', debtValue = 0 } = Astro.props;
 
 const formattedDebt = debtValue > 0
   ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(debtValue)
-  : 'SYNCING...';
+  : '';
 
 // Icon SVG paths for each category (inline to avoid JS)
 const iconPaths: Record<string, string> = {
@@ -64,13 +64,15 @@ const iconPaths: Record<string, string> = {
     ))}
   </div>
 
-  <!-- National Debt Widget -->
-  <div class="p-4 border-t border-white/5 flex-none">
-    <div class="bg-gradient-to-br from-red-900/20 to-black border border-red-500/30 p-3 rounded-lg">
-      <div class="text-[10px] text-red-400 font-medium mb-1 uppercase tracking-widest">National Debt</div>
-      <div class="text-lg text-white font-bold tabular-nums tracking-tighter" id="debt-display">
-        {formattedDebt}
+  <!-- National Debt Widget (render only with real data) -->
+  {formattedDebt && (
+    <div class="p-4 border-t border-white/5 flex-none">
+      <div class="bg-gradient-to-br from-red-900/20 to-black border border-red-500/30 p-3 rounded-lg">
+        <div class="text-[10px] text-red-400 font-medium mb-1 uppercase tracking-widest">National Debt</div>
+            <div class="text-lg text-white font-bold tabular-nums tracking-tighter" id="debt-display">
+              {formattedDebt}
+            </div>
       </div>
     </div>
-  </div>
+  )}
 </nav>
