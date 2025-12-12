@@ -11,30 +11,43 @@ export const EDGE_PROXY_URL = 'https://stacknews-proxy.launch-maniac.workers.dev
 export const FRED_BASE_URL = 'https://api.stlouisfed.org/fred/series/observations';
 
 export const CATEGORIES = [
+  // Overview
   { id: 'ALL', label: 'OVERVIEW' },
-  { id: 'TREASURY', label: 'TREASURY' },
+
+  // UNITED STATES (alphabetical)
+  { id: 'EXECUTIVE', label: 'EXECUTIVE' },
   { id: 'FEDERAL RESERVE', label: 'FEDERAL RESERVE' },
-  { id: 'ENERGY', label: 'ENERGY SECTOR' },
-  { id: 'EUROZONE', label: 'EUROZONE' },
-  { id: 'ASIA_PACIFIC', label: 'ASIA PACIFIC' },
-  { id: 'CHINA', label: 'CHINA' },
-  { id: 'GLOBAL_MACRO', label: 'GLOBAL MACRO' },
-  { id: 'CRYPTO', label: 'CRYPTO CURRENCY' },
-  { id: 'STATE_DEPT', label: 'STATE DEPT.' },
   { id: 'MILITARY', label: 'U.S. MILITARY' },
-  { id: 'UK', label: 'UNITED KINGDOM' },
-  { id: 'BULGARIA', label: 'BULGARIA' },
-  { id: 'AFRICA', label: 'AFRICA' },
-  { id: 'RESEARCH', label: 'RESEARCH & GRANT' },
   { id: 'MORTGAGE', label: 'MORTGAGE' },
   { id: 'REAL ESTATE', label: 'REAL ESTATE' },
-  { id: 'US CONGRESS', label: 'US CONGRESS' },
   { id: 'REGULATION', label: 'REGULATION' },
-  { id: 'EXECUTIVE', label: 'EXECUTIVE' },
-  { id: 'NEWS', label: 'NEWS' },
+  { id: 'STATE_DEPT', label: 'STATE DEPT.' },
+  { id: 'TREASURY', label: 'TREASURY' },
+  { id: 'US CONGRESS', label: 'US CONGRESS' },
+
+  // AMERICAS (alphabetical)
   { id: 'CANADA', label: 'CANADA' },
+
+  // ASIA (alphabetical)
+  { id: 'ASIA_PACIFIC', label: 'ASIA PACIFIC' },
+  { id: 'CHINA', label: 'CHINA' },
   { id: 'JAPAN', label: 'JAPAN' },
+
+  // EUROPE (alphabetical)
+  { id: 'BULGARIA', label: 'BULGARIA' },
+  { id: 'EUROZONE', label: 'EUROZONE' },
+  { id: 'UK', label: 'UNITED KINGDOM' },
+
+  // SUB-SAHARA AFRICA (alphabetical)
+  { id: 'AFRICA', label: 'AFRICA' },
+
+  // GLOBAL (alphabetical)
+  { id: 'CRYPTO', label: 'CRYPTO CURRENCY' },
+  { id: 'ENERGY', label: 'ENERGY SECTOR' },
+  { id: 'GLOBAL_MACRO', label: 'GLOBAL MACRO' },
   { id: 'NASA', label: 'NASA & SPACE' },
+  { id: 'NEWS', label: 'NEWS' },
+  { id: 'RESEARCH', label: 'RESEARCH & GRANT' },
 ] as const;
 
 export const FEEDS: FeedConfig[] = [
