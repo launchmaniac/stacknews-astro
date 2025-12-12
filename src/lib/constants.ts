@@ -34,6 +34,7 @@ export const CATEGORIES = [
   { id: 'NEWS', label: 'NEWS' },
   { id: 'CANADA', label: 'CANADA' },
   { id: 'JAPAN', label: 'JAPAN' },
+  { id: 'NASA', label: 'NASA & SPACE' },
 ] as const;
 
 export const FEEDS: FeedConfig[] = [
@@ -943,5 +944,169 @@ export const FEEDS: FeedConfig[] = [
     name: 'MIT ENERGY',
     color: '#06b6d4',
     category: 'RESEARCH'
+  },
+  // EurekAlert - University & Lab Press Releases
+  {
+    id: 'eurekalert-all',
+    url: 'https://www.eurekalert.org/rss/technology_engineering.xml',
+    name: 'EUREKALERT TECH',
+    color: '#10b981',
+    category: 'RESEARCH'
+  },
+  {
+    id: 'eurekalert-science',
+    url: 'https://www.eurekalert.org/rss/physics_math.xml',
+    name: 'EUREKALERT PHYSICS',
+    color: '#14b8a6',
+    category: 'RESEARCH'
+  },
+  {
+    id: 'eurekalert-earth',
+    url: 'https://www.eurekalert.org/rss/earth_environ.xml',
+    name: 'EUREKALERT EARTH',
+    color: '#22c55e',
+    category: 'RESEARCH'
+  },
+  // ScienceDaily - Research News
+  {
+    id: 'sciencedaily-ai',
+    url: 'https://www.sciencedaily.com/rss/computers_math/artificial_intelligence.xml',
+    name: 'SCIENCEDAILY AI',
+    color: '#3b82f6',
+    category: 'RESEARCH'
+  },
+  {
+    id: 'sciencedaily-energy',
+    url: 'https://www.sciencedaily.com/rss/matter_energy/energy_technology.xml',
+    name: 'SCIENCEDAILY ENERGY',
+    color: '#f59e0b',
+    category: 'RESEARCH'
+  },
+  {
+    id: 'sciencedaily-nuclear',
+    url: 'https://www.sciencedaily.com/rss/matter_energy/nuclear_energy.xml',
+    name: 'SCIENCEDAILY NUCLEAR',
+    color: '#84cc16',
+    category: 'RESEARCH'
+  },
+  {
+    id: 'sciencedaily-climate',
+    url: 'https://www.sciencedaily.com/rss/earth_climate/climate.xml',
+    name: 'SCIENCEDAILY CLIMATE',
+    color: '#0ea5e9',
+    category: 'RESEARCH'
+  },
+  {
+    id: 'sciencedaily-econ',
+    url: 'https://www.sciencedaily.com/rss/science_society/economics.xml',
+    name: 'SCIENCEDAILY ECONOMICS',
+    color: '#8b5cf6',
+    category: 'RESEARCH'
+  },
+  // Phys.org - Science News
+  {
+    id: 'phys-tech',
+    url: 'https://phys.org/rss-feed/technology-news/',
+    name: 'PHYS.ORG TECH',
+    color: '#ec4899',
+    category: 'RESEARCH'
+  },
+  {
+    id: 'phys-physics',
+    url: 'https://phys.org/rss-feed/physics-news/',
+    name: 'PHYS.ORG PHYSICS',
+    color: '#f43f5e',
+    category: 'RESEARCH'
+  },
+  // Nature - Scientific Journals
+  {
+    id: 'nature-news',
+    url: 'https://www.nature.com/nature.rss',
+    name: 'NATURE',
+    color: '#dc2626',
+    category: 'RESEARCH'
+  },
+  {
+    id: 'science-news',
+    url: 'https://www.science.org/rss/news_current.xml',
+    name: 'SCIENCE MAG',
+    color: '#be185d',
+    category: 'RESEARCH'
+  },
+
+  // NASA Feeds - Planetary Intelligence
+  // News & General
+  {
+    id: 'nasa-news',
+    url: 'https://www.nasa.gov/news-release/feed/',
+    name: 'NASA NEWS RELEASES',
+    color: '#0b3d91',
+    category: 'NASA'
+  },
+  {
+    id: 'nasa-iotd',
+    url: 'https://www.nasa.gov/feeds/iotd-feed/',
+    name: 'NASA IMAGE OF DAY',
+    color: '#fc3d21',
+    category: 'NASA'
+  },
+  {
+    id: 'nasa-recent',
+    url: 'https://www.nasa.gov/feed/',
+    name: 'NASA RECENT',
+    color: '#1e90ff',
+    category: 'NASA'
+  },
+  // Mission-specific
+  {
+    id: 'nasa-artemis',
+    url: 'https://www.nasa.gov/missions/artemis/feed/',
+    name: 'ARTEMIS PROGRAM',
+    color: '#f4f4f4',
+    category: 'NASA'
+  },
+  {
+    id: 'nasa-iss',
+    url: 'https://www.nasa.gov/missions/station/feed/',
+    name: 'SPACE STATION',
+    color: '#00a3e0',
+    category: 'NASA'
+  },
+  // Technology & Aeronautics
+  {
+    id: 'nasa-tech',
+    url: 'https://www.nasa.gov/technology/feed/',
+    name: 'NASA TECHNOLOGY',
+    color: '#8b5cf6',
+    category: 'NASA'
+  },
+  {
+    id: 'nasa-aero',
+    url: 'https://www.nasa.gov/aeronautics/feed/',
+    name: 'NASA AERONAUTICS',
+    color: '#22c55e',
+    category: 'NASA'
+  },
+  // Research Centers (primary science/climate focus)
+  {
+    id: 'nasa-goddard',
+    url: 'https://www.nasa.gov/centers-and-facilities/goddard/feed/',
+    name: 'GODDARD SPACE CENTER',
+    color: '#3b82f6',
+    category: 'NASA'
+  },
+  {
+    id: 'nasa-jpl',
+    url: 'https://www.nasa.gov/centers-and-facilities/jpl/feed/',
+    name: 'JET PROPULSION LAB',
+    color: '#ef4444',
+    category: 'NASA'
+  },
+  {
+    id: 'nasa-giss',
+    url: 'https://www.nasa.gov/centers-and-facilities/giss/feed/',
+    name: 'GODDARD CLIMATE',
+    color: '#10b981',
+    category: 'NASA'
   },
 ];

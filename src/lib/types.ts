@@ -34,7 +34,8 @@ export type CategoryType =
   | 'ASIA_PACIFIC'
   | 'EUROZONE'
   | 'GLOBAL_MACRO'
-  | 'JAPAN';
+  | 'JAPAN'
+  | 'NASA';
 
 export interface FeedConfig {
   id: string;
@@ -173,7 +174,7 @@ export interface HousingStats {
   latestPermits?: number;
 }
 
-// NASA DONKI (Solar Flares)
+// NASA DONKI (Space Weather)
 export interface SolarFlareEvent {
   flareID: string;
   classType?: string;
@@ -181,9 +182,105 @@ export interface SolarFlareEvent {
   beginTime?: string;
   peakTime?: string;
   endTime?: string;
+  linkedEvents?: any[];
 }
 
-// GDELT Documents
+// Coronal Mass Ejection (CME)
+export interface CoronalMassEjection {
+  activityID: string;
+  startTime?: string;
+  sourceLocation?: string;
+  note?: string;
+  instruments?: string[];
+  cmeAnalyses?: Array<{
+    speed?: number;
+    type?: string;
+    latitude?: number;
+    longitude?: number;
+    halfAngle?: number;
+    isMostAccurate?: boolean;
+    time21_5?: string;
+  }>;
+  linkedEvents?: any[];
+}
+
+// Geomagnetic Storm (GST)
+export interface GeomagneticStorm {
+  gstID: string;
+  startTime?: string;
+  allKpIndex?: Array<{
+    observedTime?: string;
+    kpIndex?: number;
+    source?: string;
+  }>;
+  linkedEvents?: any[];
+}
+
+// Space Weather Snapshot
+export interface SpaceWeatherSnapshot {
+  timestamp: string;
+  period: { start: string; end: string; days: number };
+  summary: {
+    totalEvents: number;
+    solarFlares: number;
+    xClassFlares: number;
+    mClassFlares: number;
+    coronalMassEjections: number;
+    geomagneticStorms: number;
+    solarEnergeticParticles: number;
+    interplanetaryShocks: number;
+    highSpeedStreams: number;
+  };
+  threatAssessment: {
+    level: 'low' | 'moderate' | 'elevated' | 'high' | 'extreme';
+    score: number;
+    maxKpIndex: number;
+    gridRisk: 'low' | 'moderate' | 'high';
+    satelliteRisk: 'low' | 'elevated' | 'high';
+    radioBlackoutRisk: 'low' | 'moderate' | 'high';
+  };
+  recentFlares: SolarFlareEvent[];
+  recentCMEs: CoronalMassEjection[];
+  recentStorms: GeomagneticStorm[];
+}
+
+// EONET Natural Event
+export interface EonetEvent {
+  id: string;
+  title: string;
+  description?: string;
+  link?: string;
+  closed?: string;
+  categories: Array<{ id: string; title: string }>;
+  sources: Array<{ id: string; url: string }>;
+  geometry: Array<{
+    date: string;
+    type: string;
+    coordinates: number[];
+    magnitudeValue?: number;
+    magnitudeUnit?: string;
+  }>;
+}
+
+// EONET Snapshot
+export interface EonetSnapshot {
+  timestamp: string;
+  period: { days: number };
+  summary: {
+    totalActiveEvents: number;
+    byCategory: Record<string, number>;
+  };
+  highlights: {
+    activeWildfires: number;
+    activeVolcanoes: number;
+    severeStorms: number;
+    seaIceEvents: number;
+  };
+  recentEvents: EonetEvent[];
+  categories: Array<{ id: string; title: string; description: string }>;
+}
+
+// GDELT Documents with CAMEO coding
 export interface GdeltDoc {
   url: string;
   title?: string;
@@ -191,6 +288,36 @@ export interface GdeltDoc {
   domain?: string;
   timestamp?: string;
   country?: string;
+  tone?: number;  // GDELT tone score (-10 to +10)
+}
+
+// GDELT Global Stability Snapshot
+export interface GdeltStabilitySnapshot {
+  timestamp: string;
+  overallTone: number;
+  eventCounts: {
+    total: number;
+    cooperation: number;
+    verbalConflict: number;
+    materialConflict: number;
+  };
+  stabilityIndex: number;
+  regionalTones: Record<string, { tone: number; eventCount: number }>;
+  hotspots: Array<{ country: string; tone: number; eventCount: number }>;
+}
+
+// ArXiv Research Paper
+export interface ArxivPaper {
+  id: string;
+  title: string;
+  summary: string;
+  authors: string[];
+  published: string;
+  updated: string;
+  categories: string[];
+  primaryCategory: string;
+  pdfLink?: string;
+  abstractLink?: string;
 }
 
 // UK data.gov.uk (CKAN)
@@ -234,4 +361,82 @@ export interface EStatDataPoint {
   unit: string;
   indicator: string;
   annotation?: string;
+}
+
+// Real Estate and Construction Types
+
+// Census Bureau Construction Pipeline
+export interface ConstructionSeries {
+  permits?: { date: string; value: number }[];
+  starts?: { date: string; value: number }[];
+  completions?: { date: string; value: number }[];
+}
+
+export interface ConstructionStage {
+  series: { date: string; value: number }[];
+  latest: number;
+  monthOverMonth: number;
+  unit: string;
+}
+
+export interface ConstructionPipeline {
+  permits: ConstructionStage;
+  starts: ConstructionStage;
+  completions: ConstructionStage;
+  underConstruction: ConstructionStage;
+  pipelineRatio: {
+    permitsToStarts: number;
+    startsToCompletions: number;
+    description: string;
+  };
+  latestPeriod: string;
+}
+
+// HUD Fair Market Rents
+export interface HudFairMarketRent {
+  entityId: string;
+  areaName: string;
+  year: number;
+  efficiency: number;
+  oneBedroom: number;
+  twoBedroom: number;
+  threeBedroom: number;
+  fourBedroom: number;
+  medianIncome: number;
+  smallAreaFmr: boolean;
+}
+
+// Commercial Real Estate Index (FRED)
+export interface CommercialRealEstateIndex {
+  series: { date: string; value: number }[];
+  latestValue: number;
+  latestDate: string;
+  yearOverYear: number;
+  description?: string;
+}
+
+// Aggregated Real Estate Snapshot
+export interface RealEstateSnapshot {
+  construction: {
+    permits: number;
+    permitsChange: number;
+    starts: number;
+    startsChange: number;
+    completions: number;
+    completionsChange: number;
+    underConstruction: number;
+    period: string;
+    pipelineHealth: 'expanding' | 'contracting';
+  };
+  pricing: {
+    caseShillerIndex: number;
+    caseShillerYoY: number;
+    commercialIndex: number;
+    commercialYoY: number;
+  };
+  affordability: {
+    index: number;
+    description: string;
+  };
+  timestamp: string;
 }

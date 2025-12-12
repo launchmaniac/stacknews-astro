@@ -2,6 +2,112 @@
 
 All notable changes to this project are tracked here. Dates in UTC.
 
+## 2025-12-12
+
+### NASA & Space Category - Planetary Intelligence
+- Created new `NASA` category with 10 RSS feeds:
+  - News: NASA News Releases, NASA Image of Day, NASA Recent
+  - Missions: Artemis Program, Space Station (ISS)
+  - Technology: NASA Technology, NASA Aeronautics
+  - Research Centers: Goddard Space Center, Jet Propulsion Lab, Goddard Climate (GISS)
+- Created `/api/nasa/planetary.json` - Planetary Intelligence API
+- DONKI Space Weather Integration (requires NASA_API_KEY):
+  - Solar Flares with classification (A/B/C minor, M moderate, X major, X10+ extreme)
+  - Coronal Mass Ejections (CME) with speed and trajectory analysis
+  - Geomagnetic Storms with Kp Index (0-9 scale, G1-G5 storm levels)
+  - Solar Energetic Particles, Interplanetary Shocks, High-Speed Streams
+  - Threat Assessment with grid/satellite/radio blackout risk levels
+- EONET Natural Event Tracker (no API key required):
+  - Real-time tracking of wildfires, volcanoes, severe storms, sea ice
+  - 13 event categories: drought, earthquakes, floods, landslides, etc.
+  - Coordinates and magnitude data for mapping
+- Query modes:
+  - Combined snapshot: `/api/nasa/planetary.json`
+  - Space weather: `/api/nasa/planetary.json?dataset=space-weather&days=7`
+  - Earth events: `/api/nasa/planetary.json?dataset=earth-events&days=30`
+  - Wildfires: `/api/nasa/planetary.json?dataset=wildfires`
+  - Volcanoes: `/api/nasa/planetary.json?dataset=volcanoes`
+- Energy sector relevance:
+  - Solar events can damage power grids, transformers, and satellite communications
+  - Kp 7+ storms can cause transformer damage
+  - Wildfires threaten power lines and infrastructure
+- Enhanced `src/lib/nasa.ts` with full DONKI and EONET integration
+- New types: CoronalMassEjection, GeomagneticStorm, SpaceWeatherSnapshot, EonetEvent, EonetSnapshot
+
+### ArXiv Scientific Research API
+- Created `/api/arxiv.json` endpoint for scientific preprints
+- OAI-PMH protocol integration with arXiv.org
+- 8 preset categories:
+  - `FINANCE_QUANT` - Statistical Finance, Risk Management, Portfolio Management, Mathematical Finance
+  - `ECONOMETRICS` - Econometrics and General Economics
+  - `AI_ML` - Artificial Intelligence, Machine Learning, Natural Language Processing
+  - `CRYPTO_SECURITY` - Cryptography, Distributed Computing, Blockchain
+  - `NUCLEAR_ENERGY` - Nuclear Theory, Nuclear Experiment, Plasma Physics
+  - `ASTROPHYSICS` - Earth & Planetary, High Energy Astrophysics, Cosmology
+  - `QUANTUM` - Quantum Physics, Quantum Computing
+  - `CLIMATE_SCIENCE` - Atmospheric & Oceanic Physics, Geophysics
+- Query modes:
+  - By preset: `/api/arxiv.json?preset=FINANCE_QUANT`
+  - By categories: `/api/arxiv.json?categories=q-fin.ST,econ.EM`
+  - By keyword search: `/api/arxiv.json?search=neural+network`
+  - Dashboard snapshot: `/api/arxiv.json?preset=SNAPSHOT`
+- Returns paper metadata: title, authors, abstract, published date, PDF link
+- New library: `src/lib/arxiv.ts` - ArXiv API integration
+- New type: ArxivPaper
+
+### GDELT Event Intelligence Expansion
+- Enhanced `/api/gdelt/stability.json` endpoint
+- Added CAMEO event coding taxonomy for geopolitical analysis:
+  - Cooperation codes (01-08): Appeals, Aid, Diplomatic cooperation
+  - Conflict codes (09-20): Demands, Threats, Protests, Military actions
+- Global Stability Index (0-100 scale):
+  - 80-100: High stability (cooperation dominates)
+  - 60-80: Moderate stability
+  - 40-60: Neutral
+  - 20-40: Elevated tensions (conflict dominates)
+  - 0-20: Crisis level
+- 14 thematic query presets:
+  - Geopolitical: MILITARY_CONFLICT, DIPLOMATIC_TENSIONS, PROTEST_CIVIL_UNREST
+  - Economic: CENTRAL_BANKS, TRADE_SANCTIONS, ENERGY_GEOPOLITICS
+  - Technology: AI_REGULATION, CYBER_SECURITY, SPACE_TECH
+  - Climate: CLIMATE_POLICY, NATURAL_DISASTERS
+  - Regional: ASIA_PACIFIC, MIDDLE_EAST, EUROPE
+- Enhanced GDELT library with keyword-based queries
+- Note: GDELT API availability may vary from Cloudflare Workers
+
+### Scientific RSS Feeds
+- Added 14 new feeds to RESEARCH category for educational/fact-based content:
+  - EurekAlert (3 feeds): technology_engineering, physics_math, earth_environ
+  - ScienceDaily (5 feeds): artificial_intelligence, energy_development, nuclear_energy, climate_weather, economics_business
+  - Phys.org (2 feeds): technology-news, physics-news
+  - Nature (2 feeds): Nature News, Science Magazine AAAS
+  - Research Newsline (2 feeds): research-newsline, science-alerts
+- Focus on peer-reviewed research and institutional sources
+- Avoids opinion content per user request
+
+### Real Estate and Construction Indicators API
+- Created `/api/realestate.json` endpoint with 8 datasets:
+    - `pipeline` - Construction pipeline (Permits, Starts, Completions, Under Construction)
+    - `pipeline-type` - Single-family vs Multi-family breakdown
+    - `fmr` - HUD Fair Market Rents for specific metro areas
+    - `fmr-metros` - FMR for top 10 major metros
+    - `commercial` - Commercial Real Estate Price Index (FRED COMREPUSQ159N)
+    - `affordability` - Housing Affordability Index (FRED FIXHAI)
+    - `caseshiller` - S&P/Case-Shiller US National Home Price Index (FRED CSUSHPINSA)
+    - `snapshot` - Aggregated dashboard metrics
+  - Construction pipeline visualizes three stages: Permits (leading) -> Starts -> Completions (supply)
+  - Pipeline ratio analysis: permits-to-starts > 1 indicates expansion, < 1 indicates contraction
+  - Current snapshot (August 2025):
+    - Permits: 1,330K units (-2.3% MoM)
+    - Starts: 1,307K units (-8.5% MoM)
+    - Completions: 1,608K units (+8.4% MoM)
+    - Case-Shiller Index: 328.94 (+1.3% YoY)
+    - Affordability Index: 104.5 (median family can afford median home)
+  - Data sources: FRED (PERMIT, HOUST, COMPUTSA series from Census Bureau), HUD Fair Market Rents API
+  - Requires FRED_API_KEY for all construction and pricing datasets
+  - New library: `src/lib/realestate.ts` - Real estate data aggregation
+  - New types: ConstructionPipeline, HudFairMarketRent, CommercialRealEstateIndex, RealEstateSnapshot
+
 ## 2025-12-11
 - EIA API Expansion - Comprehensive Energy Data
   - Expanded `/api/eia.json` endpoint with 6 datasets:
