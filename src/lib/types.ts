@@ -24,7 +24,6 @@ export type CategoryType =
   | 'REGULATION'
   | 'EXECUTIVE'
   | 'NEWS'
-  | 'CANADA'
   | 'STATE_DEPT'
   | 'RESEARCH'
   | 'CRYPTO'
@@ -35,7 +34,26 @@ export type CategoryType =
   | 'EUROZONE'
   | 'GLOBAL_MACRO'
   | 'JAPAN'
-  | 'NASA';
+  | 'NASA'
+  // Americas
+  | 'ARGENTINA'
+  | 'BRAZIL'
+  | 'CANADA'
+  | 'CHILE'
+  | 'COLOMBIA'
+  | 'ECUADOR'
+  | 'GUATEMALA'
+  | 'HONDURAS'
+  | 'MEXICO'
+  | 'PANAMA'
+  | 'PARAGUAY'
+  | 'PERU'
+  | 'URUGUAY'
+  // Other regions
+  | 'AFRICA'
+  | 'BULGARIA'
+  | 'CHINA'
+  | 'US CONGRESS';
 
 export interface FeedConfig {
   id: string;

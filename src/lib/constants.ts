@@ -26,7 +26,19 @@ export const CATEGORIES = [
   { id: 'US CONGRESS', label: 'US CONGRESS' },
 
   // AMERICAS (alphabetical)
+  { id: 'ARGENTINA', label: 'ARGENTINA' },
+  { id: 'BRAZIL', label: 'BRAZIL' },
   { id: 'CANADA', label: 'CANADA' },
+  { id: 'CHILE', label: 'CHILE' },
+  { id: 'COLOMBIA', label: 'COLOMBIA' },
+  { id: 'ECUADOR', label: 'ECUADOR' },
+  { id: 'GUATEMALA', label: 'GUATEMALA' },
+  { id: 'HONDURAS', label: 'HONDURAS' },
+  { id: 'MEXICO', label: 'MEXICO' },
+  { id: 'PANAMA', label: 'PANAMA' },
+  { id: 'PARAGUAY', label: 'PARAGUAY' },
+  { id: 'PERU', label: 'PERU' },
+  { id: 'URUGUAY', label: 'URUGUAY' },
 
   // ASIA (alphabetical)
   { id: 'ASIA_PACIFIC', label: 'ASIA PACIFIC' },
@@ -882,6 +894,331 @@ export const FEEDS: FeedConfig[] = [
     name: 'BANK OF CANADA PRESS',
     color: '#2563eb',
     category: 'CANADA'
+  },
+
+  // Argentina Feeds
+  {
+    id: 'arg-bcra',
+    url: 'https://www.bcra.gob.ar/Noticias/Noticias_i.xml',
+    name: 'BCRA (CENTRAL BANK)',
+    color: '#75aadb',
+    category: 'ARGENTINA'
+  },
+  {
+    id: 'arg-infobae',
+    url: 'https://www.infobae.com/feeds/rss/',
+    name: 'INFOBAE',
+    color: '#1a1a1a',
+    category: 'ARGENTINA'
+  },
+  {
+    id: 'arg-lanacion',
+    url: 'https://www.lanacion.com.ar/arcio/rss/',
+    name: 'LA NACION',
+    color: '#004a8c',
+    category: 'ARGENTINA'
+  },
+  {
+    id: 'arg-clarin',
+    url: 'https://www.clarin.com/rss/lo-ultimo/',
+    name: 'CLARIN',
+    color: '#d52b1e',
+    category: 'ARGENTINA'
+  },
+
+  // Brazil Feeds
+  {
+    id: 'bra-bcb',
+    url: 'https://www.bcb.gov.br/api/feed/sitebcb/sitefeeds/noticias',
+    name: 'BCB (CENTRAL BANK)',
+    color: '#009b3a',
+    category: 'BRAZIL'
+  },
+  {
+    id: 'bra-gov',
+    url: 'https://www.gov.br/pt-br/noticias/RSS',
+    name: 'GOV.BR NEWS',
+    color: '#009c3b',
+    category: 'BRAZIL'
+  },
+  {
+    id: 'bra-folha',
+    url: 'https://feeds.folha.uol.com.br/poder/rss091.xml',
+    name: 'FOLHA POLITICA',
+    color: '#f7941d',
+    category: 'BRAZIL'
+  },
+  {
+    id: 'bra-estadao',
+    url: 'https://www.estadao.com.br/arc/outboundfeeds/rss/',
+    name: 'ESTADAO',
+    color: '#005a9c',
+    category: 'BRAZIL'
+  },
+  {
+    id: 'bra-globo',
+    url: 'https://g1.globo.com/rss/g1/',
+    name: 'GLOBO G1',
+    color: '#c62828',
+    category: 'BRAZIL'
+  },
+
+  // Chile Feeds
+  {
+    id: 'chl-bcc',
+    url: 'https://www.bcentral.cl/web/banco-central-de-chile/-/rss/notas_de_prensa_xml',
+    name: 'BCC (CENTRAL BANK)',
+    color: '#0033a0',
+    category: 'CHILE'
+  },
+  {
+    id: 'chl-emol',
+    url: 'https://www.emol.com/rss/rss.asp',
+    name: 'EMOL',
+    color: '#003366',
+    category: 'CHILE'
+  },
+  {
+    id: 'chl-latercera',
+    url: 'https://www.latercera.com/arc/outboundfeeds/rss/',
+    name: 'LA TERCERA',
+    color: '#0066cc',
+    category: 'CHILE'
+  },
+  {
+    id: 'chl-df',
+    url: 'https://www.df.cl/noticias/rss/economia.xml',
+    name: 'DIARIO FINANCIERO',
+    color: '#1a5276',
+    category: 'CHILE'
+  },
+
+  // Colombia Feeds
+  {
+    id: 'col-banrep',
+    url: 'https://www.banrep.gov.co/es/rss.xml',
+    name: 'BANREP (CENTRAL BANK)',
+    color: '#fcd116',
+    category: 'COLOMBIA'
+  },
+  {
+    id: 'col-eltiempo',
+    url: 'https://www.eltiempo.com/rss/economia.xml',
+    name: 'EL TIEMPO',
+    color: '#003366',
+    category: 'COLOMBIA'
+  },
+  {
+    id: 'col-semana',
+    url: 'https://www.semana.com/rss',
+    name: 'SEMANA',
+    color: '#c41230',
+    category: 'COLOMBIA'
+  },
+  {
+    id: 'col-portafolio',
+    url: 'https://www.portafolio.co/rss.xml',
+    name: 'PORTAFOLIO',
+    color: '#1a5276',
+    category: 'COLOMBIA'
+  },
+
+  // Ecuador Feeds
+  {
+    id: 'ecu-bce',
+    url: 'https://www.bce.fin.ec/rss.xml',
+    name: 'BCE (CENTRAL BANK)',
+    color: '#ffd100',
+    category: 'ECUADOR'
+  },
+  {
+    id: 'ecu-universo',
+    url: 'https://www.eluniverso.com/arc/outboundfeeds/rss/',
+    name: 'EL UNIVERSO',
+    color: '#003399',
+    category: 'ECUADOR'
+  },
+  {
+    id: 'ecu-comercio',
+    url: 'https://www.elcomercio.com/feed/',
+    name: 'EL COMERCIO',
+    color: '#1a1a1a',
+    category: 'ECUADOR'
+  },
+
+  // Guatemala Feeds
+  {
+    id: 'gtm-banguat',
+    url: 'https://www.banguat.gob.gt/rss/noticias.xml',
+    name: 'BANGUAT (CENTRAL BANK)',
+    color: '#0047ab',
+    category: 'GUATEMALA'
+  },
+  {
+    id: 'gtm-prensa',
+    url: 'https://www.prensalibre.com/feed/',
+    name: 'PRENSA LIBRE',
+    color: '#003366',
+    category: 'GUATEMALA'
+  },
+
+  // Honduras Feeds
+  {
+    id: 'hnd-bch',
+    url: 'https://www.bch.hn/rss/noticias.xml',
+    name: 'BCH (CENTRAL BANK)',
+    color: '#0073cf',
+    category: 'HONDURAS'
+  },
+  {
+    id: 'hnd-laprensa',
+    url: 'https://www.laprensa.hn/feed/',
+    name: 'LA PRENSA HN',
+    color: '#003366',
+    category: 'HONDURAS'
+  },
+
+  // Mexico Feeds
+  {
+    id: 'mex-banxico',
+    url: 'https://www.banxico.org.mx/rss/banxico.xml',
+    name: 'BANXICO (CENTRAL BANK)',
+    color: '#006847',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-gob',
+    url: 'https://www.gob.mx/gobierno/rss.xml',
+    name: 'GOB.MX',
+    color: '#9e2343',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-reforma',
+    url: 'https://www.reforma.com/rss/',
+    name: 'REFORMA',
+    color: '#e31937',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-elfinanciero',
+    url: 'https://www.elfinanciero.com.mx/arc/outboundfeeds/rss/',
+    name: 'EL FINANCIERO',
+    color: '#002f6c',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-expansion',
+    url: 'https://expansion.mx/rss',
+    name: 'EXPANSION MX',
+    color: '#1a5276',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-jornada',
+    url: 'https://www.jornada.com.mx/rss/economia.xml',
+    name: 'LA JORNADA',
+    color: '#003366',
+    category: 'MEXICO'
+  },
+
+  // Panama Feeds
+  {
+    id: 'pan-bnp',
+    url: 'https://www.bfrb.gob.pa/rss/noticias.xml',
+    name: 'SUPERINTENDENCIA BANCOS',
+    color: '#005eb8',
+    category: 'PANAMA'
+  },
+  {
+    id: 'pan-prensa',
+    url: 'https://www.prensa.com/feed/',
+    name: 'LA PRENSA PA',
+    color: '#003366',
+    category: 'PANAMA'
+  },
+  {
+    id: 'pan-estrella',
+    url: 'https://www.laestrella.com.pa/feed/',
+    name: 'LA ESTRELLA PANAMA',
+    color: '#1a5276',
+    category: 'PANAMA'
+  },
+
+  // Paraguay Feeds
+  {
+    id: 'pry-bcp',
+    url: 'https://www.bcp.gov.py/rss/noticias.xml',
+    name: 'BCP (CENTRAL BANK)',
+    color: '#0038a8',
+    category: 'PARAGUAY'
+  },
+  {
+    id: 'pry-abc',
+    url: 'https://www.abc.com.py/rss/',
+    name: 'ABC COLOR',
+    color: '#003366',
+    category: 'PARAGUAY'
+  },
+  {
+    id: 'pry-lanacion',
+    url: 'https://www.lanacion.com.py/feed/',
+    name: 'LA NACION PY',
+    color: '#1a5276',
+    category: 'PARAGUAY'
+  },
+
+  // Peru Feeds
+  {
+    id: 'per-bcrp',
+    url: 'https://www.bcrp.gob.pe/rss/noticias.xml',
+    name: 'BCRP (CENTRAL BANK)',
+    color: '#d91023',
+    category: 'PERU'
+  },
+  {
+    id: 'per-elcomercio',
+    url: 'https://elcomercio.pe/arcio/rss/',
+    name: 'EL COMERCIO PE',
+    color: '#003366',
+    category: 'PERU'
+  },
+  {
+    id: 'per-gestion',
+    url: 'https://gestion.pe/arcio/rss/',
+    name: 'GESTION',
+    color: '#ff6600',
+    category: 'PERU'
+  },
+  {
+    id: 'per-larepublica',
+    url: 'https://larepublica.pe/rss/',
+    name: 'LA REPUBLICA',
+    color: '#c41230',
+    category: 'PERU'
+  },
+
+  // Uruguay Feeds
+  {
+    id: 'ury-bcu',
+    url: 'https://www.bcu.gub.uy/RSS/Paginas/Noticias.aspx',
+    name: 'BCU (CENTRAL BANK)',
+    color: '#0038a8',
+    category: 'URUGUAY'
+  },
+  {
+    id: 'ury-pais',
+    url: 'https://www.elpais.com.uy/rss/',
+    name: 'EL PAIS UY',
+    color: '#003366',
+    category: 'URUGUAY'
+  },
+  {
+    id: 'ury-observador',
+    url: 'https://www.elobservador.com.uy/rss/',
+    name: 'EL OBSERVADOR',
+    color: '#1a5276',
+    category: 'URUGUAY'
   },
 
   // Japan Feeds
