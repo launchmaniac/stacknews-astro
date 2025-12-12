@@ -2,6 +2,21 @@
 
 Scope: This file applies to `stacknews-astro/` only and overrides the global AGENTS.md where conflicts arise. It documents conventions, deployment, secrets, and platform usage for this app.
 
+## Cloudflare Pages Project
+
+**IMPORTANT:** The correct Cloudflare Pages project is `stacknews-astro`.
+
+| Project | Domains | Status |
+|---------|---------|--------|
+| `stacknews-astro` | stacknews.org, stacknews-astro.pages.dev | **PRODUCTION** |
+| `stacknews` | www.stacknews.org, stacknews-4a5.pages.dev | DEPRECATED (delete after removing custom domain) |
+
+Always deploy to `stacknews-astro`:
+```bash
+npm run build
+npx wrangler pages deploy dist/ --project-name=stacknews-astro --branch=main
+```
+
 ## Architecture & Platform
 - Astro SSR deployed on Cloudflare Pages + Functions.
 - Cloudflare Workers Durable Object coordinator warms cache and coordinates category refreshes.
@@ -46,10 +61,15 @@ Scope: This file applies to `stacknews-astro/` only and overrides the global AGE
 - Mark all code as "Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200  support@launchmaniac.com".
 
 ## Deployment Checklist
-1) Ensure Service Binding `COORDINATOR` is set on Pages.
-2) Ensure `STACKNEWS_KV` is bound.
+1) Ensure Service Binding `COORDINATOR` is set on Pages project `stacknews-astro`.
+2) Ensure `STACKNEWS_KV` is bound (namespace ID: `8f9f004bf39a4e92ac3c21ebf1545d68`).
 3) Set secrets: `FRED_API_KEY`, `WARM_SECRET`, `NASA_API_KEY`, `EIA_API_KEY`.
-4) Build + deploy: `npm run build` → `wrangler pages deploy --project-name stacknews-astro`.
+4) Build + deploy:
+   ```bash
+   npm run build
+   npx wrangler pages deploy dist/ --project-name=stacknews-astro --branch=main
+   ```
+5) Verify deployment: `curl -s "https://stacknews.org/api/feeds.json?category=NEWS" | jq '.feeds | keys'`
 
 ## Observability
 - Tail deployments: `wrangler pages deployment tail --project-name stacknews-astro --deployment-id <id>`.
