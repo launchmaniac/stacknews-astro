@@ -16,6 +16,7 @@ export interface RSSItem {
 }
 
 export type CategoryType =
+  // United States
   | 'TREASURY'
   | 'FEDERAL RESERVE'
   | 'MORTGAGE'
@@ -25,16 +26,8 @@ export type CategoryType =
   | 'EXECUTIVE'
   | 'NEWS'
   | 'STATE_DEPT'
-  | 'RESEARCH'
-  | 'CRYPTO'
-  | 'UK'
   | 'MILITARY'
-  | 'ENERGY'
-  | 'ASIA_PACIFIC'
-  | 'EUROZONE'
-  | 'GLOBAL_MACRO'
-  | 'JAPAN'
-  | 'NASA'
+  | 'US CONGRESS'
   // Americas
   | 'ARGENTINA'
   | 'BRAZIL'
@@ -49,11 +42,58 @@ export type CategoryType =
   | 'PARAGUAY'
   | 'PERU'
   | 'URUGUAY'
-  // Other regions
-  | 'AFRICA'
-  | 'BULGARIA'
+  // Asia
+  | 'ASIA_PACIFIC'
   | 'CHINA'
-  | 'US CONGRESS';
+  | 'JAPAN'
+  // Europe
+  | 'AUSTRIA'
+  | 'BELGIUM'
+  | 'BOSNIA'
+  | 'BULGARIA'
+  | 'CROATIA'
+  | 'CYPRUS'
+  | 'CZECHIA'
+  | 'DENMARK'
+  | 'ESTONIA'
+  | 'EUROZONE'
+  | 'FINLAND'
+  | 'FRANCE'
+  | 'GEORGIA'
+  | 'GERMANY'
+  | 'GREECE'
+  | 'HUNGARY'
+  | 'ICELAND'
+  | 'IRELAND'
+  | 'ITALY'
+  | 'LATVIA'
+  | 'LITHUANIA'
+  | 'LUXEMBOURG'
+  | 'NETHERLANDS'
+  | 'NORTH_MACEDONIA'
+  | 'NORWAY'
+  | 'POLAND'
+  | 'PORTUGAL'
+  | 'ROMANIA'
+  | 'RUSSIA'
+  | 'SERBIA'
+  | 'SLOVAKIA'
+  | 'SLOVENIA'
+  | 'SPAIN'
+  | 'SWEDEN'
+  | 'SWITZERLAND'
+  | 'UK'
+  | 'UKRAINE'
+  // Africa
+  | 'AFRICA'
+  | 'RWANDA'
+  | 'SIERRA_LEONE'
+  // Global
+  | 'CRYPTO'
+  | 'ENERGY'
+  | 'GLOBAL_MACRO'
+  | 'NASA'
+  | 'RESEARCH';
 
 export interface FeedConfig {
   id: string;

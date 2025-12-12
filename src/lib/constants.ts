@@ -46,12 +46,48 @@ export const CATEGORIES = [
   { id: 'JAPAN', label: 'JAPAN' },
 
   // EUROPE (alphabetical)
+  { id: 'AUSTRIA', label: 'AUSTRIA' },
+  { id: 'BELGIUM', label: 'BELGIUM' },
+  { id: 'BOSNIA', label: 'BOSNIA & HERZ.' },
   { id: 'BULGARIA', label: 'BULGARIA' },
+  { id: 'CROATIA', label: 'CROATIA' },
+  { id: 'CYPRUS', label: 'CYPRUS' },
+  { id: 'CZECHIA', label: 'CZECHIA' },
+  { id: 'DENMARK', label: 'DENMARK' },
+  { id: 'ESTONIA', label: 'ESTONIA' },
   { id: 'EUROZONE', label: 'EUROZONE' },
+  { id: 'FINLAND', label: 'FINLAND' },
+  { id: 'FRANCE', label: 'FRANCE' },
+  { id: 'GEORGIA', label: 'GEORGIA' },
+  { id: 'GERMANY', label: 'GERMANY' },
+  { id: 'GREECE', label: 'GREECE' },
+  { id: 'HUNGARY', label: 'HUNGARY' },
+  { id: 'ICELAND', label: 'ICELAND' },
+  { id: 'IRELAND', label: 'IRELAND' },
+  { id: 'ITALY', label: 'ITALY' },
+  { id: 'LATVIA', label: 'LATVIA' },
+  { id: 'LITHUANIA', label: 'LITHUANIA' },
+  { id: 'LUXEMBOURG', label: 'LUXEMBOURG' },
+  { id: 'NETHERLANDS', label: 'NETHERLANDS' },
+  { id: 'NORTH_MACEDONIA', label: 'N. MACEDONIA' },
+  { id: 'NORWAY', label: 'NORWAY' },
+  { id: 'POLAND', label: 'POLAND' },
+  { id: 'PORTUGAL', label: 'PORTUGAL' },
+  { id: 'ROMANIA', label: 'ROMANIA' },
+  { id: 'RUSSIA', label: 'RUSSIA' },
+  { id: 'SERBIA', label: 'SERBIA' },
+  { id: 'SLOVAKIA', label: 'SLOVAKIA' },
+  { id: 'SLOVENIA', label: 'SLOVENIA' },
+  { id: 'SPAIN', label: 'SPAIN' },
+  { id: 'SWEDEN', label: 'SWEDEN' },
+  { id: 'SWITZERLAND', label: 'SWITZERLAND' },
   { id: 'UK', label: 'UNITED KINGDOM' },
+  { id: 'UKRAINE', label: 'UKRAINE' },
 
   // SUB-SAHARA AFRICA (alphabetical)
   { id: 'AFRICA', label: 'AFRICA' },
+  { id: 'RWANDA', label: 'RWANDA' },
+  { id: 'SIERRA_LEONE', label: 'SIERRA LEONE' },
 
   // GLOBAL (alphabetical)
   { id: 'CRYPTO', label: 'CRYPTO CURRENCY' },
@@ -1258,12 +1294,842 @@ export const FEEDS: FeedConfig[] = [
     category: 'JAPAN'
   },
 
+  // =============================================================================
+  // EUROPE FEEDS
+  // =============================================================================
+
+  // Austria Feeds
   {
-    id: 'cbr-press',
-    url: 'http://www.cbr.ru/rss/EngRssPress',
-    name: 'RUSSIA CBR PRESS',
+    id: 'aut-oenb',
+    url: 'https://www.oenb.at/en/rss/press-releases.xml',
+    name: 'OENB (CENTRAL BANK)',
+    color: '#ed1c24',
+    category: 'AUSTRIA'
+  },
+  {
+    id: 'aut-derstandard',
+    url: 'https://www.derstandard.at/rss',
+    name: 'DER STANDARD',
+    color: '#1a1a1a',
+    category: 'AUSTRIA'
+  },
+  {
+    id: 'aut-wienerzeitung',
+    url: 'https://www.wienerzeitung.at/rss/',
+    name: 'WIENER ZEITUNG',
+    color: '#003366',
+    category: 'AUSTRIA'
+  },
+
+  // Belgium Feeds
+  {
+    id: 'bel-nbb',
+    url: 'https://www.nbb.be/en/rss/press-releases',
+    name: 'NBB (CENTRAL BANK)',
+    color: '#fdda24',
+    category: 'BELGIUM'
+  },
+  {
+    id: 'bel-rtbf',
+    url: 'https://www.rtbf.be/article/rss',
+    name: 'RTBF NEWS',
+    color: '#0055a4',
+    category: 'BELGIUM'
+  },
+  {
+    id: 'bel-lesoir',
+    url: 'https://www.lesoir.be/rss/homepage.xml',
+    name: 'LE SOIR',
+    color: '#1a1a1a',
+    category: 'BELGIUM'
+  },
+
+  // Bosnia and Herzegovina Feeds
+  {
+    id: 'bih-cbbh',
+    url: 'https://www.cbbh.ba/en/rss/news',
+    name: 'CBBH (CENTRAL BANK)',
+    color: '#002395',
+    category: 'BOSNIA'
+  },
+  {
+    id: 'bih-klix',
+    url: 'https://www.klix.ba/rss',
+    name: 'KLIX.BA',
     color: '#ef4444',
-    category: 'GLOBAL_MACRO'
+    category: 'BOSNIA'
+  },
+
+  // Bulgaria Feeds (already exists, adding central bank)
+  {
+    id: 'bgr-bnb',
+    url: 'https://www.bnb.bg/RSS/rss.xml',
+    name: 'BNB (CENTRAL BANK)',
+    color: '#00966e',
+    category: 'BULGARIA'
+  },
+
+  // Croatia Feeds
+  {
+    id: 'hrv-hnb',
+    url: 'https://www.hnb.hr/en/rss/press-releases',
+    name: 'HNB (CENTRAL BANK)',
+    color: '#ff0000',
+    category: 'CROATIA'
+  },
+  {
+    id: 'hrv-index',
+    url: 'https://www.index.hr/rss',
+    name: 'INDEX.HR',
+    color: '#1a5276',
+    category: 'CROATIA'
+  },
+  {
+    id: 'hrv-vecernji',
+    url: 'https://www.vecernji.hr/rss/',
+    name: 'VECERNJI LIST',
+    color: '#003366',
+    category: 'CROATIA'
+  },
+
+  // Cyprus Feeds
+  {
+    id: 'cyp-cbc',
+    url: 'https://www.centralbank.cy/en/rss/press-releases',
+    name: 'CBC (CENTRAL BANK)',
+    color: '#d57500',
+    category: 'CYPRUS'
+  },
+  {
+    id: 'cyp-cna',
+    url: 'https://in-cyprus.philenews.com/feed/',
+    name: 'IN-CYPRUS NEWS',
+    color: '#003366',
+    category: 'CYPRUS'
+  },
+
+  // Czech Republic Feeds
+  {
+    id: 'cze-cnb',
+    url: 'https://www.cnb.cz/en/rss/press_releases.xml',
+    name: 'CNB (CENTRAL BANK)',
+    color: '#11457e',
+    category: 'CZECHIA'
+  },
+  {
+    id: 'cze-idnes',
+    url: 'https://www.idnes.cz/rss',
+    name: 'IDNES.CZ',
+    color: '#e31e24',
+    category: 'CZECHIA'
+  },
+  {
+    id: 'cze-aktualne',
+    url: 'https://www.aktualne.cz/rss/',
+    name: 'AKTUALNE.CZ',
+    color: '#003366',
+    category: 'CZECHIA'
+  },
+
+  // Denmark Feeds
+  {
+    id: 'dnk-nationalbanken',
+    url: 'https://www.nationalbanken.dk/en/rss/news',
+    name: 'NATIONALBANKEN',
+    color: '#c60c30',
+    category: 'DENMARK'
+  },
+  {
+    id: 'dnk-dr',
+    url: 'https://www.dr.dk/nyheder/service/feeds/allenyheder',
+    name: 'DR NYHEDER',
+    color: '#e31837',
+    category: 'DENMARK'
+  },
+  {
+    id: 'dnk-berlingske',
+    url: 'https://www.berlingske.dk/rss/',
+    name: 'BERLINGSKE',
+    color: '#003366',
+    category: 'DENMARK'
+  },
+
+  // Estonia Feeds
+  {
+    id: 'est-eestipank',
+    url: 'https://www.eestipank.ee/en/rss/press-releases',
+    name: 'EESTI PANK',
+    color: '#0072ce',
+    category: 'ESTONIA'
+  },
+  {
+    id: 'est-err',
+    url: 'https://news.err.ee/rss',
+    name: 'ERR NEWS',
+    color: '#003366',
+    category: 'ESTONIA'
+  },
+
+  // Finland Feeds
+  {
+    id: 'fin-bof',
+    url: 'https://www.suomenpankki.fi/en/rss/press-releases/',
+    name: 'SUOMEN PANKKI',
+    color: '#003580',
+    category: 'FINLAND'
+  },
+  {
+    id: 'fin-yle',
+    url: 'https://feeds.yle.fi/uutiset/v1/majorHeadlines/YLE_UUTISET.rss',
+    name: 'YLE UUTISET',
+    color: '#00b4e6',
+    category: 'FINLAND'
+  },
+  {
+    id: 'fin-hs',
+    url: 'https://www.hs.fi/rss/',
+    name: 'HELSINGIN SANOMAT',
+    color: '#1a1a1a',
+    category: 'FINLAND'
+  },
+
+  // France Feeds
+  {
+    id: 'fra-bdf',
+    url: 'https://www.banque-france.fr/en/rss/press-releases',
+    name: 'BANQUE DE FRANCE',
+    color: '#002654',
+    category: 'FRANCE'
+  },
+  {
+    id: 'fra-lemonde',
+    url: 'https://www.lemonde.fr/rss/une.xml',
+    name: 'LE MONDE',
+    color: '#1a1a1a',
+    category: 'FRANCE'
+  },
+  {
+    id: 'fra-figaro',
+    url: 'https://www.lefigaro.fr/rss/figaro_actualites.xml',
+    name: 'LE FIGARO',
+    color: '#005a9c',
+    category: 'FRANCE'
+  },
+  {
+    id: 'fra-lesechos',
+    url: 'https://www.lesechos.fr/rss/rss_une.xml',
+    name: 'LES ECHOS',
+    color: '#e85d04',
+    category: 'FRANCE'
+  },
+
+  // Georgia Feeds
+  {
+    id: 'geo-nbg',
+    url: 'https://nbg.gov.ge/en/rss/news',
+    name: 'NBG (CENTRAL BANK)',
+    color: '#da291c',
+    category: 'GEORGIA'
+  },
+  {
+    id: 'geo-civil',
+    url: 'https://civil.ge/feed',
+    name: 'CIVIL GEORGIA',
+    color: '#003366',
+    category: 'GEORGIA'
+  },
+
+  // Germany Feeds
+  {
+    id: 'deu-bundesbank',
+    url: 'https://www.bundesbank.de/en/rss/press-releases.rss',
+    name: 'BUNDESBANK',
+    color: '#ffcc00',
+    category: 'GERMANY'
+  },
+  {
+    id: 'deu-spiegel',
+    url: 'https://www.spiegel.de/schlagzeilen/index.rss',
+    name: 'DER SPIEGEL',
+    color: '#e64415',
+    category: 'GERMANY'
+  },
+  {
+    id: 'deu-faz',
+    url: 'https://www.faz.net/rss/aktuell/',
+    name: 'FAZ',
+    color: '#003366',
+    category: 'GERMANY'
+  },
+  {
+    id: 'deu-handelsblatt',
+    url: 'https://www.handelsblatt.com/contentexport/feed/top-themen',
+    name: 'HANDELSBLATT',
+    color: '#e85d04',
+    category: 'GERMANY'
+  },
+  {
+    id: 'deu-dw',
+    url: 'https://rss.dw.com/rss/rdf/rss-en-all',
+    name: 'DW NEWS',
+    color: '#0055a4',
+    category: 'GERMANY'
+  },
+
+  // Greece Feeds
+  {
+    id: 'grc-bog',
+    url: 'https://www.bankofgreece.gr/en/rss/press-releases',
+    name: 'BANK OF GREECE',
+    color: '#0d5eaf',
+    category: 'GREECE'
+  },
+  {
+    id: 'grc-kathimerini',
+    url: 'https://www.ekathimerini.com/rss/',
+    name: 'EKATHIMERINI',
+    color: '#003366',
+    category: 'GREECE'
+  },
+
+  // Hungary Feeds
+  {
+    id: 'hun-mnb',
+    url: 'https://www.mnb.hu/en/rss/press-releases',
+    name: 'MNB (CENTRAL BANK)',
+    color: '#477050',
+    category: 'HUNGARY'
+  },
+  {
+    id: 'hun-index',
+    url: 'https://index.hu/24ora/rss/',
+    name: 'INDEX.HU',
+    color: '#ff6600',
+    category: 'HUNGARY'
+  },
+  {
+    id: 'hun-hvg',
+    url: 'https://hvg.hu/rss/hvg.hu.rss',
+    name: 'HVG',
+    color: '#003366',
+    category: 'HUNGARY'
+  },
+
+  // Iceland Feeds
+  {
+    id: 'isl-cb',
+    url: 'https://www.cb.is/rss/news/',
+    name: 'CENTRAL BANK ICE',
+    color: '#003897',
+    category: 'ICELAND'
+  },
+  {
+    id: 'isl-ruv',
+    url: 'https://www.ruv.is/rss/frettir',
+    name: 'RUV NEWS',
+    color: '#dc143c',
+    category: 'ICELAND'
+  },
+
+  // Ireland Feeds
+  {
+    id: 'irl-cbi',
+    url: 'https://www.centralbank.ie/rss/news',
+    name: 'CENTRAL BANK IRL',
+    color: '#169b62',
+    category: 'IRELAND'
+  },
+  {
+    id: 'irl-rte',
+    url: 'https://www.rte.ie/news/rss/news-headlines.xml',
+    name: 'RTE NEWS',
+    color: '#00a651',
+    category: 'IRELAND'
+  },
+  {
+    id: 'irl-irishtimes',
+    url: 'https://www.irishtimes.com/rss/',
+    name: 'IRISH TIMES',
+    color: '#003366',
+    category: 'IRELAND'
+  },
+
+  // Italy Feeds
+  {
+    id: 'ita-bdi',
+    url: 'https://www.bancaditalia.it/rss/comunicati-stampa.xml',
+    name: 'BANCA D\'ITALIA',
+    color: '#009246',
+    category: 'ITALY'
+  },
+  {
+    id: 'ita-corriere',
+    url: 'https://xml2.corriereobjects.it/rss/homepage.xml',
+    name: 'CORRIERE DELLA SERA',
+    color: '#003366',
+    category: 'ITALY'
+  },
+  {
+    id: 'ita-repubblica',
+    url: 'https://www.repubblica.it/rss/homepage/rss2.0.xml',
+    name: 'LA REPUBBLICA',
+    color: '#e31937',
+    category: 'ITALY'
+  },
+  {
+    id: 'ita-sole24',
+    url: 'https://www.ilsole24ore.com/rss/mondo.xml',
+    name: 'IL SOLE 24 ORE',
+    color: '#f7941d',
+    category: 'ITALY'
+  },
+
+  // Latvia Feeds
+  {
+    id: 'lva-lb',
+    url: 'https://www.bank.lv/en/rss/press-releases',
+    name: 'LATVIJAS BANKA',
+    color: '#9e3039',
+    category: 'LATVIA'
+  },
+  {
+    id: 'lva-lsm',
+    url: 'https://eng.lsm.lv/rss/',
+    name: 'LSM NEWS',
+    color: '#003366',
+    category: 'LATVIA'
+  },
+
+  // Lithuania Feeds
+  {
+    id: 'ltu-lb',
+    url: 'https://www.lb.lt/en/rss/press-releases',
+    name: 'LIETUVOS BANKAS',
+    color: '#fdb913',
+    category: 'LITHUANIA'
+  },
+  {
+    id: 'ltu-lrt',
+    url: 'https://www.lrt.lt/rss/naujienos',
+    name: 'LRT NEWS',
+    color: '#006a44',
+    category: 'LITHUANIA'
+  },
+  {
+    id: 'ltu-delfi',
+    url: 'https://www.delfi.lt/rss/',
+    name: 'DELFI.LT',
+    color: '#003366',
+    category: 'LITHUANIA'
+  },
+
+  // Luxembourg Feeds
+  {
+    id: 'lux-bcl',
+    url: 'https://www.bcl.lu/en/rss/press-releases',
+    name: 'BCL (CENTRAL BANK)',
+    color: '#00a2e8',
+    category: 'LUXEMBOURG'
+  },
+  {
+    id: 'lux-wort',
+    url: 'https://www.wort.lu/en/rss/',
+    name: 'LUXEMBURGER WORT',
+    color: '#003366',
+    category: 'LUXEMBOURG'
+  },
+
+  // Netherlands Feeds
+  {
+    id: 'nld-dnb',
+    url: 'https://www.dnb.nl/en/rss/press-releases/',
+    name: 'DNB (CENTRAL BANK)',
+    color: '#ff6600',
+    category: 'NETHERLANDS'
+  },
+  {
+    id: 'nld-nos',
+    url: 'https://feeds.nos.nl/nosnieuwsalgemeen',
+    name: 'NOS NEWS',
+    color: '#f26c22',
+    category: 'NETHERLANDS'
+  },
+  {
+    id: 'nld-telegraaf',
+    url: 'https://www.telegraaf.nl/rss',
+    name: 'DE TELEGRAAF',
+    color: '#003366',
+    category: 'NETHERLANDS'
+  },
+  {
+    id: 'nld-fd',
+    url: 'https://fd.nl/rss',
+    name: 'FIN. DAGBLAD',
+    color: '#e85d04',
+    category: 'NETHERLANDS'
+  },
+
+  // North Macedonia Feeds
+  {
+    id: 'mkd-nbrm',
+    url: 'https://www.nbrm.mk/en/rss/press-releases',
+    name: 'NBRM (CENTRAL BANK)',
+    color: '#d20000',
+    category: 'NORTH_MACEDONIA'
+  },
+  {
+    id: 'mkd-mkd',
+    url: 'https://www.mkd.mk/rss/',
+    name: 'MKD.MK',
+    color: '#ffcd00',
+    category: 'NORTH_MACEDONIA'
+  },
+
+  // Norway Feeds
+  {
+    id: 'nor-norgesbank',
+    url: 'https://www.norges-bank.no/en/rss/press-releases/',
+    name: 'NORGES BANK',
+    color: '#ba0c2f',
+    category: 'NORWAY'
+  },
+  {
+    id: 'nor-nrk',
+    url: 'https://www.nrk.no/toppsaker.rss',
+    name: 'NRK NEWS',
+    color: '#0070b8',
+    category: 'NORWAY'
+  },
+  {
+    id: 'nor-vg',
+    url: 'https://www.vg.no/rss/feed/',
+    name: 'VG',
+    color: '#ef4444',
+    category: 'NORWAY'
+  },
+  {
+    id: 'nor-aftenposten',
+    url: 'https://www.aftenposten.no/rss/',
+    name: 'AFTENPOSTEN',
+    color: '#003366',
+    category: 'NORWAY'
+  },
+
+  // Poland Feeds
+  {
+    id: 'pol-nbp',
+    url: 'https://www.nbp.pl/en/rss/press.xml',
+    name: 'NBP (CENTRAL BANK)',
+    color: '#dc143c',
+    category: 'POLAND'
+  },
+  {
+    id: 'pol-tvn24',
+    url: 'https://tvn24.pl/najnowsze.xml',
+    name: 'TVN24',
+    color: '#f26c22',
+    category: 'POLAND'
+  },
+  {
+    id: 'pol-wyborcza',
+    url: 'https://wyborcza.pl/rss/0,0.html',
+    name: 'GAZETA WYBORCZA',
+    color: '#003366',
+    category: 'POLAND'
+  },
+  {
+    id: 'pol-parkiet',
+    url: 'https://www.parkiet.com/rss',
+    name: 'PARKIET',
+    color: '#e85d04',
+    category: 'POLAND'
+  },
+
+  // Portugal Feeds
+  {
+    id: 'prt-bportugal',
+    url: 'https://www.bportugal.pt/en/rss/press-releases',
+    name: 'BANCO PORTUGAL',
+    color: '#006600',
+    category: 'PORTUGAL'
+  },
+  {
+    id: 'prt-publico',
+    url: 'https://feeds.feedburner.com/PublicoRSS',
+    name: 'PUBLICO',
+    color: '#1a1a1a',
+    category: 'PORTUGAL'
+  },
+  {
+    id: 'prt-jornaldenegocios',
+    url: 'https://www.jornaldenegocios.pt/rss',
+    name: 'JORNAL DE NEGOCIOS',
+    color: '#e85d04',
+    category: 'PORTUGAL'
+  },
+
+  // Romania Feeds
+  {
+    id: 'rou-bnr',
+    url: 'https://www.bnr.ro/rss/press-releases-en.xml',
+    name: 'BNR (CENTRAL BANK)',
+    color: '#002b7f',
+    category: 'ROMANIA'
+  },
+  {
+    id: 'rou-digi24',
+    url: 'https://www.digi24.ro/rss',
+    name: 'DIGI24',
+    color: '#0055a4',
+    category: 'ROMANIA'
+  },
+  {
+    id: 'rou-hotnews',
+    url: 'https://www.hotnews.ro/rss/',
+    name: 'HOTNEWS.RO',
+    color: '#ef4444',
+    category: 'ROMANIA'
+  },
+
+  // Russia Feeds
+  {
+    id: 'rus-cbr',
+    url: 'http://www.cbr.ru/rss/EngRssPress',
+    name: 'CBR (CENTRAL BANK)',
+    color: '#0039a6',
+    category: 'RUSSIA'
+  },
+  {
+    id: 'rus-tass',
+    url: 'https://tass.com/rss/v2.xml',
+    name: 'TASS',
+    color: '#dc2626',
+    category: 'RUSSIA'
+  },
+  {
+    id: 'rus-rt',
+    url: 'https://www.rt.com/rss/',
+    name: 'RT NEWS',
+    color: '#6cbd45',
+    category: 'RUSSIA'
+  },
+
+  // Serbia Feeds
+  {
+    id: 'srb-nbs',
+    url: 'https://www.nbs.rs/en/rss/press-releases',
+    name: 'NBS (CENTRAL BANK)',
+    color: '#c6363c',
+    category: 'SERBIA'
+  },
+  {
+    id: 'srb-b92',
+    url: 'https://www.b92.net/rss/',
+    name: 'B92',
+    color: '#003366',
+    category: 'SERBIA'
+  },
+
+  // Slovakia Feeds
+  {
+    id: 'svk-nbs',
+    url: 'https://www.nbs.sk/en/rss/press-releases',
+    name: 'NBS (CENTRAL BANK)',
+    color: '#0b4ea2',
+    category: 'SLOVAKIA'
+  },
+  {
+    id: 'svk-sme',
+    url: 'https://www.sme.sk/rss',
+    name: 'SME.SK',
+    color: '#003366',
+    category: 'SLOVAKIA'
+  },
+  {
+    id: 'svk-aktuality',
+    url: 'https://www.aktuality.sk/rss/',
+    name: 'AKTUALITY.SK',
+    color: '#ef4444',
+    category: 'SLOVAKIA'
+  },
+
+  // Slovenia Feeds
+  {
+    id: 'svn-bsi',
+    url: 'https://www.bsi.si/en/rss/press-releases',
+    name: 'BSI (CENTRAL BANK)',
+    color: '#005da4',
+    category: 'SLOVENIA'
+  },
+  {
+    id: 'svn-rtv',
+    url: 'https://www.rtvslo.si/feeds/00.xml',
+    name: 'RTV SLOVENIA',
+    color: '#003366',
+    category: 'SLOVENIA'
+  },
+
+  // Spain Feeds
+  {
+    id: 'esp-bde',
+    url: 'https://www.bde.es/rss/webbde/SectionesEN/SalaPrensa/ComunicadosBCE/',
+    name: 'BANCO DE ESPANA',
+    color: '#aa151b',
+    category: 'SPAIN'
+  },
+  {
+    id: 'esp-elpais',
+    url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada',
+    name: 'EL PAIS',
+    color: '#1a1a1a',
+    category: 'SPAIN'
+  },
+  {
+    id: 'esp-elmundo',
+    url: 'https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml',
+    name: 'EL MUNDO',
+    color: '#003366',
+    category: 'SPAIN'
+  },
+  {
+    id: 'esp-expansion',
+    url: 'https://e00-expansion.uecdn.es/rss/portada.xml',
+    name: 'EXPANSION ES',
+    color: '#e85d04',
+    category: 'SPAIN'
+  },
+  {
+    id: 'esp-cincodias',
+    url: 'https://cincodias.elpais.com/rss/portada.xml',
+    name: 'CINCO DIAS',
+    color: '#0055a4',
+    category: 'SPAIN'
+  },
+
+  // Sweden Feeds
+  {
+    id: 'swe-riksbank',
+    url: 'https://www.riksbank.se/en/rss/press-releases/',
+    name: 'RIKSBANK',
+    color: '#006aa7',
+    category: 'SWEDEN'
+  },
+  {
+    id: 'swe-svd',
+    url: 'https://www.svd.se/feed/articles.rss',
+    name: 'SVD',
+    color: '#003366',
+    category: 'SWEDEN'
+  },
+  {
+    id: 'swe-dn',
+    url: 'https://www.dn.se/rss/',
+    name: 'DAGENS NYHETER',
+    color: '#1a1a1a',
+    category: 'SWEDEN'
+  },
+  {
+    id: 'swe-di',
+    url: 'https://www.di.se/rss',
+    name: 'DAGENS INDUSTRI',
+    color: '#e85d04',
+    category: 'SWEDEN'
+  },
+
+  // Switzerland Feeds
+  {
+    id: 'che-snb',
+    url: 'https://www.snb.ch/en/rss/mmr/press-releases',
+    name: 'SNB (CENTRAL BANK)',
+    color: '#d52b1e',
+    category: 'SWITZERLAND'
+  },
+  {
+    id: 'che-nzz',
+    url: 'https://www.nzz.ch/recent.rss',
+    name: 'NZZ',
+    color: '#003366',
+    category: 'SWITZERLAND'
+  },
+  {
+    id: 'che-swissinfo',
+    url: 'https://www.swissinfo.ch/eng/rss/news',
+    name: 'SWISSINFO',
+    color: '#ef4444',
+    category: 'SWITZERLAND'
+  },
+  {
+    id: 'che-letemps',
+    url: 'https://www.letemps.ch/rss.xml',
+    name: 'LE TEMPS',
+    color: '#1a1a1a',
+    category: 'SWITZERLAND'
+  },
+
+  // Ukraine Feeds
+  {
+    id: 'ukr-nbu',
+    url: 'https://bank.gov.ua/en/rss/news',
+    name: 'NBU (CENTRAL BANK)',
+    color: '#0057b7',
+    category: 'UKRAINE'
+  },
+  {
+    id: 'ukr-pravda',
+    url: 'https://www.pravda.com.ua/rss/',
+    name: 'UKRAINSKA PRAVDA',
+    color: '#ffd700',
+    category: 'UKRAINE'
+  },
+  {
+    id: 'ukr-kyivindependent',
+    url: 'https://kyivindependent.com/feed/',
+    name: 'KYIV INDEPENDENT',
+    color: '#0057b7',
+    category: 'UKRAINE'
+  },
+  {
+    id: 'ukr-unian',
+    url: 'https://www.unian.net/rss/',
+    name: 'UNIAN',
+    color: '#003366',
+    category: 'UKRAINE'
+  },
+
+  // =============================================================================
+  // AFRICA FEEDS (NEW)
+  // =============================================================================
+
+  // Rwanda Feeds
+  {
+    id: 'rwa-bnr',
+    url: 'https://www.bnr.rw/rss/news',
+    name: 'BNR (CENTRAL BANK)',
+    color: '#00a2e8',
+    category: 'RWANDA'
+  },
+  {
+    id: 'rwa-newtimes',
+    url: 'https://www.newtimes.co.rw/rssFeed',
+    name: 'NEW TIMES',
+    color: '#1a1a1a',
+    category: 'RWANDA'
+  },
+
+  // Sierra Leone Feeds
+  {
+    id: 'sle-bsl',
+    url: 'https://www.bsl.gov.sl/rss/news',
+    name: 'BSL (CENTRAL BANK)',
+    color: '#1eb53a',
+    category: 'SIERRA_LEONE'
+  },
+  {
+    id: 'sle-awoko',
+    url: 'https://awokonewspaper.sl/feed/',
+    name: 'AWOKO',
+    color: '#003366',
+    category: 'SIERRA_LEONE'
   },
 
   // Science & Research
