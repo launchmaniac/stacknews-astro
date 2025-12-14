@@ -193,8 +193,8 @@ async function fetchSingleFeed(
   const metaKey = `feedmeta:${config.id}`;
   const dataKey = `feeddata:${config.id}`;
 
-  // Load conditional headers from KV
-  const meta = await kvGetJSON<{ etag?: string; lastModified?: string }>(kv, metaKey);
+  // Load conditional headers from KV (mutable so we can clear on 304 with missing data)
+  let meta = await kvGetJSON<{ etag?: string; lastModified?: string }>(kv, metaKey);
 
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     const controller = new AbortController();
@@ -221,7 +221,10 @@ async function fetchSingleFeed(
         if (cached && cached.length > 0) {
           return { feedId: config.id, items: cached, error: false };
         }
-        // No stored items, continue to force fetch without conditionals next loop
+        // No stored items - clear conditional headers so next attempt fetches fresh
+        // This can happen when KV data expired but meta headers remain valid
+        await kvPutJSON(kv, metaKey, {}, 1); // Clear meta in KV with 1s TTL
+        meta = null; // Clear local reference so next retry doesn't send conditional headers
         lastError = 'Not Modified, no cached data';
         continue;
       }

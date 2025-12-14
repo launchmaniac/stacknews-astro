@@ -39,39 +39,39 @@ const iconPaths: Record<string, string> = {
 };
 ---
 
-<nav class="w-64 flex-none bg-black/20 backdrop-blur-lg border-r border-white/5 flex flex-col hidden lg:flex">
-  <div class="p-4 space-y-1 flex-1 overflow-y-auto scrollbar-thin">
-    <div class="text-[10px] font-medium text-gray-500 mb-2 px-2 tracking-[0.2em] uppercase">Select Frequency</div>
+<nav class="w-56 flex-none bg-black/20 backdrop-blur-lg border-r border-white/5 flex flex-col hidden lg:flex">
+  <div class="p-2 space-y-0.5 flex-1 overflow-y-auto scrollbar-thin">
+    <div class="text-[9px] font-medium text-gray-500 mb-1.5 px-2 tracking-[0.2em] uppercase">Select Frequency</div>
     {CATEGORIES.map(cat => (
       <a
         href={cat.id === 'ALL' ? '/' : `/?category=${cat.id}`}
         data-category={cat.id}
         class:list={[
-          'w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 group relative overflow-hidden',
+          'w-full flex items-center gap-2 px-2.5 py-1 rounded-md transition-all duration-200 group relative overflow-hidden',
           activeCategory === cat.id
             ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]'
             : 'text-gray-400 hover:bg-white/5 hover:text-white border border-transparent'
         ]}
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d={iconPaths[cat.id] || iconPaths['ALL']} />
         </svg>
-        <span class:list={['text-xs tracking-wider', activeCategory === cat.id ? 'font-bold' : 'font-medium']}>
+        <span class:list={['text-[11px] tracking-wide', activeCategory === cat.id ? 'font-bold' : 'font-medium']}>
           {cat.label}
         </span>
-        {activeCategory === cat.id && <div class="absolute right-0 top-0 bottom-0 w-1 bg-cyan-500" />}
+        {activeCategory === cat.id && <div class="absolute right-0 top-0 bottom-0 w-0.5 bg-cyan-500" />}
       </a>
     ))}
   </div>
 
   <!-- National Debt Widget (render only with real data) -->
   {formattedDebt && (
-    <div class="p-4 border-t border-white/5 flex-none">
-      <div class="bg-gradient-to-br from-red-900/20 to-black border border-red-500/30 p-3 rounded-lg">
-        <div class="text-[10px] text-red-400 font-medium mb-1 uppercase tracking-widest">National Debt</div>
-            <div class="text-lg text-white font-bold tabular-nums tracking-tighter" id="debt-display">
-              {formattedDebt}
-            </div>
+    <div class="p-2 border-t border-white/5 flex-none">
+      <div class="bg-gradient-to-br from-red-900/20 to-black border border-red-500/30 p-2 rounded-md">
+        <div class="text-[9px] text-red-400 font-medium mb-0.5 uppercase tracking-widest">National Debt</div>
+        <div class="text-base text-white font-bold tabular-nums tracking-tighter" id="debt-display">
+          {formattedDebt}
+        </div>
       </div>
     </div>
   )}

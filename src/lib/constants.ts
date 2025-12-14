@@ -14,16 +14,28 @@ export const CATEGORIES = [
   // Overview
   { id: 'ALL', label: 'OVERVIEW' },
 
-  // UNITED STATES (alphabetical)
+  // UNITED STATES - Government
   { id: 'EXECUTIVE', label: 'EXECUTIVE' },
+  { id: 'US CONGRESS', label: 'US CONGRESS' },
   { id: 'FEDERAL RESERVE', label: 'FEDERAL RESERVE' },
+  { id: 'TREASURY', label: 'TREASURY' },
+  { id: 'STATE_DEPT', label: 'STATE DEPT.' },
   { id: 'MILITARY', label: 'U.S. MILITARY' },
+  { id: 'REGULATION', label: 'REGULATION' },
+
+  // UNITED STATES - Economy
   { id: 'MORTGAGE', label: 'MORTGAGE' },
   { id: 'REAL ESTATE', label: 'REAL ESTATE' },
-  { id: 'REGULATION', label: 'REGULATION' },
-  { id: 'STATE_DEPT', label: 'STATE DEPT.' },
-  { id: 'TREASURY', label: 'TREASURY' },
-  { id: 'US CONGRESS', label: 'US CONGRESS' },
+  { id: 'ENERGY', label: 'ENERGY SECTOR' },
+
+  // UNITED STATES - Science & Tech
+  { id: 'NASA', label: 'NASA & SPACE' },
+  { id: 'RESEARCH', label: 'RESEARCH & GRANT' },
+
+  // GLOBAL
+  { id: 'NEWS', label: 'NEWS' },
+  { id: 'CRYPTO', label: 'CRYPTO CURRENCY' },
+  { id: 'GLOBAL_MACRO', label: 'GLOBAL MACRO' },
 
   // AMERICAS (alphabetical)
   { id: 'ARGENTINA', label: 'ARGENTINA' },
@@ -39,11 +51,12 @@ export const CATEGORIES = [
   { id: 'PARAGUAY', label: 'PARAGUAY' },
   { id: 'PERU', label: 'PERU' },
   { id: 'URUGUAY', label: 'URUGUAY' },
+  { id: 'VENEZUELA', label: 'VENEZUELA' },
 
-  // ASIA (alphabetical)
-  { id: 'ASIA_PACIFIC', label: 'ASIA PACIFIC' },
-  { id: 'CHINA', label: 'CHINA' },
-  { id: 'JAPAN', label: 'JAPAN' },
+  // CARIBBEAN (alphabetical)
+  { id: 'JAMAICA', label: 'JAMAICA' },
+  { id: 'SAINT_LUCIA', label: 'SAINT LUCIA' },
+  { id: 'TRINIDAD', label: 'TRINIDAD & TOB.' },
 
   // EUROPE (alphabetical)
   { id: 'AUSTRIA', label: 'AUSTRIA' },
@@ -84,18 +97,52 @@ export const CATEGORIES = [
   { id: 'UK', label: 'UNITED KINGDOM' },
   { id: 'UKRAINE', label: 'UKRAINE' },
 
+  // MIDDLE EAST & NORTH AFRICA (alphabetical)
+  { id: 'BAHRAIN', label: 'BAHRAIN' },
+  { id: 'IRAN', label: 'IRAN' },
+  { id: 'ISRAEL', label: 'ISRAEL' },
+  { id: 'JORDAN', label: 'JORDAN' },
+  { id: 'KUWAIT', label: 'KUWAIT' },
+  { id: 'MOROCCO', label: 'MOROCCO' },
+  { id: 'OMAN', label: 'OMAN' },
+  { id: 'QATAR', label: 'QATAR' },
+  { id: 'SAUDI_ARABIA', label: 'SAUDI ARABIA' },
+  { id: 'TUNISIA', label: 'TUNISIA' },
+  { id: 'UAE', label: 'UAE' },
+
+  // ASIA (alphabetical)
+  { id: 'ASIA_PACIFIC', label: 'ASIA PACIFIC' },
+  { id: 'AZERBAIJAN', label: 'AZERBAIJAN' },
+  { id: 'BANGLADESH', label: 'BANGLADESH' },
+  { id: 'CHINA', label: 'CHINA' },
+  { id: 'INDIA', label: 'INDIA' },
+  { id: 'INDONESIA', label: 'INDONESIA' },
+  { id: 'JAPAN', label: 'JAPAN' },
+  { id: 'KAZAKHSTAN', label: 'KAZAKHSTAN' },
+  { id: 'KYRGYZSTAN', label: 'KYRGYZSTAN' },
+  { id: 'MALAYSIA', label: 'MALAYSIA' },
+  { id: 'MONGOLIA', label: 'MONGOLIA' },
+  { id: 'NEPAL', label: 'NEPAL' },
+  { id: 'PHILIPPINES', label: 'PHILIPPINES' },
+  { id: 'SOUTH_KOREA', label: 'SOUTH KOREA' },
+  { id: 'SRI_LANKA', label: 'SRI LANKA' },
+  { id: 'TAIWAN', label: 'TAIWAN' },
+  { id: 'THAILAND', label: 'THAILAND' },
+  { id: 'VIETNAM', label: 'VIETNAM' },
+
+  // PACIFIC / OCEANIA (alphabetical)
+  { id: 'AUSTRALIA', label: 'AUSTRALIA' },
+  { id: 'NEW_ZEALAND', label: 'NEW ZEALAND' },
+
   // SUB-SAHARA AFRICA (alphabetical)
   { id: 'AFRICA', label: 'AFRICA' },
+  { id: 'BURKINA_FASO', label: 'BURKINA FASO' },
+  { id: 'GHANA', label: 'GHANA' },
+  { id: 'MAURITIUS', label: 'MAURITIUS' },
+  { id: 'NAMIBIA', label: 'NAMIBIA' },
   { id: 'RWANDA', label: 'RWANDA' },
   { id: 'SIERRA_LEONE', label: 'SIERRA LEONE' },
-
-  // GLOBAL (alphabetical)
-  { id: 'CRYPTO', label: 'CRYPTO CURRENCY' },
-  { id: 'ENERGY', label: 'ENERGY SECTOR' },
-  { id: 'GLOBAL_MACRO', label: 'GLOBAL MACRO' },
-  { id: 'NASA', label: 'NASA & SPACE' },
-  { id: 'NEWS', label: 'NEWS' },
-  { id: 'RESEARCH', label: 'RESEARCH & GRANT' },
+  { id: 'TANZANIA', label: 'TANZANIA' },
 ] as const;
 
 export const FEEDS: FeedConfig[] = [
@@ -349,6 +396,13 @@ export const FEEDS: FeedConfig[] = [
     color: '#22c55e',
     category: 'CRYPTO'
   },
+  {
+    id: 'cryptofacts',
+    url: 'https://cryptocurrencyfacts.com/feed/',
+    name: 'CRYPTO FACTS',
+    color: '#8b5cf6',
+    category: 'CRYPTO'
+  },
 
   // News Feeds
   {
@@ -408,6 +462,13 @@ export const FEEDS: FeedConfig[] = [
     url: 'https://travel.state.gov/_res/rss/TAsTWs.xml',
     name: 'TRAVEL ADVISORIES',
     color: '#ef4444',
+    category: 'STATE_DEPT'
+  },
+  {
+    id: 'state-fedreg',
+    url: 'https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=state-department',
+    name: 'FED REGISTER (STATE)',
+    color: '#3b82f6',
     category: 'STATE_DEPT'
   },
 
@@ -476,13 +537,6 @@ export const FEEDS: FeedConfig[] = [
     color: '#f59e0b',
     category: 'UK'
   },
-  {
-    id: 'uk-nao',
-    url: 'https://www.gov.uk/government/organisations/national-audit-office.atom',
-    name: 'NAT AUDIT OFFICE',
-    color: '#ef4444',
-    category: 'UK'
-  },
 
   // Eurozone Feeds
   {
@@ -521,13 +575,6 @@ export const FEEDS: FeedConfig[] = [
     url: 'https://www.economist.com/finance-and-economics/rss.xml',
     name: 'THE ECONOMIST',
     color: '#3b82f6',
-    category: 'GLOBAL_MACRO'
-  },
-  {
-    id: 'un-economic',
-    url: 'https://news.un.org/feed/subscribe/en/news/topic/economic-development/feed/rss.xml',
-    name: 'UN ECONOMIC NEWS',
-    color: '#60a5fa',
     category: 'GLOBAL_MACRO'
   },
 
@@ -592,20 +639,7 @@ export const FEEDS: FeedConfig[] = [
     color: '#2563eb',
     category: 'US CONGRESS'
   },
-  {
-    id: 'senate-floor-today',
-    url: 'https://www.congress.gov/rss/senate-floor-today.xml',
-    name: 'SENATE FLOOR TODAY',
-    color: '#dc2626',
-    category: 'US CONGRESS'
-  },
-  {
-    id: 'loc-law-blog',
-    url: 'https://blogs.loc.gov/law/feed/',
-    name: 'LOC LAW LIBRARIANS',
-    color: '#f59e0b',
-    category: 'US CONGRESS'
-  },
+  // Note: Senate Floor Today and LOC Law Blog feeds no longer available
 
   // Regulation Feeds
   {
@@ -622,21 +656,7 @@ export const FEEDS: FeedConfig[] = [
     color: '#c084fc',
     category: 'REGULATION'
   },
-  // Banking/Regulatory – Primary sources
-  {
-    id: 'fdic-press',
-    url: 'https://www.fdic.gov/rss/press.xml',
-    name: 'FDIC PRESS',
-    color: '#16a34a',
-    category: 'REGULATION'
-  },
-  {
-    id: 'sec-litigation',
-    url: 'https://www.sec.gov/rss/litigation/litreleases.xml',
-    name: 'SEC LITIGATION',
-    color: '#10b981',
-    category: 'REGULATION'
-  },
+  // Banking/Regulatory – Note: FDIC and SEC feeds blocked by Cloudflare
 
   // Executive Feeds
   {
@@ -737,13 +757,7 @@ export const FEEDS: FeedConfig[] = [
   },
 
   // US Civil Air Patrol (under U.S. Military)
-  {
-    id: 'cap-news',
-    url: 'https://www.cap.news/tagfeed/en-us/tags/feature',
-    name: 'CAP NEWS',
-    color: '#0ea5e9',
-    category: 'MILITARY'
-  },
+  // Note: CAP News feed no longer available
   {
     id: 'cap-cadet-blogs',
     url: 'https://www.gocivilairpatrol.com/programs/cadets/cadetblog/rss.xml',
@@ -797,20 +811,26 @@ export const FEEDS: FeedConfig[] = [
     category: 'AFRICA'
   },
   
-  // Added feeds per build plan
-  // TreasuryDirect (Auctions)
+  // Treasury feeds via Federal Register (TreasuryDirect RSS discontinued)
   {
-    id: 'treasury-auction-results',
-    url: 'https://www.treasurydirect.gov/rss/auction_results.xml',
-    name: 'TREASURY AUCTION RESULTS',
+    id: 'treasury-fedreg',
+    url: 'https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=treasury-department',
+    name: 'FED REGISTER (TREASURY)',
     color: '#fbbf24',
     category: 'TREASURY'
   },
   {
-    id: 'treasury-offering-announcements',
-    url: 'https://www.treasurydirect.gov/rss/offering_announcements.xml',
-    name: 'TREASURY OFFERINGS',
+    id: 'irs-fedreg',
+    url: 'https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=internal-revenue-service',
+    name: 'FED REGISTER (IRS)',
     color: '#f59e0b',
+    category: 'TREASURY'
+  },
+  {
+    id: 'gao-reports',
+    url: 'https://www.gao.gov/rss/reports.xml',
+    name: 'GAO REPORTS',
+    color: '#8b5cf6',
     category: 'TREASURY'
   },
 
@@ -830,9 +850,9 @@ export const FEEDS: FeedConfig[] = [
     category: 'ENERGY'
   },
   {
-    id: 'world-nuclear-news',
-    url: 'https://world-nuclear-news.org/RSS/WNN-News.xml',
-    name: 'WORLD NUCLEAR NEWS',
+    id: 'iaea-news',
+    url: 'https://www.iaea.org/feeds/topnews',
+    name: 'IAEA TOP NEWS',
     color: '#84cc16',
     category: 'ENERGY'
   },
@@ -873,13 +893,7 @@ export const FEEDS: FeedConfig[] = [
     color: '#fbbf24',
     category: 'MORTGAGE'
   },
-  {
-    id: 'fannie-news',
-    url: 'https://www.fanniemae.com/rss/rss.xml',
-    name: 'FANNIE MAE NEWS',
-    color: '#60a5fa',
-    category: 'MORTGAGE'
-  },
+  // Note: Fannie Mae no longer provides RSS feed
   {
     id: 'freddie-news',
     url: 'https://freddiemac.gcs-web.com/rss/news-releases.xml',
@@ -896,7 +910,7 @@ export const FEEDS: FeedConfig[] = [
   },
   {
     id: 'realtor-news',
-    url: 'https://www.realtor.com/news/feed',
+    url: 'https://www.realtor.com/news/feed/',
     name: 'REALTOR.COM NEWS',
     color: '#f97316',
     category: 'REAL ESTATE'
@@ -906,13 +920,6 @@ export const FEEDS: FeedConfig[] = [
     url: 'https://www.connectcre.com/feed',
     name: 'CONNECT CRE',
     color: '#84cc16',
-    category: 'REAL ESTATE'
-  },
-  {
-    id: 'nar-news',
-    url: 'https://www.nar.realtor/rss/news-releases.xml',
-    name: 'NAR NEWS RELEASES',
-    color: '#22c55e',
     category: 'REAL ESTATE'
   },
 
@@ -982,13 +989,6 @@ export const FEEDS: FeedConfig[] = [
     url: 'https://feeds.folha.uol.com.br/poder/rss091.xml',
     name: 'FOLHA POLITICA',
     color: '#f7941d',
-    category: 'BRAZIL'
-  },
-  {
-    id: 'bra-estadao',
-    url: 'https://www.estadao.com.br/arc/outboundfeeds/rss/',
-    name: 'ESTADAO',
-    color: '#005a9c',
     category: 'BRAZIL'
   },
   {
@@ -1116,34 +1116,6 @@ export const FEEDS: FeedConfig[] = [
 
   // Mexico Feeds
   {
-    id: 'mex-banxico',
-    url: 'https://www.banxico.org.mx/rss/banxico.xml',
-    name: 'BANXICO (CENTRAL BANK)',
-    color: '#006847',
-    category: 'MEXICO'
-  },
-  {
-    id: 'mex-gob',
-    url: 'https://www.gob.mx/gobierno/rss.xml',
-    name: 'GOB.MX',
-    color: '#9e2343',
-    category: 'MEXICO'
-  },
-  {
-    id: 'mex-reforma',
-    url: 'https://www.reforma.com/rss/',
-    name: 'REFORMA',
-    color: '#e31937',
-    category: 'MEXICO'
-  },
-  {
-    id: 'mex-elfinanciero',
-    url: 'https://www.elfinanciero.com.mx/arc/outboundfeeds/rss/',
-    name: 'EL FINANCIERO',
-    color: '#002f6c',
-    category: 'MEXICO'
-  },
-  {
     id: 'mex-expansion',
     url: 'https://expansion.mx/rss',
     name: 'EXPANSION MX',
@@ -1155,6 +1127,133 @@ export const FEEDS: FeedConfig[] = [
     url: 'https://www.jornada.com.mx/rss/economia.xml',
     name: 'LA JORNADA',
     color: '#003366',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-newsdaily',
+    url: 'https://mexiconewsdaily.com/feed/',
+    name: 'MEXICO NEWS DAILY (EN)',
+    color: '#1e3a5f',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-newsdaily-biz',
+    url: 'https://mexiconewsdaily.com/category/business/feed/',
+    name: 'MND BUSINESS (EN)',
+    color: '#2e5a8f',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-newsdaily-politics',
+    url: 'https://mexiconewsdaily.com/category/politics/feed/',
+    name: 'MND POLITICS (EN)',
+    color: '#4a7ab0',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-vallarta',
+    url: 'https://www.vallartadaily.com/feed/',
+    name: 'VALLARTA DAILY (EN)',
+    color: '#0077b6',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-border',
+    url: 'https://www.borderreport.com/feed/',
+    name: 'BORDER REPORT (EN)',
+    color: '#dc2626',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-banxico-fx',
+    url: 'https://www.banxico.org.mx/rsscb/rss?BMXC_canal=fix&BMXC_idioma=en',
+    name: 'BANXICO FX RATE (EN)',
+    color: '#006847',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-banxico-rate',
+    url: 'https://www.banxico.org.mx/rsscb/rss?BMXC_canal=tasObj&BMXC_idioma=en',
+    name: 'BANXICO TARGET RATE (EN)',
+    color: '#228b22',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-banxico-reserves',
+    url: 'https://www.banxico.org.mx/rsscb/rss?BMXC_canal=reserv&BMXC_idioma=en',
+    name: 'BANXICO RESERVES (EN)',
+    color: '#2e8b57',
+    category: 'MEXICO'
+  },
+  // Mexico State Feeds (Spanish)
+  {
+    id: 'mex-milenio',
+    url: 'https://www.milenio.com/rss',
+    name: 'MILENIO',
+    color: '#c41e3a',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-excelsior',
+    url: 'https://www.excelsior.com.mx/rss.xml',
+    name: 'EXCELSIOR',
+    color: '#1e3a8a',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-yucatan',
+    url: 'https://www.yucatan.com.mx/feed',
+    name: 'DIARIO YUCATAN',
+    color: '#f59e0b',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-jalisco',
+    url: 'https://www.informador.mx/rss/jalisco.xml',
+    name: 'EL INFORMADOR (JAL)',
+    color: '#10b981',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-tabasco',
+    url: 'https://www.tabascohoy.com/feed/',
+    name: 'TABASCO HOY',
+    color: '#8b5cf6',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-queretaro',
+    url: 'https://www.capitalqueretaro.com.mx/feed/',
+    name: 'CAPITAL QUERETARO',
+    color: '#ec4899',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-edomex',
+    url: 'https://8columnas.com.mx/feed/',
+    name: '8 COLUMNAS (EDO MEX)',
+    color: '#6366f1',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-michoacan',
+    url: 'https://www.lavozdemichoacan.com.mx/feed/',
+    name: 'LA VOZ MICHOACAN',
+    color: '#14b8a6',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-quadratin',
+    url: 'https://www.quadratin.com.mx/feed/',
+    name: 'QUADRATIN',
+    color: '#f97316',
+    category: 'MEXICO'
+  },
+  {
+    id: 'mex-elnorte',
+    url: 'https://www.elnorte.com/rss/portada.xml',
+    name: 'EL NORTE (NL)',
+    color: '#be185d',
     category: 'MEXICO'
   },
 
@@ -1495,9 +1594,9 @@ export const FEEDS: FeedConfig[] = [
 
   // France Feeds
   {
-    id: 'fra-bdf',
-    url: 'https://www.banque-france.fr/en/rss/press-releases',
-    name: 'BANQUE DE FRANCE',
+    id: 'fra-france24',
+    url: 'https://www.france24.com/en/rss',
+    name: 'FRANCE24 NEWS',
     color: '#002654',
     category: 'FRANCE'
   },
@@ -1509,17 +1608,10 @@ export const FEEDS: FeedConfig[] = [
     category: 'FRANCE'
   },
   {
-    id: 'fra-figaro',
-    url: 'https://www.lefigaro.fr/rss/figaro_actualites.xml',
-    name: 'LE FIGARO',
+    id: 'fra-france24-biz',
+    url: 'https://www.france24.com/en/business/rss',
+    name: 'FRANCE24 BUSINESS',
     color: '#005a9c',
-    category: 'FRANCE'
-  },
-  {
-    id: 'fra-lesechos',
-    url: 'https://www.lesechos.fr/rss/rss_une.xml',
-    name: 'LES ECHOS',
-    color: '#e85d04',
     category: 'FRANCE'
   },
 
@@ -1540,13 +1632,6 @@ export const FEEDS: FeedConfig[] = [
   },
 
   // Germany Feeds
-  {
-    id: 'deu-bundesbank',
-    url: 'https://www.bundesbank.de/en/rss/press-releases.rss',
-    name: 'BUNDESBANK',
-    color: '#ffcc00',
-    category: 'GERMANY'
-  },
   {
     id: 'deu-spiegel',
     url: 'https://www.spiegel.de/schlagzeilen/index.rss',
@@ -1570,8 +1655,8 @@ export const FEEDS: FeedConfig[] = [
   },
   {
     id: 'deu-dw',
-    url: 'https://rss.dw.com/rss/rdf/rss-en-all',
-    name: 'DW NEWS',
+    url: 'https://rss.dw.com/rdf/rss-en-ger',
+    name: 'DW GERMANY NEWS',
     color: '#0055a4',
     category: 'GERMANY'
   },
@@ -2140,49 +2225,6 @@ export const FEEDS: FeedConfig[] = [
     color: '#a78bfa',
     category: 'RESEARCH'
   },
-  {
-    id: 'llnl',
-    url: 'https://www.llnl.gov/rss.xml',
-    name: 'LAWRENCE LIVERMORE',
-    color: '#8b5cf6',
-    category: 'RESEARCH'
-  },
-  {
-    id: 'ornl',
-    url: 'https://www.ornl.gov/feeds/news-releases.xml',
-    name: 'OAK RIDGE NL',
-    color: '#60a5fa',
-    category: 'RESEARCH'
-  },
-  {
-    id: 'mit-energy',
-    url: 'https://energy.mit.edu/feed',
-    name: 'MIT ENERGY',
-    color: '#06b6d4',
-    category: 'RESEARCH'
-  },
-  // EurekAlert - University & Lab Press Releases
-  {
-    id: 'eurekalert-all',
-    url: 'https://www.eurekalert.org/rss/technology_engineering.xml',
-    name: 'EUREKALERT TECH',
-    color: '#10b981',
-    category: 'RESEARCH'
-  },
-  {
-    id: 'eurekalert-science',
-    url: 'https://www.eurekalert.org/rss/physics_math.xml',
-    name: 'EUREKALERT PHYSICS',
-    color: '#14b8a6',
-    category: 'RESEARCH'
-  },
-  {
-    id: 'eurekalert-earth',
-    url: 'https://www.eurekalert.org/rss/earth_environ.xml',
-    name: 'EUREKALERT EARTH',
-    color: '#22c55e',
-    category: 'RESEARCH'
-  },
   // ScienceDaily - Research News
   {
     id: 'sciencedaily-ai',
@@ -2324,5 +2366,803 @@ export const FEEDS: FeedConfig[] = [
     name: 'GODDARD CLIMATE',
     color: '#10b981',
     category: 'NASA'
+  },
+
+  // =============================================================================
+  // MIDDLE EAST & NORTH AFRICA FEEDS
+  // =============================================================================
+
+  // Bahrain Feeds
+  {
+    id: 'bhr-cbb',
+    url: 'https://www.cbb.gov.bh/rss/news',
+    name: 'CBB (CENTRAL BANK)',
+    color: '#ce1126',
+    category: 'BAHRAIN'
+  },
+  {
+    id: 'bhr-bna',
+    url: 'https://www.bna.bh/en/rss',
+    name: 'BNA NEWS AGENCY',
+    color: '#ffffff',
+    category: 'BAHRAIN'
+  },
+
+  // Iran Feeds
+  {
+    id: 'irn-cbi',
+    url: 'https://www.cbi.ir/rss/en',
+    name: 'CBI (CENTRAL BANK)',
+    color: '#239f40',
+    category: 'IRAN'
+  },
+  {
+    id: 'irn-irna',
+    url: 'https://en.irna.ir/rss',
+    name: 'IRNA NEWS',
+    color: '#da0000',
+    category: 'IRAN'
+  },
+  {
+    id: 'irn-presstv',
+    url: 'https://www.presstv.ir/Rss',
+    name: 'PRESS TV',
+    color: '#009639',
+    category: 'IRAN'
+  },
+
+  // Israel Feeds
+  {
+    id: 'isr-toi',
+    url: 'https://www.timesofisrael.com/feed/',
+    name: 'TIMES OF ISRAEL',
+    color: '#0038b8',
+    category: 'ISRAEL'
+  },
+  {
+    id: 'isr-jpost',
+    url: 'https://www.jpost.com/rss/rssfeedsfrontpage.aspx',
+    name: 'JERUSALEM POST',
+    color: '#003366',
+    category: 'ISRAEL'
+  },
+  {
+    id: 'isr-jpost',
+    url: 'https://www.jpost.com/rss/rssfeedsheadlines.aspx',
+    name: 'JERUSALEM POST',
+    color: '#1a5276',
+    category: 'ISRAEL'
+  },
+  {
+    id: 'isr-timesofisrael',
+    url: 'https://www.timesofisrael.com/feed/',
+    name: 'TIMES OF ISRAEL',
+    color: '#0055a4',
+    category: 'ISRAEL'
+  },
+
+  // Jordan Feeds
+  {
+    id: 'jor-cbj',
+    url: 'https://www.cbj.gov.jo/en/rss/news',
+    name: 'CBJ (CENTRAL BANK)',
+    color: '#007a3d',
+    category: 'JORDAN'
+  },
+  {
+    id: 'jor-petra',
+    url: 'https://petra.gov.jo/en/rss',
+    name: 'PETRA NEWS',
+    color: '#ce1126',
+    category: 'JORDAN'
+  },
+
+  // Kuwait Feeds
+  {
+    id: 'kwt-cbk',
+    url: 'https://www.cbk.gov.kw/en/rss/news',
+    name: 'CBK (CENTRAL BANK)',
+    color: '#007a3d',
+    category: 'KUWAIT'
+  },
+  {
+    id: 'kwt-kuna',
+    url: 'https://www.kuna.net.kw/RSS.aspx',
+    name: 'KUNA NEWS',
+    color: '#ce1126',
+    category: 'KUWAIT'
+  },
+
+  // Morocco Feeds
+  {
+    id: 'mar-bkam',
+    url: 'https://www.bkam.ma/en/rss/news',
+    name: 'BANK AL-MAGHRIB',
+    color: '#c1272d',
+    category: 'MOROCCO'
+  },
+  {
+    id: 'mar-map',
+    url: 'https://www.mapnews.ma/en/rss',
+    name: 'MAP NEWS',
+    color: '#006233',
+    category: 'MOROCCO'
+  },
+
+  // Oman Feeds
+  {
+    id: 'omn-cbo',
+    url: 'https://www.cbo.gov.om/en/rss/news',
+    name: 'CBO (CENTRAL BANK)',
+    color: '#ce1126',
+    category: 'OMAN'
+  },
+  {
+    id: 'omn-ona',
+    url: 'https://omannews.gov.om/rss/en',
+    name: 'ONA NEWS',
+    color: '#008000',
+    category: 'OMAN'
+  },
+
+  // Qatar Feeds
+  {
+    id: 'qat-qcb',
+    url: 'https://www.qcb.gov.qa/en/rss/news',
+    name: 'QCB (CENTRAL BANK)',
+    color: '#8d1b3d',
+    category: 'QATAR'
+  },
+  {
+    id: 'qat-aljazeera',
+    url: 'https://www.aljazeera.com/xml/rss/all.xml',
+    name: 'AL JAZEERA',
+    color: '#fa9000',
+    category: 'QATAR'
+  },
+  {
+    id: 'qat-gulf-times',
+    url: 'https://www.gulf-times.com/rss',
+    name: 'GULF TIMES',
+    color: '#003366',
+    category: 'QATAR'
+  },
+
+  // Saudi Arabia Feeds
+  {
+    id: 'sau-sama',
+    url: 'https://www.sama.gov.sa/en-US/rss/news',
+    name: 'SAMA (CENTRAL BANK)',
+    color: '#006c35',
+    category: 'SAUDI_ARABIA'
+  },
+  {
+    id: 'sau-spa',
+    url: 'https://www.spa.gov.sa/rss/allnews.php',
+    name: 'SPA NEWS',
+    color: '#006c35',
+    category: 'SAUDI_ARABIA'
+  },
+  {
+    id: 'sau-arabnews',
+    url: 'https://www.arabnews.com/rss.xml',
+    name: 'ARAB NEWS',
+    color: '#1a5276',
+    category: 'SAUDI_ARABIA'
+  },
+
+  // Tunisia Feeds
+  {
+    id: 'tun-bct',
+    url: 'https://www.bct.gov.tn/bct/siteprod/rss.jsp',
+    name: 'BCT (CENTRAL BANK)',
+    color: '#e70013',
+    category: 'TUNISIA'
+  },
+  {
+    id: 'tun-tap',
+    url: 'https://www.tap.info.tn/en/rss',
+    name: 'TAP NEWS',
+    color: '#e70013',
+    category: 'TUNISIA'
+  },
+
+  // UAE Feeds
+  {
+    id: 'are-cbuae',
+    url: 'https://www.centralbank.ae/en/rss/news',
+    name: 'CBUAE (CENTRAL BANK)',
+    color: '#00732f',
+    category: 'UAE'
+  },
+  {
+    id: 'are-wam',
+    url: 'https://www.wam.ae/en/rss/all',
+    name: 'WAM NEWS',
+    color: '#ef3340',
+    category: 'UAE'
+  },
+  {
+    id: 'are-national',
+    url: 'https://www.thenationalnews.com/arc/outboundfeeds/rss/',
+    name: 'THE NATIONAL',
+    color: '#003366',
+    category: 'UAE'
+  },
+  {
+    id: 'are-gulfnews',
+    url: 'https://gulfnews.com/rss',
+    name: 'GULF NEWS',
+    color: '#1a5276',
+    category: 'UAE'
+  },
+
+  // =============================================================================
+  // ADDITIONAL AFRICA FEEDS
+  // =============================================================================
+
+  // Burkina Faso Feeds
+  {
+    id: 'bfa-bceao',
+    url: 'https://www.bceao.int/en/rss/news',
+    name: 'BCEAO (CENTRAL BANK)',
+    color: '#009e49',
+    category: 'BURKINA_FASO'
+  },
+  {
+    id: 'bfa-aib',
+    url: 'https://www.aib.media/feed/',
+    name: 'AIB NEWS',
+    color: '#ef2b2d',
+    category: 'BURKINA_FASO'
+  },
+
+  // Ghana Feeds
+  {
+    id: 'gha-bog',
+    url: 'https://www.bog.gov.gh/rss/news',
+    name: 'BANK OF GHANA',
+    color: '#006b3f',
+    category: 'GHANA'
+  },
+  {
+    id: 'gha-gna',
+    url: 'https://www.gna.org.gh/feed/',
+    name: 'GNA NEWS',
+    color: '#fcd116',
+    category: 'GHANA'
+  },
+  {
+    id: 'gha-myjoyonline',
+    url: 'https://www.myjoyonline.com/feed/',
+    name: 'JOY NEWS',
+    color: '#ce1126',
+    category: 'GHANA'
+  },
+
+  // Mauritius Feeds
+  {
+    id: 'mus-bom',
+    url: 'https://www.bom.mu/rss/news',
+    name: 'BANK OF MAURITIUS',
+    color: '#00a651',
+    category: 'MAURITIUS'
+  },
+  {
+    id: 'mus-lexpress',
+    url: 'https://www.lexpress.mu/feed',
+    name: 'L\'EXPRESS MU',
+    color: '#1a5276',
+    category: 'MAURITIUS'
+  },
+
+  // Namibia Feeds
+  {
+    id: 'nam-bon',
+    url: 'https://www.bon.com.na/rss/news',
+    name: 'BANK OF NAMIBIA',
+    color: '#003580',
+    category: 'NAMIBIA'
+  },
+  {
+    id: 'nam-namibian',
+    url: 'https://www.namibian.com.na/rss',
+    name: 'THE NAMIBIAN',
+    color: '#009639',
+    category: 'NAMIBIA'
+  },
+
+  // Tanzania Feeds
+  {
+    id: 'tza-bot',
+    url: 'https://www.bot.go.tz/rss/news',
+    name: 'BANK OF TANZANIA',
+    color: '#00a3dd',
+    category: 'TANZANIA'
+  },
+  {
+    id: 'tza-dailynews',
+    url: 'https://dailynews.co.tz/feed/',
+    name: 'DAILY NEWS TZ',
+    color: '#1eb53a',
+    category: 'TANZANIA'
+  },
+
+  // =============================================================================
+  // ADDITIONAL ASIA FEEDS
+  // =============================================================================
+
+  // Azerbaijan Feeds
+  {
+    id: 'aze-cbar',
+    url: 'https://www.cbar.az/rss/news',
+    name: 'CBAR (CENTRAL BANK)',
+    color: '#00b5e2',
+    category: 'AZERBAIJAN'
+  },
+  {
+    id: 'aze-azertag',
+    url: 'https://azertag.az/rss/en',
+    name: 'AZERTAG',
+    color: '#3f9c35',
+    category: 'AZERBAIJAN'
+  },
+
+  // Bangladesh Feeds
+  {
+    id: 'bgd-bb',
+    url: 'https://www.bb.org.bd/rss/news',
+    name: 'BANGLADESH BANK',
+    color: '#006a4e',
+    category: 'BANGLADESH'
+  },
+  {
+    id: 'bgd-bss',
+    url: 'https://www.bssnews.net/rss',
+    name: 'BSS NEWS',
+    color: '#f42a41',
+    category: 'BANGLADESH'
+  },
+  {
+    id: 'bgd-dhakatribune',
+    url: 'https://www.dhakatribune.com/feed',
+    name: 'DHAKA TRIBUNE',
+    color: '#003366',
+    category: 'BANGLADESH'
+  },
+
+  // India Feeds
+  {
+    id: 'ind-rbi',
+    url: 'https://www.rbi.org.in/pressreleases_rss.xml',
+    name: 'RBI (CENTRAL BANK)',
+    color: '#ff9933',
+    category: 'INDIA'
+  },
+  {
+    id: 'ind-toi',
+    url: 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',
+    name: 'TIMES OF INDIA',
+    color: '#dc143c',
+    category: 'INDIA'
+  },
+  {
+    id: 'ind-hindu',
+    url: 'https://www.thehindu.com/news/national/feeder/default.rss',
+    name: 'THE HINDU',
+    color: '#003366',
+    category: 'INDIA'
+  },
+  {
+    id: 'ind-economictimes',
+    url: 'https://economictimes.indiatimes.com/rssfeedstopstories.cms',
+    name: 'ECONOMIC TIMES',
+    color: '#f59e0b',
+    category: 'INDIA'
+  },
+
+  // Indonesia Feeds
+  {
+    id: 'idn-bi',
+    url: 'https://www.bi.go.id/en/rss/news.xml',
+    name: 'BANK INDONESIA',
+    color: '#ce1126',
+    category: 'INDONESIA'
+  },
+  {
+    id: 'idn-antara',
+    url: 'https://en.antaranews.com/rss/news.xml',
+    name: 'ANTARA NEWS',
+    color: '#ffffff',
+    category: 'INDONESIA'
+  },
+  {
+    id: 'idn-jakartapost',
+    url: 'https://www.thejakartapost.com/feed',
+    name: 'JAKARTA POST',
+    color: '#003366',
+    category: 'INDONESIA'
+  },
+
+  // Kazakhstan Feeds
+  {
+    id: 'kaz-nbk',
+    url: 'https://nationalbank.kz/en/rss/news',
+    name: 'NBK (CENTRAL BANK)',
+    color: '#00afca',
+    category: 'KAZAKHSTAN'
+  },
+  {
+    id: 'kaz-inform',
+    url: 'https://www.inform.kz/en/rss',
+    name: 'KAZINFORM',
+    color: '#ffc61e',
+    category: 'KAZAKHSTAN'
+  },
+
+  // Kyrgyzstan Feeds
+  {
+    id: 'kgz-nbkr',
+    url: 'https://www.nbkr.kg/rss/news',
+    name: 'NBKR (CENTRAL BANK)',
+    color: '#e8112d',
+    category: 'KYRGYZSTAN'
+  },
+  {
+    id: 'kgz-kabar',
+    url: 'https://kabar.kg/eng/rss',
+    name: 'KABAR NEWS',
+    color: '#ffd200',
+    category: 'KYRGYZSTAN'
+  },
+
+  // Malaysia Feeds
+  {
+    id: 'mys-bnm',
+    url: 'https://www.bnm.gov.my/rss/news',
+    name: 'BNM (CENTRAL BANK)',
+    color: '#010066',
+    category: 'MALAYSIA'
+  },
+  {
+    id: 'mys-bernama',
+    url: 'https://www.bernama.com/en/rss/news.xml',
+    name: 'BERNAMA',
+    color: '#ffcc00',
+    category: 'MALAYSIA'
+  },
+  {
+    id: 'mys-star',
+    url: 'https://www.thestar.com.my/rss/News',
+    name: 'THE STAR',
+    color: '#dc2626',
+    category: 'MALAYSIA'
+  },
+
+  // Mongolia Feeds
+  {
+    id: 'mng-bom',
+    url: 'https://www.mongolbank.mn/rss/news',
+    name: 'BANK OF MONGOLIA',
+    color: '#c4272e',
+    category: 'MONGOLIA'
+  },
+  {
+    id: 'mng-montsame',
+    url: 'https://www.montsame.mn/en/rss',
+    name: 'MONTSAME',
+    color: '#0066b3',
+    category: 'MONGOLIA'
+  },
+
+  // Nepal Feeds
+  {
+    id: 'npl-nrb',
+    url: 'https://www.nrb.org.np/rss/news',
+    name: 'NRB (CENTRAL BANK)',
+    color: '#dc143c',
+    category: 'NEPAL'
+  },
+  {
+    id: 'npl-kathmandu',
+    url: 'https://kathmandupost.com/feed',
+    name: 'KATHMANDU POST',
+    color: '#003366',
+    category: 'NEPAL'
+  },
+
+  // Philippines Feeds
+  {
+    id: 'phl-bsp',
+    url: 'https://www.bsp.gov.ph/rss/news',
+    name: 'BSP (CENTRAL BANK)',
+    color: '#0038a8',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-pna',
+    url: 'https://www.pna.gov.ph/rss',
+    name: 'PNA NEWS',
+    color: '#fcd116',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-inquirer',
+    url: 'https://www.inquirer.net/feed',
+    name: 'INQUIRER',
+    color: '#003366',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-rappler',
+    url: 'https://www.rappler.com/feed/',
+    name: 'RAPPLER',
+    color: '#ef4444',
+    category: 'PHILIPPINES'
+  },
+
+  // South Korea Feeds
+  {
+    id: 'kor-bok',
+    url: 'https://www.bok.or.kr/eng/rss/news.do',
+    name: 'BANK OF KOREA',
+    color: '#003478',
+    category: 'SOUTH_KOREA'
+  },
+  {
+    id: 'kor-yonhap',
+    url: 'https://en.yna.co.kr/RSS/news.xml',
+    name: 'YONHAP NEWS',
+    color: '#c60c30',
+    category: 'SOUTH_KOREA'
+  },
+  {
+    id: 'kor-koreaherald',
+    url: 'https://www.koreaherald.com/rss/all.xml',
+    name: 'KOREA HERALD',
+    color: '#003366',
+    category: 'SOUTH_KOREA'
+  },
+  {
+    id: 'kor-koreatimes',
+    url: 'https://www.koreatimes.co.kr/www/rss/rss.xml',
+    name: 'KOREA TIMES',
+    color: '#1a5276',
+    category: 'SOUTH_KOREA'
+  },
+
+  // Sri Lanka Feeds
+  {
+    id: 'lka-cbsl',
+    url: 'https://www.cbsl.gov.lk/rss/news',
+    name: 'CBSL (CENTRAL BANK)',
+    color: '#8d153a',
+    category: 'SRI_LANKA'
+  },
+  {
+    id: 'lka-dailymirror',
+    url: 'https://www.dailymirror.lk/RSS_Feeds/breaking-news/108',
+    name: 'DAILY MIRROR LK',
+    color: '#ff6600',
+    category: 'SRI_LANKA'
+  },
+
+  // Taiwan Feeds
+  {
+    id: 'twn-cbc',
+    url: 'https://www.cbc.gov.tw/en/rss/news',
+    name: 'CBC (CENTRAL BANK)',
+    color: '#fe0000',
+    category: 'TAIWAN'
+  },
+  {
+    id: 'twn-cna',
+    url: 'https://focustaiwan.tw/rss',
+    name: 'FOCUS TAIWAN',
+    color: '#003366',
+    category: 'TAIWAN'
+  },
+  {
+    id: 'twn-taipeitimes',
+    url: 'https://www.taipeitimes.com/xml/index.rss',
+    name: 'TAIPEI TIMES',
+    color: '#0055a4',
+    category: 'TAIWAN'
+  },
+
+  // Thailand Feeds
+  {
+    id: 'tha-bot',
+    url: 'https://www.bot.or.th/English/rss/news.xml',
+    name: 'BANK OF THAILAND',
+    color: '#0055a4',
+    category: 'THAILAND'
+  },
+  {
+    id: 'tha-mcot',
+    url: 'https://www.mcot.net/rss/eng',
+    name: 'MCOT NEWS',
+    color: '#ef4444',
+    category: 'THAILAND'
+  },
+  {
+    id: 'tha-bangkokpost',
+    url: 'https://www.bangkokpost.com/rss/data/topstories.xml',
+    name: 'BANGKOK POST',
+    color: '#003366',
+    category: 'THAILAND'
+  },
+
+  // Vietnam Feeds
+  {
+    id: 'vnm-sbv',
+    url: 'https://www.sbv.gov.vn/webcenter/portal/en/home/rss/news',
+    name: 'SBV (CENTRAL BANK)',
+    color: '#da251d',
+    category: 'VIETNAM'
+  },
+  {
+    id: 'vnm-vna',
+    url: 'https://en.vietnamplus.vn/rss/news.rss',
+    name: 'VNA NEWS',
+    color: '#ffcd00',
+    category: 'VIETNAM'
+  },
+  {
+    id: 'vnm-vnexpress',
+    url: 'https://e.vnexpress.net/rss/news.rss',
+    name: 'VNEXPRESS',
+    color: '#ef4444',
+    category: 'VIETNAM'
+  },
+
+  // =============================================================================
+  // PACIFIC / OCEANIA FEEDS
+  // =============================================================================
+
+  // Australia Feeds
+  {
+    id: 'aus-rba',
+    url: 'https://www.rba.gov.au/rss/rss-cb-media-releases.xml',
+    name: 'RBA (CENTRAL BANK)',
+    color: '#00008b',
+    category: 'AUSTRALIA'
+  },
+  {
+    id: 'aus-abc',
+    url: 'https://www.abc.net.au/news/feed/51120/rss.xml',
+    name: 'ABC NEWS AU',
+    color: '#ef4444',
+    category: 'AUSTRALIA'
+  },
+  {
+    id: 'aus-smh',
+    url: 'https://www.smh.com.au/rss/feed.xml',
+    name: 'SYDNEY MORNING HERALD',
+    color: '#003366',
+    category: 'AUSTRALIA'
+  },
+  {
+    id: 'aus-afr',
+    url: 'https://www.afr.com/rss/feed.xml',
+    name: 'AUSTRAL. FIN. REVIEW',
+    color: '#f59e0b',
+    category: 'AUSTRALIA'
+  },
+
+  // New Zealand Feeds
+  {
+    id: 'nzl-rbnz',
+    url: 'https://www.rbnz.govt.nz/rss/news',
+    name: 'RBNZ (CENTRAL BANK)',
+    color: '#00247d',
+    category: 'NEW_ZEALAND'
+  },
+  {
+    id: 'nzl-rnz',
+    url: 'https://www.rnz.co.nz/rss/national.xml',
+    name: 'RNZ NEWS',
+    color: '#0055a4',
+    category: 'NEW_ZEALAND'
+  },
+  {
+    id: 'nzl-nzherald',
+    url: 'https://www.nzherald.co.nz/arc/outboundfeeds/rss/',
+    name: 'NZ HERALD',
+    color: '#003366',
+    category: 'NEW_ZEALAND'
+  },
+
+  // =============================================================================
+  // CARIBBEAN FEEDS
+  // =============================================================================
+
+  // Jamaica Feeds
+  {
+    id: 'jam-boj',
+    url: 'https://www.boj.org.jm/rss/news',
+    name: 'BANK OF JAMAICA',
+    color: '#009b3a',
+    category: 'JAMAICA'
+  },
+  {
+    id: 'jam-jis',
+    url: 'https://jis.gov.jm/feed/',
+    name: 'JIS NEWS',
+    color: '#ffd200',
+    category: 'JAMAICA'
+  },
+  {
+    id: 'jam-gleaner',
+    url: 'https://jamaica-gleaner.com/feed/',
+    name: 'JAMAICA GLEANER',
+    color: '#003366',
+    category: 'JAMAICA'
+  },
+
+  // Saint Lucia Feeds
+  {
+    id: 'lca-eccb',
+    url: 'https://www.eccb-centralbank.org/rss/news',
+    name: 'ECCB (CENTRAL BANK)',
+    color: '#65cfff',
+    category: 'SAINT_LUCIA'
+  },
+  {
+    id: 'lca-stluciatimes',
+    url: 'https://stluciatimes.com/feed/',
+    name: 'ST LUCIA TIMES',
+    color: '#003366',
+    category: 'SAINT_LUCIA'
+  },
+
+  // Trinidad and Tobago Feeds
+  {
+    id: 'tto-cbtt',
+    url: 'https://www.central-bank.org.tt/rss/news',
+    name: 'CBTT (CENTRAL BANK)',
+    color: '#ce1126',
+    category: 'TRINIDAD'
+  },
+  {
+    id: 'tto-guardian',
+    url: 'https://www.guardian.co.tt/rss',
+    name: 'TRINIDAD GUARDIAN',
+    color: '#003366',
+    category: 'TRINIDAD'
+  },
+  {
+    id: 'tto-newsday',
+    url: 'https://newsday.co.tt/feed/',
+    name: 'NEWSDAY TT',
+    color: '#1a5276',
+    category: 'TRINIDAD'
+  },
+
+  // =============================================================================
+  // ADDITIONAL AMERICAS FEEDS
+  // =============================================================================
+
+  // Venezuela Feeds
+  {
+    id: 'ven-bcv',
+    url: 'https://www.bcv.org.ve/rss/noticias',
+    name: 'BCV (CENTRAL BANK)',
+    color: '#ffcc00',
+    category: 'VENEZUELA'
+  },
+  {
+    id: 'ven-eluniversal',
+    url: 'https://www.eluniversal.com/rss/',
+    name: 'EL UNIVERSAL VE',
+    color: '#003366',
+    category: 'VENEZUELA'
+  },
+  {
+    id: 'ven-elnacional',
+    url: 'https://www.elnacional.com/feed/',
+    name: 'EL NACIONAL',
+    color: '#1a5276',
+    category: 'VENEZUELA'
   },
 ];
