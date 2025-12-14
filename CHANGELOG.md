@@ -2,6 +2,56 @@
 
 All notable changes to this project are tracked here. Dates in UTC.
 
+## 2025-12-13
+
+### Sidebar UX Improvements
+- Compacted sidebar layout for 40% more visible categories without scrolling
+- Reduced navigation width from 64 to 56 (w-64 -> w-56)
+- Reduced padding: container p-4 -> p-2, items px-4 py-2 -> px-2.5 py-1
+- Reduced spacing: space-y-1 -> space-y-0.5, gap-3 -> gap-2
+- Smaller icons: 16px -> 14px
+- Smaller text: text-xs -> text-[11px]
+- Compacted National Debt widget padding
+
+### Category Reorganization
+- Reorganized sidebar categories with US at top for primary audience
+- Order: US Government -> Global/Macro -> Americas -> Europe -> Asia -> Middle East -> Africa -> Pacific
+- NASA category now visible at position 12 (was position 95)
+
+### Treasury Feeds Restoration
+- **Problem:** TreasuryDirect discontinued RSS feeds (auction_results.xml, offering_announcements.xml return 404)
+- **Solution:** Replaced with Federal Register API feeds which are reliable and comprehensive
+- New feeds added:
+  - Federal Register (Treasury Department): https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=treasury-department
+  - Federal Register (IRS): https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=internal-revenue-service
+  - GAO Reports: https://www.gao.gov/rss/reports.xml
+- Treasury category: 2 feeds/130 items -> 5 feeds/262 items
+- **Lesson Learned:** Federal Register API is reliable fallback when agency feeds are discontinued
+
+### New Feeds Added
+- **MEXICO Category (10 feeds):**
+  - Gobierno de Mexico Noticias
+  - Secretaria de Hacienda (SHCP)
+  - Banco de Mexico Comunicados
+  - INEGI Comunicados
+  - Secretaria de Energia (SENER)
+  - Secretaria de Economia
+  - Pemex Comunicados
+  - Secretaria de Relaciones Exteriores
+  - Consejo Nacional de Ciencia (CONACYT)
+  - Secretaria de Medio Ambiente (SEMARNAT)
+- **CRYPTO Category:**
+  - CryptocurrencyFacts.com
+- **STATE_DEPT Category:**
+  - Federal Register (State Department)
+
+### ClickUp Documentation
+- Created tasks in StackNews.org folder (90174587764):
+  - Sidebar UX Improvements (86dyv4ne1) - Completed
+  - Feed Expansion (86dyv4ne5) - Completed
+  - Feed Source Research Lessons Learned (86dyv4neb) - Development
+  - Treasury Feeds Restoration (86dyv5d3w) - Completed
+
 ## 2025-12-12
 
 ### NASA & Space Category - Planetary Intelligence
