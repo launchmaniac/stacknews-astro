@@ -10,6 +10,7 @@ import Sidebar from '../components/astro/Sidebar.astro';
 import Clock from '../components/react/Clock.tsx';
 import SearchBar from '../components/react/SearchBar.tsx';
 import TreasuryPanel from '../components/react/TreasuryPanel.tsx';
+import LaborPanel from '../components/react/LaborPanel.tsx';
 import MarketPanel from '../components/react/MarketPanel.tsx';
 import CryptoPanel from '../components/react/CryptoPanel.tsx';
 import CommoditiesPanel from '../components/react/CommoditiesPanel.tsx';
@@ -58,6 +59,9 @@ const category = url.searchParams.get('category') || 'ALL';
 
           <!-- Treasury Hero Row (React Island) -->
           <TreasuryPanel client:load />
+
+          <!-- Labor & Employment Panel (React Island - BLS Data) -->
+          <LaborPanel client:load />
 
           <!-- Data Windows Section -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

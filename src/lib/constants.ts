@@ -24,6 +24,7 @@ export const CATEGORIES = [
   { id: 'REGULATION', label: 'REGULATION' },
 
   // UNITED STATES - Economy
+  { id: 'LABOR', label: 'LABOR & JOBS' },
   { id: 'MORTGAGE', label: 'MORTGAGE' },
   { id: 'REAL ESTATE', label: 'REAL ESTATE' },
   { id: 'ENERGY', label: 'ENERGY SECTOR' },

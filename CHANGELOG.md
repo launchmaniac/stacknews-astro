@@ -4,6 +4,22 @@ All notable changes to this project are tracked here. Dates in UTC.
 
 ## 2025-12-24
 
+### BLS API Integration - LABOR Category (25 feeds)
+- **New Category:** LABOR & JOBS added to sidebar
+- **API Endpoint:** `/api/bls.json` with Cache API + KV fallback
+- **Data Sources (25 series):**
+  - Labor Market (8): Unemployment, payrolls, hourly earnings, employment levels
+  - JOLTS (4): Job openings, quits rate, hires rate, retail jobs
+  - Inflation (4): CPI all items, CPI core, import/export prices
+  - Producer Prices (3): PPI commodities, energy, food
+  - Productivity (3): Nonfarm productivity, unit labor costs, ECI wages
+  - State Unemployment (3): California, Texas, New York
+- **Files Created:**
+  - `src/lib/bls.ts` - BLS API v2 data fetching module
+  - `src/pages/api/bls.json.ts` - API endpoint with caching
+  - `src/components/react/LaborPanel.tsx` - Dashboard component
+- **ClickUp Task:** 86dyzzmjc
+
 ### New Feeds Added
 - **CRYPTO:** The Block - https://www.theblock.co/rss.xml
 - **EUROZONE:** BIS Central Bank Speeches - https://www.bis.org/doclist/cbspeeches.rss
