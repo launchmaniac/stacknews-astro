@@ -14,31 +14,39 @@ export const CATEGORIES = [
   // Overview
   { id: 'ALL', label: 'OVERVIEW' },
 
-  // UNITED STATES - Government
-  { id: 'EXECUTIVE', label: 'EXECUTIVE' },
-  { id: 'US CONGRESS', label: 'US CONGRESS' },
-  { id: 'FEDERAL RESERVE', label: 'FEDERAL RESERVE' },
+  // ═══════════════════════════════════════════
+  // UNITED STATES
+  // ═══════════════════════════════════════════
+
+  // US - Government & Policy
+  { id: 'EXECUTIVE', label: 'WHITE HOUSE' },
+  { id: 'US CONGRESS', label: 'CONGRESS' },
   { id: 'TREASURY', label: 'TREASURY' },
+  { id: 'FEDERAL RESERVE', label: 'FEDERAL RESERVE' },
   { id: 'STATE_DEPT', label: 'STATE DEPT.' },
-  { id: 'MILITARY', label: 'U.S. MILITARY' },
+  { id: 'MILITARY', label: 'DEFENSE & MILITARY' },
   { id: 'REGULATION', label: 'REGULATION' },
 
-  // UNITED STATES - Economy
+  // US - Economy & Markets
   { id: 'LABOR', label: 'LABOR & JOBS' },
-  { id: 'MORTGAGE', label: 'MORTGAGE' },
+  { id: 'ENERGY', label: 'ENERGY' },
   { id: 'REAL ESTATE', label: 'REAL ESTATE' },
-  { id: 'ENERGY', label: 'ENERGY SECTOR' },
+  { id: 'MORTGAGE', label: 'MORTGAGE' },
 
-  // UNITED STATES - Science & Tech
+  // US - Science & Technology
   { id: 'NASA', label: 'NASA & SPACE' },
-  { id: 'RESEARCH', label: 'RESEARCH & GRANT' },
+  { id: 'RESEARCH', label: 'RESEARCH' },
 
-  // GLOBAL
-  { id: 'NEWS', label: 'NEWS' },
-  { id: 'CRYPTO', label: 'CRYPTO CURRENCY' },
+  // ═══════════════════════════════════════════
+  // GLOBAL & MARKETS
+  // ═══════════════════════════════════════════
+  { id: 'NEWS', label: 'WORLD NEWS' },
   { id: 'GLOBAL_MACRO', label: 'GLOBAL MACRO' },
+  { id: 'CRYPTO', label: 'CRYPTO' },
 
-  // AMERICAS (alphabetical)
+  // ═══════════════════════════════════════════
+  // AMERICAS
+  // ═══════════════════════════════════════════
   { id: 'ARGENTINA', label: 'ARGENTINA' },
   { id: 'BRAZIL', label: 'BRAZIL' },
   { id: 'CANADA', label: 'CANADA' },
@@ -54,12 +62,18 @@ export const CATEGORIES = [
   { id: 'URUGUAY', label: 'URUGUAY' },
   { id: 'VENEZUELA', label: 'VENEZUELA' },
 
-  // CARIBBEAN (alphabetical)
+  // ═══════════════════════════════════════════
+  // CARIBBEAN
+  // ═══════════════════════════════════════════
   { id: 'JAMAICA', label: 'JAMAICA' },
   { id: 'SAINT_LUCIA', label: 'SAINT LUCIA' },
   { id: 'TRINIDAD', label: 'TRINIDAD & TOB.' },
 
-  // EUROPE (alphabetical)
+  // ═══════════════════════════════════════════
+  // EUROPE
+  // ═══════════════════════════════════════════
+  { id: 'EUROZONE', label: 'EUROZONE' },
+  { id: 'UK', label: 'UNITED KINGDOM' },
   { id: 'AUSTRIA', label: 'AUSTRIA' },
   { id: 'BELGIUM', label: 'BELGIUM' },
   { id: 'BOSNIA', label: 'BOSNIA & HERZ.' },
@@ -69,7 +83,6 @@ export const CATEGORIES = [
   { id: 'CZECHIA', label: 'CZECHIA' },
   { id: 'DENMARK', label: 'DENMARK' },
   { id: 'ESTONIA', label: 'ESTONIA' },
-  { id: 'EUROZONE', label: 'EUROZONE' },
   { id: 'FINLAND', label: 'FINLAND' },
   { id: 'FRANCE', label: 'FRANCE' },
   { id: 'GEORGIA', label: 'GEORGIA' },
@@ -95,10 +108,11 @@ export const CATEGORIES = [
   { id: 'SPAIN', label: 'SPAIN' },
   { id: 'SWEDEN', label: 'SWEDEN' },
   { id: 'SWITZERLAND', label: 'SWITZERLAND' },
-  { id: 'UK', label: 'UNITED KINGDOM' },
   { id: 'UKRAINE', label: 'UKRAINE' },
 
-  // MIDDLE EAST & NORTH AFRICA (alphabetical)
+  // ═══════════════════════════════════════════
+  // MIDDLE EAST & NORTH AFRICA
+  // ═══════════════════════════════════════════
   { id: 'BAHRAIN', label: 'BAHRAIN' },
   { id: 'IRAN', label: 'IRAN' },
   { id: 'ISRAEL', label: 'ISRAEL' },
@@ -111,7 +125,9 @@ export const CATEGORIES = [
   { id: 'TUNISIA', label: 'TUNISIA' },
   { id: 'UAE', label: 'UAE' },
 
-  // ASIA (alphabetical)
+  // ═══════════════════════════════════════════
+  // ASIA
+  // ═══════════════════════════════════════════
   { id: 'ASIA_PACIFIC', label: 'ASIA PACIFIC' },
   { id: 'AZERBAIJAN', label: 'AZERBAIJAN' },
   { id: 'BANGLADESH', label: 'BANGLADESH' },
@@ -131,11 +147,15 @@ export const CATEGORIES = [
   { id: 'THAILAND', label: 'THAILAND' },
   { id: 'VIETNAM', label: 'VIETNAM' },
 
-  // PACIFIC / OCEANIA (alphabetical)
+  // ═══════════════════════════════════════════
+  // PACIFIC & OCEANIA
+  // ═══════════════════════════════════════════
   { id: 'AUSTRALIA', label: 'AUSTRALIA' },
   { id: 'NEW_ZEALAND', label: 'NEW ZEALAND' },
 
-  // SUB-SAHARA AFRICA (alphabetical)
+  // ═══════════════════════════════════════════
+  // AFRICA
+  // ═══════════════════════════════════════════
   { id: 'AFRICA', label: 'AFRICA' },
   { id: 'BURKINA_FASO', label: 'BURKINA FASO' },
   { id: 'GHANA', label: 'GHANA' },
