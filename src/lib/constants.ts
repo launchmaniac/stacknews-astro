@@ -314,6 +314,13 @@ export const FEEDS: FeedConfig[] = [
     color: '#2563eb',
     category: 'CRYPTO'
   },
+  {
+    id: 'theblock',
+    url: 'https://www.theblock.co/rss.xml',
+    name: 'THE BLOCK',
+    color: '#1e3a5f',
+    category: 'CRYPTO'
+  },
   // Bitcoin Core official announcements
   {
     id: 'btc-core-announce',
@@ -544,6 +551,13 @@ export const FEEDS: FeedConfig[] = [
     url: 'https://www.ecb.europa.eu/rss/press.xml',
     name: 'ECB PRESS',
     color: '#3b82f6',
+    category: 'EUROZONE'
+  },
+  {
+    id: 'bis-speeches',
+    url: 'https://www.bis.org/doclist/cbspeeches.rss',
+    name: 'BIS CB SPEECHES',
+    color: '#6366f1',
     category: 'EUROZONE'
   },
   // Asia Pacific Feeds

@@ -4,6 +4,11 @@ All notable changes to this project are tracked here. Dates in UTC.
 
 ## 2025-12-24
 
+### New Feeds Added
+- **CRYPTO:** The Block - https://www.theblock.co/rss.xml
+- **EUROZONE:** BIS Central Bank Speeches - https://www.bis.org/doclist/cbspeeches.rss
+- Discovered during Feed Source Research task (86dyv4neb)
+
 ### Yield Curve API Migration (FRED API)
 - **Problem:** Treasury FiscalData API endpoint `daily_treasury_yield_curve_rates` deprecated (returning 404)
 - **Root Cause:** Discovered during Browser DevTools investigation - yield curve endpoint returning HTTP 525
