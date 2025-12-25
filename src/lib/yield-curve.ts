@@ -1,70 +1,60 @@
 // Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200  support@launchmaniac.com
-// Treasury: Daily Yield Curve (FiscalData) – lightweight fetch helper
+// Treasury Yield Curve data via FRED API
+// Replaces deprecated FiscalData endpoint (returned 404 as of Dec 2025)
 
 export type YieldCurvePoint = {
   date: string;
   bc_1month?: number;
-  bc_2month?: number;
   bc_3month?: number;
   bc_6month?: number;
   bc_1year?: number;
   bc_2year?: number;
-  bc_3year?: number;
   bc_5year?: number;
-  bc_7year?: number;
   bc_10year?: number;
-  bc_20year?: number;
   bc_30year?: number;
+  spread_10y2y?: number;
 };
 
-const BASE = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/daily_treasury_yield_curve_rates';
+// FRED series IDs for Treasury Constant Maturity rates
+const FRED_SERIES = {
+  bc_1month: 'DGS1MO',
+  bc_3month: 'DGS3MO',
+  bc_6month: 'DGS6MO',
+  bc_1year: 'DGS1',
+  bc_2year: 'DGS2',
+  bc_5year: 'DGS5',
+  bc_10year: 'DGS10',
+  bc_30year: 'DGS30',
+  spread_10y2y: 'T10Y2Y'
+} as const;
 
-function qs(params: Record<string, string | number>) {
-  return (
-    '?' +
-    Object.entries(params)
-      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
-      .join('&')
-  );
-}
+const MAX_ATTEMPTS = 3;
+const BASE_DELAY_MS = 300;
 
-export async function fetchYieldCurve(days: number = 60): Promise<YieldCurvePoint[]> {
-  const url = BASE + qs({ sort: '-record_date', format: 'json', 'page[size]': Math.max(1, Math.min(days, 365)) });
+async function fetchFredSeries(
+  seriesId: string,
+  apiKey: string,
+  limit: number
+): Promise<{ date: string; value: number }[]> {
+  const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${apiKey}&file_type=json&sort_order=desc&limit=${limit}`;
 
-  // Simple resilience: retry on transient errors (5xx, 429, network)
-  const MAX_ATTEMPTS = 3;
-  const BASE_DELAY_MS = 300;
   let lastErr: any;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
       const res = await fetch(url, { headers: { Accept: 'application/json' } });
       if (res.ok) {
         const json = await res.json();
-        const rows: any[] = Array.isArray(json?.data) ? json.data : [];
-        return rows
-          .map((r: any) => ({
-            date: r.record_date,
-            bc_1month: num(r.bc_1month),
-            bc_2month: num(r.bc_2month),
-            bc_3month: num(r.bc_3month),
-            bc_6month: num(r.bc_6month),
-            bc_1year: num(r.bc_1year),
-            bc_2year: num(r.bc_2year),
-            bc_3year: num(r.bc_3year),
-            bc_5year: num(r.bc_5year),
-            bc_7year: num(r.bc_7year),
-            bc_10year: num(r.bc_10year),
-            bc_20year: num(r.bc_20year),
-            bc_30year: num(r.bc_30year)
-          }))
-          .filter((p: YieldCurvePoint) => !!p.date)
-          .reverse();
+        const observations: any[] = json?.observations || [];
+        return observations
+          .filter((o: any) => o.value !== '.' && !isNaN(parseFloat(o.value)))
+          .map((o: any) => ({
+            date: o.date,
+            value: parseFloat(o.value)
+          }));
       }
-      // Retry on 429/5xx
       if (res.status === 429 || (res.status >= 500 && res.status <= 599)) {
         throw new Error(`HTTP ${res.status}`);
       }
-      // Non-retryable (4xx except 429)
       throw new Error(`HTTP ${res.status}`);
     } catch (err) {
       lastErr = err;
@@ -76,10 +66,89 @@ export async function fetchYieldCurve(days: number = 60): Promise<YieldCurvePoin
       break;
     }
   }
-  throw new Error(String(lastErr?.message || lastErr || 'fetch failed'));
+  console.error(`[FRED ${seriesId}] Failed: ${lastErr?.message || lastErr}`);
+  return [];
 }
 
-function num(v: any): number | undefined {
-  const n = parseFloat(v);
-  return isNaN(n) ? undefined : n;
+export async function fetchYieldCurve(
+  days: number = 60,
+  apiKey?: string
+): Promise<YieldCurvePoint[]> {
+  // apiKey should be passed from the API route via locals.runtime.env.FRED_API_KEY
+  if (!apiKey) {
+    throw new Error('FRED_API_KEY required for yield curve data');
+  }
+
+  const limit = Math.max(1, Math.min(days, 365));
+
+  // Fetch all series in parallel
+  const [
+    m1Data,
+    m3Data,
+    m6Data,
+    y1Data,
+    y2Data,
+    y5Data,
+    y10Data,
+    y30Data,
+    spreadData
+  ] = await Promise.all([
+    fetchFredSeries(FRED_SERIES.bc_1month, apiKey, limit),
+    fetchFredSeries(FRED_SERIES.bc_3month, apiKey, limit),
+    fetchFredSeries(FRED_SERIES.bc_6month, apiKey, limit),
+    fetchFredSeries(FRED_SERIES.bc_1year, apiKey, limit),
+    fetchFredSeries(FRED_SERIES.bc_2year, apiKey, limit),
+    fetchFredSeries(FRED_SERIES.bc_5year, apiKey, limit),
+    fetchFredSeries(FRED_SERIES.bc_10year, apiKey, limit),
+    fetchFredSeries(FRED_SERIES.bc_30year, apiKey, limit),
+    fetchFredSeries(FRED_SERIES.spread_10y2y, apiKey, limit)
+  ]);
+
+  // Build lookup maps by date
+  const toMap = (arr: { date: string; value: number }[]) =>
+    new Map(arr.map((d) => [d.date, d.value]));
+
+  const m1Map = toMap(m1Data);
+  const m3Map = toMap(m3Data);
+  const m6Map = toMap(m6Data);
+  const y1Map = toMap(y1Data);
+  const y2Map = toMap(y2Data);
+  const y5Map = toMap(y5Data);
+  const y10Map = toMap(y10Data);
+  const y30Map = toMap(y30Data);
+  const spreadMap = toMap(spreadData);
+
+  // Collect all unique dates
+  const allDates = new Set<string>();
+  [m1Data, m3Data, m6Data, y1Data, y2Data, y5Data, y10Data, y30Data, spreadData].forEach(
+    (arr) => arr.forEach((d) => allDates.add(d.date))
+  );
+
+  // Sort dates descending then take limit
+  const sortedDates = Array.from(allDates)
+    .sort((a, b) => b.localeCompare(a))
+    .slice(0, limit);
+
+  // Build yield curve points
+  const points: YieldCurvePoint[] = sortedDates.map((date) => ({
+    date,
+    bc_1month: m1Map.get(date),
+    bc_3month: m3Map.get(date),
+    bc_6month: m6Map.get(date),
+    bc_1year: y1Map.get(date),
+    bc_2year: y2Map.get(date),
+    bc_5year: y5Map.get(date),
+    bc_10year: y10Map.get(date),
+    bc_30year: y30Map.get(date),
+    spread_10y2y: spreadMap.get(date)
+  }));
+
+  // Return in chronological order (oldest first) for sparklines
+  return points.reverse();
+}
+
+// Get latest yield curve snapshot (single day)
+export async function getLatestYieldCurve(apiKey?: string): Promise<YieldCurvePoint | null> {
+  const data = await fetchYieldCurve(1, apiKey);
+  return data.length > 0 ? data[0] : null;
 }

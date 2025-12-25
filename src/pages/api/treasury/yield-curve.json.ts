@@ -1,8 +1,9 @@
 // Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200  support@launchmaniac.com
-// Treasury Yield Curve JSON endpoint (FiscalData Daily Yield Curve)
+// Treasury Yield Curve JSON endpoint (FRED API - CMT Rates)
 // - Cache API with SWR + stale-if-error
 // - KV durable fallback
 // - Optional warm-mode via X-Stacknews-Warm
+// Note: Migrated from FiscalData to FRED API (Dec 2025) after FiscalData endpoint deprecated
 
 import type { APIRoute } from 'astro';
 import { fetchYieldCurve } from '../../../lib/yield-curve';
@@ -16,6 +17,15 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
   const days = Math.max(1, Math.min(parseInt(url.searchParams.get('days') || '60', 10) || 60, 365));
   const forceRefresh = url.searchParams.get('refresh') === 'true';
   const isWarm = url.searchParams.get('warm') === 'true';
+  const apiKey = (locals as any)?.runtime?.env?.FRED_API_KEY as string | undefined;
+
+  if (!apiKey) {
+    console.error('[YieldCurve] Missing FRED_API_KEY binding');
+    return new Response(
+      JSON.stringify({ error: 'Missing FRED_API_KEY', message: 'Configure FRED_API_KEY as a Cloudflare secret/binding.' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
 
   // Warm-mode protection
   if (isWarm) {
@@ -36,8 +46,8 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
       if (cached) return cached;
     }
 
-    // Fetch fresh
-    const data = await fetchYieldCurve(days);
+    // Fetch fresh from FRED API
+    const data = await fetchYieldCurve(days, apiKey);
 
     const res = new Response(
       JSON.stringify({

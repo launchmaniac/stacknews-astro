@@ -2,6 +2,23 @@
 
 All notable changes to this project are tracked here. Dates in UTC.
 
+## 2025-12-24
+
+### Yield Curve API Migration (FRED API)
+- **Problem:** Treasury FiscalData API endpoint `daily_treasury_yield_curve_rates` deprecated (returning 404)
+- **Root Cause:** Discovered during Browser DevTools investigation - yield curve endpoint returning HTTP 525
+- **Solution:** Migrated from FiscalData to FRED (Federal Reserve Economic Data) API
+- **Files Modified:**
+  - `src/lib/yield-curve.ts` - Complete rewrite to use FRED series
+  - `src/pages/api/treasury/yield-curve.json.ts` - Added FRED_API_KEY binding support
+- **FRED Series Used:**
+  - DGS1MO (1-month), DGS3MO (3-month), DGS6MO (6-month)
+  - DGS1 (1-year), DGS2 (2-year), DGS5 (5-year)
+  - DGS10 (10-year), DGS30 (30-year)
+  - T10Y2Y (10y-2y spread)
+- **Result:** All yield curve data restored with proper caching (Cache API + KV fallback)
+- **ClickUp Task:** 86dyzzdv6
+
 ## 2025-12-13
 
 ### Sidebar UX Improvements
