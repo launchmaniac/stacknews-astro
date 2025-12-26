@@ -17,6 +17,13 @@ interface MarketResponse {
   timestamp: string;
 }
 
+const COMMODITY_TOOLTIPS: Record<string, string> = {
+  'GOLD': 'Gold - precious metal used as inflation hedge and safe-haven asset',
+  'SILVER': 'Silver - industrial and precious metal, inflation hedge',
+  'CRUDE OIL': 'WTI Crude Oil - benchmark oil price, key energy commodity',
+  'NAT GAS': 'Natural Gas - energy commodity for heating and power generation'
+};
+
 function formatPrice(price: number, name: string): string {
   // Gold and Silver in dollars
   if (name === 'GOLD' || name === 'SILVER') {
@@ -78,7 +85,7 @@ export default function CommoditiesPanel() {
     <div className="glass-panel p-4 rounded-xl font-mono">
       <div className="flex items-center gap-2 mb-3">
         <span className="w-1 h-4 rounded-full bg-yellow-400" />
-        <h3 className="text-[11px] font-thin uppercase tracking-widest text-cyan-400/80">
+        <h3 className="text-[11px] font-thin uppercase tracking-widest text-cyan-400/80" title="Key commodity prices including precious metals and energy">
           Commodities
         </h3>
       </div>
@@ -91,6 +98,7 @@ export default function CommoditiesPanel() {
             <div
               key={item.symbol}
               className="bg-slate-900/50 rounded-lg p-2 border border-slate-700/50"
+              title={COMMODITY_TOOLTIPS[item.name] || item.name}
             >
               <div className="flex items-center gap-1.5 mb-1">
                 <span className={`w-1.5 h-1.5 rounded-full ${getColor(item.name)}`} />

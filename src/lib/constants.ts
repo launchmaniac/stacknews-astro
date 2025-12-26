@@ -14,11 +14,8 @@ export const CATEGORIES = [
   // Overview
   { id: 'ALL', label: 'OVERVIEW' },
 
-  // ═══════════════════════════════════════════
-  // UNITED STATES
-  // ═══════════════════════════════════════════
-
-  // US - Government & Policy
+  // Section: United States
+  { id: '_SECTION_US', label: 'UNITED STATES', isSection: true },
   { id: 'EXECUTIVE', label: 'WHITE HOUSE' },
   { id: 'US CONGRESS', label: 'CONGRESS' },
   { id: 'TREASURY', label: 'TREASURY' },
@@ -26,27 +23,23 @@ export const CATEGORIES = [
   { id: 'STATE_DEPT', label: 'STATE DEPT.' },
   { id: 'MILITARY', label: 'DEFENSE & MILITARY' },
   { id: 'REGULATION', label: 'REGULATION' },
-
-  // US - Economy & Markets
+  { id: 'JUDICIAL', label: 'JUDICIAL' },
   { id: 'LABOR', label: 'LABOR & JOBS' },
   { id: 'ENERGY', label: 'ENERGY' },
   { id: 'REAL ESTATE', label: 'REAL ESTATE' },
   { id: 'MORTGAGE', label: 'MORTGAGE' },
-
-  // US - Science & Technology
   { id: 'NASA', label: 'NASA & SPACE' },
   { id: 'RESEARCH', label: 'RESEARCH' },
+  { id: 'CYBERSECURITY', label: 'CYBERSECURITY' },
 
-  // ═══════════════════════════════════════════
-  // GLOBAL & MARKETS
-  // ═══════════════════════════════════════════
+  // Section: Global & Markets
+  { id: '_SECTION_GLOBAL', label: 'GLOBAL & MARKETS', isSection: true },
   { id: 'NEWS', label: 'WORLD NEWS' },
   { id: 'GLOBAL_MACRO', label: 'GLOBAL MACRO' },
   { id: 'CRYPTO', label: 'CRYPTO' },
 
-  // ═══════════════════════════════════════════
-  // AMERICAS
-  // ═══════════════════════════════════════════
+  // Section: Americas
+  { id: '_SECTION_AMERICAS', label: 'AMERICAS', isSection: true },
   { id: 'ARGENTINA', label: 'ARGENTINA' },
   { id: 'BRAZIL', label: 'BRAZIL' },
   { id: 'CANADA', label: 'CANADA' },
@@ -62,16 +55,14 @@ export const CATEGORIES = [
   { id: 'URUGUAY', label: 'URUGUAY' },
   { id: 'VENEZUELA', label: 'VENEZUELA' },
 
-  // ═══════════════════════════════════════════
-  // CARIBBEAN
-  // ═══════════════════════════════════════════
+  // Section: Caribbean
+  { id: '_SECTION_CARIBBEAN', label: 'CARIBBEAN', isSection: true },
   { id: 'JAMAICA', label: 'JAMAICA' },
   { id: 'SAINT_LUCIA', label: 'SAINT LUCIA' },
   { id: 'TRINIDAD', label: 'TRINIDAD & TOB.' },
 
-  // ═══════════════════════════════════════════
-  // EUROPE
-  // ═══════════════════════════════════════════
+  // Section: Europe
+  { id: '_SECTION_EUROPE', label: 'EUROPE', isSection: true },
   { id: 'EUROZONE', label: 'EUROZONE' },
   { id: 'UK', label: 'UNITED KINGDOM' },
   { id: 'AUSTRIA', label: 'AUSTRIA' },
@@ -110,9 +101,8 @@ export const CATEGORIES = [
   { id: 'SWITZERLAND', label: 'SWITZERLAND' },
   { id: 'UKRAINE', label: 'UKRAINE' },
 
-  // ═══════════════════════════════════════════
-  // MIDDLE EAST & NORTH AFRICA
-  // ═══════════════════════════════════════════
+  // Section: Middle East & North Africa
+  { id: '_SECTION_MENA', label: 'MIDDLE EAST & N. AFRICA', isSection: true },
   { id: 'BAHRAIN', label: 'BAHRAIN' },
   { id: 'IRAN', label: 'IRAN' },
   { id: 'ISRAEL', label: 'ISRAEL' },
@@ -125,9 +115,8 @@ export const CATEGORIES = [
   { id: 'TUNISIA', label: 'TUNISIA' },
   { id: 'UAE', label: 'UAE' },
 
-  // ═══════════════════════════════════════════
-  // ASIA
-  // ═══════════════════════════════════════════
+  // Section: Asia
+  { id: '_SECTION_ASIA', label: 'ASIA', isSection: true },
   { id: 'ASIA_PACIFIC', label: 'ASIA PACIFIC' },
   { id: 'AZERBAIJAN', label: 'AZERBAIJAN' },
   { id: 'BANGLADESH', label: 'BANGLADESH' },
@@ -147,15 +136,13 @@ export const CATEGORIES = [
   { id: 'THAILAND', label: 'THAILAND' },
   { id: 'VIETNAM', label: 'VIETNAM' },
 
-  // ═══════════════════════════════════════════
-  // PACIFIC & OCEANIA
-  // ═══════════════════════════════════════════
+  // Section: Pacific & Oceania
+  { id: '_SECTION_PACIFIC', label: 'PACIFIC & OCEANIA', isSection: true },
   { id: 'AUSTRALIA', label: 'AUSTRALIA' },
   { id: 'NEW_ZEALAND', label: 'NEW ZEALAND' },
 
-  // ═══════════════════════════════════════════
-  // AFRICA
-  // ═══════════════════════════════════════════
+  // Section: Africa
+  { id: '_SECTION_AFRICA', label: 'AFRICA', isSection: true },
   { id: 'AFRICA', label: 'AFRICA' },
   { id: 'BURKINA_FASO', label: 'BURKINA FASO' },
   { id: 'GHANA', label: 'GHANA' },
@@ -180,6 +167,55 @@ export const FEEDS: FeedConfig[] = [
     url: 'https://www.cbo.gov/publications/all/rss.xml',
     name: 'CBO REPORTS',
     color: '#84cc16',
+    category: 'TREASURY'
+  },
+  {
+    id: 'economic-indicators',
+    url: 'https://www.govinfo.gov/rss/econi.xml',
+    name: 'ECONOMIC INDICATORS',
+    color: '#22c55e',
+    category: 'TREASURY'
+  },
+  {
+    id: 'economic-report',
+    url: 'https://www.govinfo.gov/rss/erp.xml',
+    name: 'ECONOMIC REPORT OF PRESIDENT',
+    color: '#059669',
+    category: 'TREASURY'
+  },
+  {
+    id: 'treasury-mspd',
+    url: 'https://www.treasurydirect.gov/rss/mspd.xml',
+    name: 'MONTHLY PUBLIC DEBT STATEMENT',
+    color: '#0d9488',
+    category: 'TREASURY'
+  },
+  {
+    id: 'treasury-sbpro',
+    url: 'https://www.treasurydirect.gov/rss/sbpro.xml',
+    name: 'SAVINGS BONDS PRO',
+    color: '#0891b2',
+    category: 'TREASURY'
+  },
+  {
+    id: 'treasury-announced',
+    url: 'https://www.treasurydirect.gov/TA_WS/securities/announced/rss',
+    name: 'TREASURY OFFERING ANNOUNCEMENTS',
+    color: '#06b6d4',
+    category: 'TREASURY'
+  },
+  {
+    id: 'treasury-auctioned',
+    url: 'https://www.treasurydirect.gov/TA_WS/securities/auctioned/rss',
+    name: 'TREASURY AUCTION RESULTS',
+    color: '#0ea5e9',
+    category: 'TREASURY'
+  },
+  {
+    id: 'treasury-debt-penny',
+    url: 'https://www.treasurydirect.gov/government/debt/feeds/recent',
+    name: 'DEBT TO THE PENNY',
+    color: '#3b82f6',
     category: 'TREASURY'
   },
 
@@ -266,6 +302,132 @@ export const FEEDS: FeedConfig[] = [
     url: 'https://www.federalreserve.gov/feeds/h15.xml',
     name: 'INTEREST RATES (H.15)',
     color: '#06b6d4',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-discount',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFSRP_F02_N.B.XML',
+    name: 'DISCOUNT RATE',
+    color: '#8b5cf6',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-tbill-3m',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFSGFSM03_N.B.XML',
+    name: '3-MONTH T-BILL',
+    color: '#a78bfa',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-tcy-1y',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFLGFCY01_N.B.XML',
+    name: '1-YEAR TREASURY CMT',
+    color: '#c4b5fd',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-tcy-2y',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFLGFCY02_N.B.XML',
+    name: '2-YEAR TREASURY CMT',
+    color: '#ddd6fe',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-tcy-3y',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFLGFCY03_N.B.XML',
+    name: '3-YEAR TREASURY CMT',
+    color: '#e9d5ff',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-tcy-5y',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFLGFCY05_N.B.XML',
+    name: '5-YEAR TREASURY CMT',
+    color: '#f3e8ff',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-tcy-7y',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFLGFCY07_N.B.XML',
+    name: '7-YEAR TREASURY CMT',
+    color: '#7c3aed',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-tcy-10y',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFLGFCY10_N.B.XML',
+    name: '10-YEAR TREASURY CMT',
+    color: '#6d28d9',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-tcy-20y',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFLGFCY20_N.B.XML',
+    name: '20-YEAR TREASURY CMT',
+    color: '#5b21b6',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-tcy-30y',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFLGFCY30_N.B.XML',
+    name: '30-YEAR TREASURY CMT',
+    color: '#4c1d95',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-fedfunds',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFSPFF_N.B.XML',
+    name: 'FEDERAL FUNDS RATE',
+    color: '#dc2626',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-h15-prime',
+    url: 'https://www.federalreserve.gov/feeds/Data/H15_H15_RIFSPBLP_N.B.XML',
+    name: 'PRIME RATE',
+    color: '#ea580c',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-feds-notes',
+    url: 'https://www.federalreserve.gov/feeds/feds_notes.xml',
+    name: 'FEDS NOTES',
+    color: '#0284c7',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-g17',
+    url: 'https://www.federalreserve.gov/feeds/g17.xml',
+    name: 'INDUSTRIAL PRODUCTION (G.17)',
+    color: '#0891b2',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-sloos',
+    url: 'https://www.federalreserve.gov/feeds/sloos.xml',
+    name: 'SENIOR LOAN OFFICER SURVEY',
+    color: '#0d9488',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-working-papers',
+    url: 'https://www.federalreserve.gov/feeds/working_papers.xml',
+    name: 'WORKING PAPERS',
+    color: '#059669',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-feds',
+    url: 'https://www.federalreserve.gov/feeds/feds.xml',
+    name: 'FEDS RESEARCH PAPERS',
+    color: '#10b981',
+    category: 'FEDERAL RESERVE'
+  },
+  {
+    id: 'fed-ifdp',
+    url: 'https://www.federalreserve.gov/feeds/ifdp.xml',
+    name: 'INTL FINANCE PAPERS',
+    color: '#34d399',
     category: 'FEDERAL RESERVE'
   },
 
@@ -484,7 +646,7 @@ export const FEEDS: FeedConfig[] = [
     category: 'MILITARY'
   },
 
-  // State Dept Feeds (main state.gov RSS is down - "Technical Difficulties")
+  // State Dept Feeds - travel.state.gov works, main state.gov intermittent
   {
     id: 'state-travel',
     url: 'https://travel.state.gov/_res/rss/TAsTWs.xml',
@@ -493,11 +655,97 @@ export const FEEDS: FeedConfig[] = [
     category: 'STATE_DEPT'
   },
   {
+    id: 'state-press',
+    url: 'https://www.state.gov/rss-feed/press-releases/feed/',
+    name: 'PRESS RELEASES',
+    color: '#3b82f6',
+    category: 'STATE_DEPT'
+  },
+  {
+    id: 'state-briefings',
+    url: 'https://www.state.gov/rss-feed/department-press-briefings/feed/',
+    name: 'PRESS BRIEFINGS',
+    color: '#6366f1',
+    category: 'STATE_DEPT'
+  },
+  {
+    id: 'state-secretary',
+    url: 'https://www.state.gov/rss-feed/secretary-remarks-statements/feed/',
+    name: 'SECRETARY REMARKS',
+    color: '#8b5cf6',
+    category: 'STATE_DEPT'
+  },
+  {
+    id: 'state-schedule',
+    url: 'https://www.state.gov/rss-feed/public-schedule/feed/',
+    name: 'PUBLIC SCHEDULE',
+    color: '#a855f7',
+    category: 'STATE_DEPT'
+  },
+  {
+    id: 'state-africa',
+    url: 'https://www.state.gov/rss-feed/bureau-of-african-affairs/feed/',
+    name: 'AFRICA BUREAU',
+    color: '#22c55e',
+    category: 'STATE_DEPT'
+  },
+  {
+    id: 'state-eastasia',
+    url: 'https://www.state.gov/rss-feed/bureau-of-east-asian-and-pacific-affairs/feed/',
+    name: 'EAST ASIA PACIFIC',
+    color: '#14b8a6',
+    category: 'STATE_DEPT'
+  },
+  {
+    id: 'state-europe',
+    url: 'https://www.state.gov/rss-feed/bureau-of-european-and-eurasian-affairs/feed/',
+    name: 'EUROPE EURASIA',
+    color: '#0ea5e9',
+    category: 'STATE_DEPT'
+  },
+  {
+    id: 'state-neareast',
+    url: 'https://www.state.gov/rss-feed/bureau-of-near-eastern-affairs/feed/',
+    name: 'NEAR EAST',
+    color: '#f59e0b',
+    category: 'STATE_DEPT'
+  },
+  {
+    id: 'state-southasia',
+    url: 'https://www.state.gov/rss-feed/bureau-of-south-and-central-asian-affairs/feed/',
+    name: 'SOUTH CENTRAL ASIA',
+    color: '#eab308',
+    category: 'STATE_DEPT'
+  },
+  {
+    id: 'state-westhem',
+    url: 'https://www.state.gov/rss-feed/bureau-of-western-hemisphere-affairs/feed/',
+    name: 'WESTERN HEMISPHERE',
+    color: '#84cc16',
+    category: 'STATE_DEPT'
+  },
+  {
     id: 'state-fedreg',
     url: 'https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=state-department',
     name: 'FED REGISTER (STATE)',
-    color: '#3b82f6',
+    color: '#64748b',
     category: 'STATE_DEPT'
+  },
+
+  // CISA Cybersecurity Feeds
+  {
+    id: 'cisa-advisories',
+    url: 'https://www.cisa.gov/cybersecurity-advisories/all.xml',
+    name: 'CISA ADVISORIES',
+    color: '#ef4444',
+    category: 'CYBERSECURITY'
+  },
+  {
+    id: 'cisa-news',
+    url: 'https://www.cisa.gov/news.xml',
+    name: 'CISA NEWS',
+    color: '#3b82f6',
+    category: 'CYBERSECURITY'
   },
 
   // UK Feeds
@@ -647,6 +895,34 @@ export const FEEDS: FeedConfig[] = [
     category: 'US CONGRESS'
   },
   {
+    id: 'bills-enrolled',
+    url: 'https://www.govinfo.gov/rss/bills-enr.xml',
+    name: 'ENROLLED BILLS',
+    color: '#22c55e',
+    category: 'US CONGRESS'
+  },
+  {
+    id: 'statute-compilations',
+    url: 'https://www.govinfo.gov/rss/comps.xml',
+    name: 'STATUTE COMPILATIONS',
+    color: '#16a34a',
+    category: 'US CONGRESS'
+  },
+  {
+    id: 'statutes-at-large',
+    url: 'https://www.govinfo.gov/rss/statute.xml',
+    name: 'STATUTES AT LARGE',
+    color: '#15803d',
+    category: 'US CONGRESS'
+  },
+  {
+    id: 'us-code',
+    url: 'https://www.govinfo.gov/rss/uscode.xml',
+    name: 'US CODE',
+    color: '#166534',
+    category: 'US CONGRESS'
+  },
+  {
     id: 'congress-notifications',
     url: 'https://www.congress.gov/rss/notification.xml',
     name: 'CONGRESS NOTIFICATIONS',
@@ -674,6 +950,62 @@ export const FEEDS: FeedConfig[] = [
     color: '#2563eb',
     category: 'US CONGRESS'
   },
+  {
+    id: 'congressional-record',
+    url: 'https://www.govinfo.gov/rss/crec.xml',
+    name: 'CONGRESSIONAL RECORD',
+    color: '#10b981',
+    category: 'US CONGRESS'
+  },
+  {
+    id: 'gao-reports',
+    url: 'https://www.govinfo.gov/rss/gaoreports.xml',
+    name: 'GAO REPORTS',
+    color: '#f59e0b',
+    category: 'US CONGRESS'
+  },
+  {
+    id: 'congressional-hearings',
+    url: 'https://www.govinfo.gov/rss/chrg.xml',
+    name: 'CONGRESSIONAL HEARINGS',
+    color: '#8b5cf6',
+    category: 'US CONGRESS'
+  },
+  {
+    id: 'congressional-reports',
+    url: 'https://www.govinfo.gov/rss/crpt.xml',
+    name: 'CONGRESSIONAL REPORTS',
+    color: '#06b6d4',
+    category: 'US CONGRESS'
+  },
+  {
+    id: 'committee-prints',
+    url: 'https://www.govinfo.gov/rss/cprt.xml',
+    name: 'COMMITTEE PRINTS',
+    color: '#14b8a6',
+    category: 'US CONGRESS'
+  },
+  {
+    id: 'congressional-documents',
+    url: 'https://www.govinfo.gov/rss/cdoc.xml',
+    name: 'CONGRESSIONAL DOCUMENTS',
+    color: '#0ea5e9',
+    category: 'US CONGRESS'
+  },
+  {
+    id: 'serial-set',
+    url: 'https://www.govinfo.gov/rss/serialset.xml',
+    name: 'CONGRESSIONAL SERIAL SET',
+    color: '#6366f1',
+    category: 'US CONGRESS'
+  },
+  {
+    id: 'mandated-reports',
+    url: 'https://www.govinfo.gov/rss/cmr.xml',
+    name: 'MANDATED REPORTS',
+    color: '#ec4899',
+    category: 'US CONGRESS'
+  },
   // Note: Senate Floor Today and LOC Law Blog feeds no longer available
 
   // Regulation Feeds
@@ -691,7 +1023,1187 @@ export const FEEDS: FeedConfig[] = [
     color: '#c084fc',
     category: 'REGULATION'
   },
+  // USITC EDIS (Trade Investigations) - API-based feeds
+  {
+    id: 'edis-section337',
+    url: '/api/edis.json?feed=section337',
+    name: 'USITC SECTION 337',
+    color: '#f97316',
+    category: 'REGULATION'
+  },
+  {
+    id: 'edis-import-injury',
+    url: '/api/edis.json?feed=import-injury',
+    name: 'USITC IMPORT INJURY',
+    color: '#3b82f6',
+    category: 'REGULATION'
+  },
   // Banking/Regulatory – Note: FDIC and SEC feeds blocked by Cloudflare
+
+  // Judicial Feeds - Supreme Court
+  {
+    id: 'scotus-reports',
+    url: 'https://www.govinfo.gov/rss/usreports.xml',
+    name: 'US SUPREME COURT',
+    color: '#7c3aed',
+    category: 'JUDICIAL'
+  },
+
+  // Judicial Feeds - Appellate Courts
+  {
+    id: 'ca1',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca1.xml',
+    name: '1ST CIRCUIT',
+    color: '#8b5cf6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca2',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca2.xml',
+    name: '2ND CIRCUIT',
+    color: '#a78bfa',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca3',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca3.xml',
+    name: '3RD CIRCUIT',
+    color: '#c4b5fd',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca4',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca4.xml',
+    name: '4TH CIRCUIT',
+    color: '#6366f1',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca5',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca5.xml',
+    name: '5TH CIRCUIT',
+    color: '#818cf8',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca6',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca6.xml',
+    name: '6TH CIRCUIT',
+    color: '#a5b4fc',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca7',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca7.xml',
+    name: '7TH CIRCUIT',
+    color: '#3b82f6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca8',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca8.xml',
+    name: '8TH CIRCUIT',
+    color: '#60a5fa',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca9',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca9.xml',
+    name: '9TH CIRCUIT',
+    color: '#93c5fd',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca10',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca10.xml',
+    name: '10TH CIRCUIT',
+    color: '#0ea5e9',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca11',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca11.xml',
+    name: '11TH CIRCUIT',
+    color: '#38bdf8',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'cadc',
+    url: 'https://www.govinfo.gov/rss/uscourts-cadc.xml',
+    name: 'DC CIRCUIT',
+    color: '#7dd3fc',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ca13',
+    url: 'https://www.govinfo.gov/rss/uscourts-ca13.xml',
+    name: 'FEDERAL CIRCUIT',
+    color: '#06b6d4',
+    category: 'JUDICIAL'
+  },
+
+  // Judicial Feeds - National Courts
+  {
+    id: 'jpml',
+    url: 'https://www.govinfo.gov/rss/uscourts-jpml.xml',
+    name: 'MULTIDISTRICT LITIGATION',
+    color: '#14b8a6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'cit',
+    url: 'https://www.govinfo.gov/rss/uscourts-cit.xml',
+    name: 'INTL TRADE COURT',
+    color: '#2dd4bf',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'cofc',
+    url: 'https://www.govinfo.gov/rss/uscourts-cofc.xml',
+    name: 'FEDERAL CLAIMS',
+    color: '#5eead4',
+    category: 'JUDICIAL'
+  },
+
+  // Judicial Feeds - District Courts
+  {
+    id: 'alnd',
+    url: 'https://www.govinfo.gov/rss/uscourts-alnd.xml',
+    name: 'N.D. ALABAMA',
+    color: '#10b981',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'almd',
+    url: 'https://www.govinfo.gov/rss/uscourts-almd.xml',
+    name: 'M.D. ALABAMA',
+    color: '#34d399',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'alsd',
+    url: 'https://www.govinfo.gov/rss/uscourts-alsd.xml',
+    name: 'S.D. ALABAMA',
+    color: '#6ee7b7',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'akd',
+    url: 'https://www.govinfo.gov/rss/uscourts-akd.xml',
+    name: 'D. ALASKA',
+    color: '#22c55e',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'azd',
+    url: 'https://www.govinfo.gov/rss/uscourts-azd.xml',
+    name: 'D. ARIZONA',
+    color: '#4ade80',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ared',
+    url: 'https://www.govinfo.gov/rss/uscourts-ared.xml',
+    name: 'E.D. ARKANSAS',
+    color: '#86efac',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'caed',
+    url: 'https://www.govinfo.gov/rss/uscourts-caed.xml',
+    name: 'E.D. CALIFORNIA',
+    color: '#84cc16',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'cand',
+    url: 'https://www.govinfo.gov/rss/uscourts-cand.xml',
+    name: 'N.D. CALIFORNIA',
+    color: '#a3e635',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'casd',
+    url: 'https://www.govinfo.gov/rss/uscourts-casd.xml',
+    name: 'S.D. CALIFORNIA',
+    color: '#bef264',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'cod',
+    url: 'https://www.govinfo.gov/rss/uscourts-cod.xml',
+    name: 'D. COLORADO',
+    color: '#eab308',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ctd',
+    url: 'https://www.govinfo.gov/rss/uscourts-ctd.xml',
+    name: 'D. CONNECTICUT',
+    color: '#facc15',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ded',
+    url: 'https://www.govinfo.gov/rss/uscourts-ded.xml',
+    name: 'D. DELAWARE',
+    color: '#fde047',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'dcd',
+    url: 'https://www.govinfo.gov/rss/uscourts-dcd.xml',
+    name: 'D. COLUMBIA',
+    color: '#f59e0b',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'flnd',
+    url: 'https://www.govinfo.gov/rss/uscourts-flnd.xml',
+    name: 'N.D. FLORIDA',
+    color: '#fbbf24',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'flsd',
+    url: 'https://www.govinfo.gov/rss/uscourts-flsd.xml',
+    name: 'S.D. FLORIDA',
+    color: '#fcd34d',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'gamd',
+    url: 'https://www.govinfo.gov/rss/uscourts-gamd.xml',
+    name: 'M.D. GEORGIA',
+    color: '#f97316',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'gand',
+    url: 'https://www.govinfo.gov/rss/uscourts-gand.xml',
+    name: 'N.D. GEORGIA',
+    color: '#fb923c',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'gud',
+    url: 'https://www.govinfo.gov/rss/uscourts-gud.xml',
+    name: 'D. GUAM',
+    color: '#fdba74',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'hid',
+    url: 'https://www.govinfo.gov/rss/uscourts-hid.xml',
+    name: 'D. HAWAII',
+    color: '#ef4444',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'idd',
+    url: 'https://www.govinfo.gov/rss/uscourts-idd.xml',
+    name: 'D. IDAHO',
+    color: '#f87171',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ilnd',
+    url: 'https://www.govinfo.gov/rss/uscourts-ilnd.xml',
+    name: 'N.D. ILLINOIS',
+    color: '#fca5a5',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ilsd',
+    url: 'https://www.govinfo.gov/rss/uscourts-ilsd.xml',
+    name: 'S.D. ILLINOIS',
+    color: '#dc2626',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'insd',
+    url: 'https://www.govinfo.gov/rss/uscourts-insd.xml',
+    name: 'S.D. INDIANA',
+    color: '#b91c1c',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'iand',
+    url: 'https://www.govinfo.gov/rss/uscourts-iand.xml',
+    name: 'N.D. IOWA',
+    color: '#ec4899',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ksd',
+    url: 'https://www.govinfo.gov/rss/uscourts-ksd.xml',
+    name: 'D. KANSAS',
+    color: '#f472b6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'kyed',
+    url: 'https://www.govinfo.gov/rss/uscourts-kyed.xml',
+    name: 'E.D. KENTUCKY',
+    color: '#f9a8d4',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'kywd',
+    url: 'https://www.govinfo.gov/rss/uscourts-kywd.xml',
+    name: 'W.D. KENTUCKY',
+    color: '#db2777',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'laed',
+    url: 'https://www.govinfo.gov/rss/uscourts-laed.xml',
+    name: 'E.D. LOUISIANA',
+    color: '#be185d',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'lamd',
+    url: 'https://www.govinfo.gov/rss/uscourts-lamd.xml',
+    name: 'M.D. LOUISIANA',
+    color: '#a855f7',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'med',
+    url: 'https://www.govinfo.gov/rss/uscourts-med.xml',
+    name: 'D. MAINE',
+    color: '#c084fc',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mdd',
+    url: 'https://www.govinfo.gov/rss/uscourts-mdd.xml',
+    name: 'D. MARYLAND',
+    color: '#d8b4fe',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mad',
+    url: 'https://www.govinfo.gov/rss/uscourts-mad.xml',
+    name: 'D. MASSACHUSETTS',
+    color: '#9333ea',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mied',
+    url: 'https://www.govinfo.gov/rss/uscourts-mied.xml',
+    name: 'E.D. MICHIGAN',
+    color: '#7e22ce',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'miwd',
+    url: 'https://www.govinfo.gov/rss/uscourts-miwd.xml',
+    name: 'W.D. MICHIGAN',
+    color: '#6b21a8',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mnd',
+    url: 'https://www.govinfo.gov/rss/uscourts-mnd.xml',
+    name: 'D. MINNESOTA',
+    color: '#7c3aed',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'moed',
+    url: 'https://www.govinfo.gov/rss/uscourts-moed.xml',
+    name: 'E.D. MISSOURI',
+    color: '#8b5cf6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mowd',
+    url: 'https://www.govinfo.gov/rss/uscourts-mowd.xml',
+    name: 'W.D. MISSOURI',
+    color: '#a78bfa',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mtd',
+    url: 'https://www.govinfo.gov/rss/uscourts-mtd.xml',
+    name: 'D. MONTANA',
+    color: '#6366f1',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ned',
+    url: 'https://www.govinfo.gov/rss/uscourts-ned.xml',
+    name: 'D. NEBRASKA',
+    color: '#818cf8',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nhd',
+    url: 'https://www.govinfo.gov/rss/uscourts-nhd.xml',
+    name: 'D. NEW HAMPSHIRE',
+    color: '#a5b4fc',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'njd',
+    url: 'https://www.govinfo.gov/rss/uscourts-njd.xml',
+    name: 'D. NEW JERSEY',
+    color: '#3b82f6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nmd',
+    url: 'https://www.govinfo.gov/rss/uscourts-nmd.xml',
+    name: 'D. NEW MEXICO',
+    color: '#60a5fa',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nyed',
+    url: 'https://www.govinfo.gov/rss/uscourts-nyed.xml',
+    name: 'E.D. NEW YORK',
+    color: '#93c5fd',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nynd',
+    url: 'https://www.govinfo.gov/rss/uscourts-nynd.xml',
+    name: 'N.D. NEW YORK',
+    color: '#2563eb',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ncmd',
+    url: 'https://www.govinfo.gov/rss/uscourts-ncmd.xml',
+    name: 'M.D. N. CAROLINA',
+    color: '#1d4ed8',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ncwd',
+    url: 'https://www.govinfo.gov/rss/uscourts-ncwd.xml',
+    name: 'W.D. N. CAROLINA',
+    color: '#1e40af',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ndd',
+    url: 'https://www.govinfo.gov/rss/uscourts-ndd.xml',
+    name: 'D. N. DAKOTA',
+    color: '#0ea5e9',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nmid',
+    url: 'https://www.govinfo.gov/rss/uscourts-nmid.xml',
+    name: 'D. N. MARIANA IS.',
+    color: '#38bdf8',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ohnd',
+    url: 'https://www.govinfo.gov/rss/uscourts-ohnd.xml',
+    name: 'N.D. OHIO',
+    color: '#7dd3fc',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ohsd',
+    url: 'https://www.govinfo.gov/rss/uscourts-ohsd.xml',
+    name: 'S.D. OHIO',
+    color: '#0284c7',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'oked',
+    url: 'https://www.govinfo.gov/rss/uscourts-oked.xml',
+    name: 'E.D. OKLAHOMA',
+    color: '#0369a1',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'okwd',
+    url: 'https://www.govinfo.gov/rss/uscourts-okwd.xml',
+    name: 'W.D. OKLAHOMA',
+    color: '#075985',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ord',
+    url: 'https://www.govinfo.gov/rss/uscourts-ord.xml',
+    name: 'D. OREGON',
+    color: '#06b6d4',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'paed',
+    url: 'https://www.govinfo.gov/rss/uscourts-paed.xml',
+    name: 'E.D. PENNSYLVANIA',
+    color: '#22d3ee',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'pamd',
+    url: 'https://www.govinfo.gov/rss/uscourts-pamd.xml',
+    name: 'M.D. PENNSYLVANIA',
+    color: '#67e8f9',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'pawd',
+    url: 'https://www.govinfo.gov/rss/uscourts-pawd.xml',
+    name: 'W.D. PENNSYLVANIA',
+    color: '#0891b2',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'prd',
+    url: 'https://www.govinfo.gov/rss/uscourts-prd.xml',
+    name: 'D. PUERTO RICO',
+    color: '#0e7490',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'rid',
+    url: 'https://www.govinfo.gov/rss/uscourts-rid.xml',
+    name: 'D. RHODE ISLAND',
+    color: '#155e75',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'sdd',
+    url: 'https://www.govinfo.gov/rss/uscourts-sdd.xml',
+    name: 'D. S. DAKOTA',
+    color: '#14b8a6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'tned',
+    url: 'https://www.govinfo.gov/rss/uscourts-tned.xml',
+    name: 'E.D. TENNESSEE',
+    color: '#2dd4bf',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'tnmd',
+    url: 'https://www.govinfo.gov/rss/uscourts-tnmd.xml',
+    name: 'M.D. TENNESSEE',
+    color: '#5eead4',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'tnwd',
+    url: 'https://www.govinfo.gov/rss/uscourts-tnwd.xml',
+    name: 'W.D. TENNESSEE',
+    color: '#0d9488',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'txed',
+    url: 'https://www.govinfo.gov/rss/uscourts-txed.xml',
+    name: 'E.D. TEXAS',
+    color: '#0f766e',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'txnd',
+    url: 'https://www.govinfo.gov/rss/uscourts-txnd.xml',
+    name: 'N.D. TEXAS',
+    color: '#115e59',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'txsd',
+    url: 'https://www.govinfo.gov/rss/uscourts-txsd.xml',
+    name: 'S.D. TEXAS',
+    color: '#10b981',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'txwd',
+    url: 'https://www.govinfo.gov/rss/uscourts-txwd.xml',
+    name: 'W.D. TEXAS',
+    color: '#34d399',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'utd',
+    url: 'https://www.govinfo.gov/rss/uscourts-utd.xml',
+    name: 'D. UTAH',
+    color: '#6ee7b7',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'vtd',
+    url: 'https://www.govinfo.gov/rss/uscourts-vtd.xml',
+    name: 'D. VERMONT',
+    color: '#059669',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'vid',
+    url: 'https://www.govinfo.gov/rss/uscourts-vid.xml',
+    name: 'D. VIRGIN ISLANDS',
+    color: '#047857',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'waed',
+    url: 'https://www.govinfo.gov/rss/uscourts-waed.xml',
+    name: 'E.D. WASHINGTON',
+    color: '#065f46',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'wvnd',
+    url: 'https://www.govinfo.gov/rss/uscourts-wvnd.xml',
+    name: 'N.D. W. VIRGINIA',
+    color: '#84cc16',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'wiwd',
+    url: 'https://www.govinfo.gov/rss/uscourts-wiwd.xml',
+    name: 'W.D. WISCONSIN',
+    color: '#a3e635',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'wyd',
+    url: 'https://www.govinfo.gov/rss/uscourts-wyd.xml',
+    name: 'D. WYOMING',
+    color: '#bef264',
+    category: 'JUDICIAL'
+  },
+
+  // Judicial Feeds - Bankruptcy Courts
+  {
+    id: 'almb',
+    url: 'https://www.govinfo.gov/rss/uscourts-almb.xml',
+    name: 'BANKR. M.D. AL',
+    color: '#7c3aed',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'alnb',
+    url: 'https://www.govinfo.gov/rss/uscourts-alnb.xml',
+    name: 'BANKR. N.D. AL',
+    color: '#8b5cf6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'alsb',
+    url: 'https://www.govinfo.gov/rss/uscourts-alsb.xml',
+    name: 'BANKR. S.D. AL',
+    color: '#a78bfa',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'akb',
+    url: 'https://www.govinfo.gov/rss/uscourts-akb.xml',
+    name: 'BANKR. D. AK',
+    color: '#c4b5fd',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'areb',
+    url: 'https://www.govinfo.gov/rss/uscourts-areb.xml',
+    name: 'BANKR. E.D. AR',
+    color: '#6366f1',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'arwb',
+    url: 'https://www.govinfo.gov/rss/uscourts-arwb.xml',
+    name: 'BANKR. W.D. AR',
+    color: '#818cf8',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'azb',
+    url: 'https://www.govinfo.gov/rss/uscourts-azb.xml',
+    name: 'BANKR. D. AZ',
+    color: '#a5b4fc',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'caeb',
+    url: 'https://www.govinfo.gov/rss/uscourts-caeb.xml',
+    name: 'BANKR. E.D. CA',
+    color: '#3b82f6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'canb',
+    url: 'https://www.govinfo.gov/rss/uscourts-canb.xml',
+    name: 'BANKR. N.D. CA',
+    color: '#60a5fa',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'cacb',
+    url: 'https://www.govinfo.gov/rss/uscourts-cacb.xml',
+    name: 'BANKR. C.D. CA',
+    color: '#93c5fd',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'cob',
+    url: 'https://www.govinfo.gov/rss/uscourts-cob.xml',
+    name: 'BANKR. D. CO',
+    color: '#2563eb',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'dcb',
+    url: 'https://www.govinfo.gov/rss/uscourts-dcb.xml',
+    name: 'BANKR. D. DC',
+    color: '#1d4ed8',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ctb',
+    url: 'https://www.govinfo.gov/rss/uscourts-ctb.xml',
+    name: 'BANKR. D. CT',
+    color: '#1e40af',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'deb',
+    url: 'https://www.govinfo.gov/rss/uscourts-deb.xml',
+    name: 'BANKR. D. DE',
+    color: '#0ea5e9',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'flsb',
+    url: 'https://www.govinfo.gov/rss/uscourts-flsb.xml',
+    name: 'BANKR. S.D. FL',
+    color: '#38bdf8',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'flmb',
+    url: 'https://www.govinfo.gov/rss/uscourts-flmb.xml',
+    name: 'BANKR. M.D. FL',
+    color: '#7dd3fc',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ganb',
+    url: 'https://www.govinfo.gov/rss/uscourts-ganb.xml',
+    name: 'BANKR. N.D. GA',
+    color: '#0284c7',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'gamb',
+    url: 'https://www.govinfo.gov/rss/uscourts-gamb.xml',
+    name: 'BANKR. M.D. GA',
+    color: '#0369a1',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'hib',
+    url: 'https://www.govinfo.gov/rss/uscourts-hib.xml',
+    name: 'BANKR. D. HI',
+    color: '#075985',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ilnb',
+    url: 'https://www.govinfo.gov/rss/uscourts-ilnb.xml',
+    name: 'BANKR. N.D. IL',
+    color: '#06b6d4',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ilsb',
+    url: 'https://www.govinfo.gov/rss/uscourts-ilsb.xml',
+    name: 'BANKR. S.D. IL',
+    color: '#22d3ee',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ilcb',
+    url: 'https://www.govinfo.gov/rss/uscourts-ilcb.xml',
+    name: 'BANKR. C.D. IL',
+    color: '#67e8f9',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'insb',
+    url: 'https://www.govinfo.gov/rss/uscourts-insb.xml',
+    name: 'BANKR. S.D. IN',
+    color: '#0891b2',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ianb',
+    url: 'https://www.govinfo.gov/rss/uscourts-ianb.xml',
+    name: 'BANKR. N.D. IA',
+    color: '#0e7490',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'kyeb',
+    url: 'https://www.govinfo.gov/rss/uscourts-kyeb.xml',
+    name: 'BANKR. E.D. KY',
+    color: '#155e75',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'kywb',
+    url: 'https://www.govinfo.gov/rss/uscourts-kywb.xml',
+    name: 'BANKR. W.D. KY',
+    color: '#14b8a6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'laeb',
+    url: 'https://www.govinfo.gov/rss/uscourts-laeb.xml',
+    name: 'BANKR. E.D. LA',
+    color: '#2dd4bf',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'lawb',
+    url: 'https://www.govinfo.gov/rss/uscourts-lawb.xml',
+    name: 'BANKR. W.D. LA',
+    color: '#5eead4',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'lamb',
+    url: 'https://www.govinfo.gov/rss/uscourts-lamb.xml',
+    name: 'BANKR. M.D. LA',
+    color: '#0d9488',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'meb',
+    url: 'https://www.govinfo.gov/rss/uscourts-meb.xml',
+    name: 'BANKR. D. ME',
+    color: '#0f766e',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mdb',
+    url: 'https://www.govinfo.gov/rss/uscourts-mdb.xml',
+    name: 'BANKR. D. MD',
+    color: '#115e59',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mab',
+    url: 'https://www.govinfo.gov/rss/uscourts-mab.xml',
+    name: 'BANKR. D. MA',
+    color: '#10b981',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'miwb',
+    url: 'https://www.govinfo.gov/rss/uscourts-miwb.xml',
+    name: 'BANKR. W.D. MI',
+    color: '#34d399',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mnb',
+    url: 'https://www.govinfo.gov/rss/uscourts-mnb.xml',
+    name: 'BANKR. D. MN',
+    color: '#6ee7b7',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'msnb',
+    url: 'https://www.govinfo.gov/rss/uscourts-msnb.xml',
+    name: 'BANKR. N.D. MS',
+    color: '#059669',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'moeb',
+    url: 'https://www.govinfo.gov/rss/uscourts-moeb.xml',
+    name: 'BANKR. E.D. MO',
+    color: '#047857',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mowb',
+    url: 'https://www.govinfo.gov/rss/uscourts-mowb.xml',
+    name: 'BANKR. W.D. MO',
+    color: '#065f46',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'mtb',
+    url: 'https://www.govinfo.gov/rss/uscourts-mtb.xml',
+    name: 'BANKR. D. MT',
+    color: '#84cc16',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'neb',
+    url: 'https://www.govinfo.gov/rss/uscourts-neb.xml',
+    name: 'BANKR. D. NE',
+    color: '#a3e635',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nvb',
+    url: 'https://www.govinfo.gov/rss/uscourts-nvb.xml',
+    name: 'BANKR. D. NV',
+    color: '#bef264',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nhb',
+    url: 'https://www.govinfo.gov/rss/uscourts-nhb.xml',
+    name: 'BANKR. D. NH',
+    color: '#65a30d',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'njb',
+    url: 'https://www.govinfo.gov/rss/uscourts-njb.xml',
+    name: 'BANKR. D. NJ',
+    color: '#4d7c0f',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nmb',
+    url: 'https://www.govinfo.gov/rss/uscourts-nmb.xml',
+    name: 'BANKR. D. NM',
+    color: '#3f6212',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nyeb',
+    url: 'https://www.govinfo.gov/rss/uscourts-nyeb.xml',
+    name: 'BANKR. E.D. NY',
+    color: '#eab308',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nynb',
+    url: 'https://www.govinfo.gov/rss/uscourts-nynb.xml',
+    name: 'BANKR. N.D. NY',
+    color: '#facc15',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nysb',
+    url: 'https://www.govinfo.gov/rss/uscourts-nysb.xml',
+    name: 'BANKR. S.D. NY',
+    color: '#fde047',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nywb',
+    url: 'https://www.govinfo.gov/rss/uscourts-nywb.xml',
+    name: 'BANKR. W.D. NY',
+    color: '#ca8a04',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'nceb',
+    url: 'https://www.govinfo.gov/rss/uscourts-nceb.xml',
+    name: 'BANKR. E.D. NC',
+    color: '#a16207',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ncwb',
+    url: 'https://www.govinfo.gov/rss/uscourts-ncwb.xml',
+    name: 'BANKR. W.D. NC',
+    color: '#854d0e',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ndb',
+    url: 'https://www.govinfo.gov/rss/uscourts-ndb.xml',
+    name: 'BANKR. D. ND',
+    color: '#f59e0b',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ohnb',
+    url: 'https://www.govinfo.gov/rss/uscourts-ohnb.xml',
+    name: 'BANKR. N.D. OH',
+    color: '#fbbf24',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'ohsb',
+    url: 'https://www.govinfo.gov/rss/uscourts-ohsb.xml',
+    name: 'BANKR. S.D. OH',
+    color: '#fcd34d',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'okeb',
+    url: 'https://www.govinfo.gov/rss/uscourts-okeb.xml',
+    name: 'BANKR. E.D. OK',
+    color: '#d97706',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'oknb',
+    url: 'https://www.govinfo.gov/rss/uscourts-oknb.xml',
+    name: 'BANKR. N.D. OK',
+    color: '#b45309',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'okwb',
+    url: 'https://www.govinfo.gov/rss/uscourts-okwb.xml',
+    name: 'BANKR. W.D. OK',
+    color: '#92400e',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'orb',
+    url: 'https://www.govinfo.gov/rss/uscourts-orb.xml',
+    name: 'BANKR. D. OR',
+    color: '#f97316',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'paeb',
+    url: 'https://www.govinfo.gov/rss/uscourts-paeb.xml',
+    name: 'BANKR. E.D. PA',
+    color: '#fb923c',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'pamb',
+    url: 'https://www.govinfo.gov/rss/uscourts-pamb.xml',
+    name: 'BANKR. M.D. PA',
+    color: '#fdba74',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'pawb',
+    url: 'https://www.govinfo.gov/rss/uscourts-pawb.xml',
+    name: 'BANKR. W.D. PA',
+    color: '#ea580c',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'prb',
+    url: 'https://www.govinfo.gov/rss/uscourts-prb.xml',
+    name: 'BANKR. D. PR',
+    color: '#c2410c',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'rib',
+    url: 'https://www.govinfo.gov/rss/uscourts-rib.xml',
+    name: 'BANKR. D. RI',
+    color: '#9a3412',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'scb',
+    url: 'https://www.govinfo.gov/rss/uscourts-scb.xml',
+    name: 'BANKR. D. SC',
+    color: '#ef4444',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'sdb',
+    url: 'https://www.govinfo.gov/rss/uscourts-sdb.xml',
+    name: 'BANKR. D. SD',
+    color: '#f87171',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'tneb',
+    url: 'https://www.govinfo.gov/rss/uscourts-tneb.xml',
+    name: 'BANKR. E.D. TN',
+    color: '#fca5a5',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'tnmb',
+    url: 'https://www.govinfo.gov/rss/uscourts-tnmb.xml',
+    name: 'BANKR. M.D. TN',
+    color: '#dc2626',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'txsb',
+    url: 'https://www.govinfo.gov/rss/uscourts-txsb.xml',
+    name: 'BANKR. S.D. TX',
+    color: '#b91c1c',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'txwb',
+    url: 'https://www.govinfo.gov/rss/uscourts-txwb.xml',
+    name: 'BANKR. W.D. TX',
+    color: '#991b1b',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'vawb',
+    url: 'https://www.govinfo.gov/rss/uscourts-vawb.xml',
+    name: 'BANKR. W.D. VA',
+    color: '#ec4899',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'vib',
+    url: 'https://www.govinfo.gov/rss/uscourts-vib.xml',
+    name: 'BANKR. D. VI',
+    color: '#f472b6',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'waeb',
+    url: 'https://www.govinfo.gov/rss/uscourts-waeb.xml',
+    name: 'BANKR. E.D. WA',
+    color: '#f9a8d4',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'wawb',
+    url: 'https://www.govinfo.gov/rss/uscourts-wawb.xml',
+    name: 'BANKR. W.D. WA',
+    color: '#db2777',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'wvnb',
+    url: 'https://www.govinfo.gov/rss/uscourts-wvnb.xml',
+    name: 'BANKR. N.D. WV',
+    color: '#be185d',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'wieb',
+    url: 'https://www.govinfo.gov/rss/uscourts-wieb.xml',
+    name: 'BANKR. E.D. WI',
+    color: '#9d174d',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'wiwb',
+    url: 'https://www.govinfo.gov/rss/uscourts-wiwb.xml',
+    name: 'BANKR. W.D. WI',
+    color: '#a855f7',
+    category: 'JUDICIAL'
+  },
+  {
+    id: 'wyb',
+    url: 'https://www.govinfo.gov/rss/uscourts-wyb.xml',
+    name: 'BANKR. D. WY',
+    color: '#c084fc',
+    category: 'JUDICIAL'
+  },
 
   // Executive Feeds
   {
@@ -706,6 +2218,20 @@ export const FEEDS: FeedConfig[] = [
     url: 'https://www.govinfo.gov/rss/ppp.xml',
     name: 'PRESIDENTIAL PAPERS',
     color: '#fbbf24',
+    category: 'EXECUTIVE'
+  },
+  {
+    id: 'wh-actions',
+    url: 'https://www.whitehouse.gov/presidential-actions/feed/',
+    name: 'PRESIDENTIAL ACTIONS',
+    color: '#3b82f6',
+    category: 'EXECUTIVE'
+  },
+  {
+    id: 'presidential-docs',
+    url: 'https://www.govinfo.gov/rss/dcpd.xml',
+    name: 'PRESIDENTIAL DOCUMENTS',
+    color: '#a855f7',
     category: 'EXECUTIVE'
   },
 
@@ -2906,33 +4432,173 @@ export const FEEDS: FeedConfig[] = [
     category: 'NEPAL'
   },
 
-  // Philippines Feeds
-  {
-    id: 'phl-bsp',
-    url: 'https://www.bsp.gov.ph/rss/news',
-    name: 'BSP (CENTRAL BANK)',
-    color: '#0038a8',
-    category: 'PHILIPPINES'
-  },
-  {
-    id: 'phl-pna',
-    url: 'https://www.pna.gov.ph/rss',
-    name: 'PNA NEWS',
-    color: '#fcd116',
-    category: 'PHILIPPINES'
-  },
-  {
-    id: 'phl-inquirer',
-    url: 'https://www.inquirer.net/feed',
-    name: 'INQUIRER',
-    color: '#003366',
-    category: 'PHILIPPINES'
-  },
+  // Philippines News Feeds
   {
     id: 'phl-rappler',
     url: 'https://www.rappler.com/feed/',
     name: 'RAPPLER',
     color: '#ef4444',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-philstar',
+    url: 'https://www.philstar.com/rss/headlines',
+    name: 'PHIL STAR',
+    color: '#0038a8',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-businessworld',
+    url: 'https://www.bworldonline.com/feed/',
+    name: 'BUSINESSWORLD',
+    color: '#1e40af',
+    category: 'PHILIPPINES'
+  },
+  // Philippines Regional/Government Feeds
+  {
+    id: 'phl-usgs-quakes',
+    url: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.atom',
+    name: 'PH EARTHQUAKES (USGS)',
+    color: '#dc2626',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-quezon-city',
+    url: 'https://quezoncity.gov.ph/feed/',
+    name: 'QUEZON CITY GOV',
+    color: '#0038a8',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-qc-advisories',
+    url: 'https://quezoncity.gov.ph/category/advisories/feed/',
+    name: 'QC ADVISORIES',
+    color: '#1d4ed8',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-cebu-provincial',
+    url: 'https://www.cebu.gov.ph/category/news/feed/',
+    name: 'CEBU PROVINCIAL GOV',
+    color: '#fcd116',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-freeman-cebu',
+    url: 'https://www.philstar.com/rss/the-freeman',
+    name: 'THE FREEMAN (CEBU)',
+    color: '#0038a8',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-palawan-news',
+    url: 'https://palawan-news.com/feed/',
+    name: 'PALAWAN NEWS',
+    color: '#22c55e',
+    category: 'PHILIPPINES'
+  },
+  // Philippines Health/Medical Feeds
+  {
+    id: 'phl-pgh-hospital',
+    url: 'https://pgh.gov.ph/feed/',
+    name: 'PH GENERAL HOSPITAL',
+    color: '#059669',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-philstar-health',
+    url: 'https://www.philstar.com/rss/lifestyle/health-and-family',
+    name: 'PHILSTAR HEALTH',
+    color: '#0891b2',
+    category: 'PHILIPPINES'
+  },
+  // Philippines News - National
+  {
+    id: 'phl-gma-news',
+    url: 'https://data.gmanetwork.com/gno/rss/news/feed.xml',
+    name: 'GMA NEWS',
+    color: '#f59e0b',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-interaksyon',
+    url: 'https://interaksyon.philstar.com/feed/',
+    name: 'INTERAKSYON',
+    color: '#6366f1',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-ptv-news',
+    url: 'https://ptvnews.ph/feed/',
+    name: 'PTV NEWS',
+    color: '#0038a8',
+    category: 'PHILIPPINES'
+  },
+  // Philippines Business/Finance
+  {
+    id: 'phl-philstar-business',
+    url: 'https://www.philstar.com/rss/business',
+    name: 'PHILSTAR BUSINESS',
+    color: '#14b8a6',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-bilyonaryo',
+    url: 'https://bilyonaryo.com/feed/',
+    name: 'BILYONARYO',
+    color: '#eab308',
+    category: 'PHILIPPINES'
+  },
+  // Philippines Regional
+  {
+    id: 'phl-panay-news',
+    url: 'https://www.panaynews.net/feed/',
+    name: 'PANAY NEWS',
+    color: '#22c55e',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-mindanao-times',
+    url: 'https://mindanaotimes.com.ph/feed/',
+    name: 'MINDANAO TIMES',
+    color: '#dc2626',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-davao-today',
+    url: 'https://davaotoday.com/feed/',
+    name: 'DAVAO TODAY',
+    color: '#ea580c',
+    category: 'PHILIPPINES'
+  },
+  // Philippines Sports
+  {
+    id: 'phl-tiebreaker-times',
+    url: 'https://tiebreakertimes.com.ph/feed/',
+    name: 'TIEBREAKER TIMES',
+    color: '#3b82f6',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-philstar-sports',
+    url: 'https://www.philstar.com/rss/sports',
+    name: 'PHILSTAR SPORTS',
+    color: '#10b981',
+    category: 'PHILIPPINES'
+  },
+  // Philippines Tech
+  {
+    id: 'phl-yugatech',
+    url: 'https://www.yugatech.com/feed/',
+    name: 'YUGATECH',
+    color: '#8b5cf6',
+    category: 'PHILIPPINES'
+  },
+  {
+    id: 'phl-gadgetmatch',
+    url: 'https://www.gadgetmatch.com/feed/',
+    name: 'GADGETMATCH',
+    color: '#ec4899',
     category: 'PHILIPPINES'
   },
 

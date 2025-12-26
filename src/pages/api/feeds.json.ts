@@ -183,11 +183,62 @@ function parseRSSContent(contents: string, feedName: string, feedColor: string):
   return items;
 }
 
+// Check if a feed URL is an internal API endpoint
+function isInternalApiUrl(url: string): boolean {
+  return url.startsWith('/api/') || url.startsWith('./api/');
+}
+
+// Fetch items from internal API endpoint (like EDIS)
+async function fetchInternalApiFeed(
+  config: FeedConfig
+): Promise<{ feedId: string; items: RSSItem[]; error: boolean; errorMsg?: string }> {
+  try {
+    // Use full URL for internal API calls
+    const response = await fetch(new URL(config.url, 'https://stacknews.org').href, {
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (!response.ok) {
+      return { feedId: config.id, items: [], error: true, errorMsg: `HTTP ${response.status}` };
+    }
+
+    const data = await response.json();
+
+    // API feeds return items in a specific format
+    if (data.items && Array.isArray(data.items)) {
+      const items: RSSItem[] = data.items.map((item: any) => ({
+        title: item.title || 'Untitled',
+        link: item.link || '',
+        pubDate: item.pubDate || new Date().toISOString(),
+        description: item.description || '',
+        guid: item.id || item.link || Math.random().toString(),
+        author: item.sourceName || config.name,
+        thumbnail: '',
+        content: item.description || '',
+        enclosure: {},
+        categories: [item.category || config.category],
+        sourceName: config.name,
+        color: config.color
+      }));
+      return { feedId: config.id, items, error: false };
+    }
+
+    return { feedId: config.id, items: [], error: true, errorMsg: 'Invalid API response format' };
+  } catch (error: any) {
+    return { feedId: config.id, items: [], error: true, errorMsg: error?.message || 'Unknown error' };
+  }
+}
+
 // Fetch single feed with retry logic
 async function fetchSingleFeed(
   config: FeedConfig,
   locals?: any
 ): Promise<{ feedId: string; items: RSSItem[]; error: boolean; errorMsg?: string }> {
+  // Handle internal API feeds differently
+  if (isInternalApiUrl(config.url)) {
+    return fetchInternalApiFeed(config);
+  }
+
   const kv = getKV(locals);
   let lastError = '';
   const metaKey = `feedmeta:${config.id}`;

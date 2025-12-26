@@ -42,7 +42,7 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600, stale-if-error=86400',
+          'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600, stale-if-error=86400',
           'X-Cache': 'MISS'
         }
       }

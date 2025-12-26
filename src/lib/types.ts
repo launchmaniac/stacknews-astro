@@ -191,10 +191,22 @@ export interface CentralBankRate {
 
 // JSON API Types (new)
 
+// Debt Growth Rate for animated counter
+export interface DebtGrowthRate {
+  dailyAverage: number;      // Average daily increase in dollars
+  perSecond: number;         // Rate per second for animation
+  periodStart: string;       // Start date of calculation period
+  periodEnd: string;         // End date (most recent)
+  totalGrowth: number;       // Total growth over period
+  daysInPeriod: number;      // Actual days used in calculation
+}
+
 // Treasury Fiscal Data (Debt, Avg Interest Rates, Cash)
 export interface TreasuryFiscalSnapshot {
   debt: number; // latest total debt
+  debtTimestamp?: string; // timestamp when debt value was recorded
   debtHistory: { date: string; value: number }[];
+  debtGrowthRate?: DebtGrowthRate; // 90-day average growth rate for animation
   avgInterestRate: number; // latest average interest rate
   rateHistory: { date: string; value: number }[];
   cash: number; // latest operating cash balance

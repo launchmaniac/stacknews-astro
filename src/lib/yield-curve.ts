@@ -143,8 +143,13 @@ export async function fetchYieldCurve(
     spread_10y2y: spreadMap.get(date)
   }));
 
+  // Filter out points that have no actual yield data (e.g., holidays where only spread is available)
+  const validPoints = points.filter(p =>
+    p.bc_2year !== undefined || p.bc_10year !== undefined
+  );
+
   // Return in chronological order (oldest first) for sparklines
-  return points.reverse();
+  return validPoints.reverse();
 }
 
 // Get latest yield curve snapshot (single day)

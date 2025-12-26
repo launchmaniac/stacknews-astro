@@ -9,12 +9,14 @@ import Sidebar from '../components/astro/Sidebar.astro';
 // React Islands (client-side data loading)
 import Clock from '../components/react/Clock.tsx';
 import SearchBar from '../components/react/SearchBar.tsx';
+import HeroMetrics from '../components/react/HeroMetrics.tsx';
 import TreasuryPanel from '../components/react/TreasuryPanel.tsx';
 import LaborPanel from '../components/react/LaborPanel.tsx';
 import MarketPanel from '../components/react/MarketPanel.tsx';
 import CryptoPanel from '../components/react/CryptoPanel.tsx';
 import CommoditiesPanel from '../components/react/CommoditiesPanel.tsx';
 import YieldCurvePanel from '../components/react/YieldCurvePanel.tsx';
+import StateUnemploymentPanel from '../components/react/StateUnemploymentPanel.tsx';
 import FeedLoader from '../components/react/FeedLoader.tsx';
 import LiveWire from '../components/react/LiveWire.tsx';
 
@@ -40,10 +42,13 @@ const category = url.searchParams.get('category') || 'ALL';
     <!-- Stock Ticker Bar -->
         <div class="flex-none bg-[#020617] border-b border-white/5 z-40 h-9 flex items-center px-4"></div>
 
+    <!-- Hero Metrics Bar (8 Key Economic Indicators) - Only on Overview page -->
+    {category === 'ALL' && <HeroMetrics client:load />}
+
     <div class="flex-1 flex overflow-hidden">
 
       <!-- Sidebar (Static) -->
-      <Sidebar activeCategory={category} debtValue={0} />
+      <Sidebar activeCategory={category} />
 
       <!-- Main Content -->
       <main class="flex-1 flex flex-col min-w-0 bg-gradient-to-b from-transparent to-black/40 relative">
@@ -57,19 +62,26 @@ const category = url.searchParams.get('category') || 'ALL';
 
         <div class="flex-1 overflow-y-auto p-6 scrollbar-thin">
 
-          <!-- Treasury Hero Row (React Island) -->
-          <TreasuryPanel client:load />
+          {category === 'ALL' && (
+            <>
+              <!-- Treasury Hero Row (React Island) -->
+              <TreasuryPanel client:load />
 
-          <!-- Labor & Employment Panel (React Island - BLS Data) -->
-          <LaborPanel client:load />
+              <!-- Labor & Employment Panel (React Island - BLS Data) -->
+              <LaborPanel client:load />
 
-          <!-- Data Windows Section -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <MarketPanel client:load />
-            <YieldCurvePanel client:load />
-            <CryptoPanel client:load />
-            <CommoditiesPanel client:load />
-          </div>
+              <!-- State Unemployment Panel (React Island - All 50 States + DC + Territories) -->
+              <StateUnemploymentPanel client:load />
+
+              <!-- Data Windows Section -->
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <MarketPanel client:load />
+                <YieldCurvePanel client:load />
+                <CryptoPanel client:load />
+                <CommoditiesPanel client:load />
+              </div>
+            </>
+          )}
 
           <!-- Feed Grid (React Island with client-side loading) -->
           <FeedLoader

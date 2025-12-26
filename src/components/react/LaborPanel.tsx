@@ -22,7 +22,7 @@ interface BLSResponse {
   timestamp: string;
 }
 
-function StatCard({ label, value, subValue, trend, change, color, footnote }: {
+function StatCard({ label, value, subValue, trend, change, color, footnote, tooltip }: {
   label: string;
   value: string;
   subValue?: string;
@@ -30,11 +30,12 @@ function StatCard({ label, value, subValue, trend, change, color, footnote }: {
   change?: number;
   color?: string;
   footnote?: string;
+  tooltip?: string;
 }) {
   const accentColor = color || '#22d3ee';
 
   return (
-    <div className="glass-panel p-3 rounded-lg relative overflow-hidden group font-mono">
+    <div className="glass-panel p-3 rounded-lg relative overflow-hidden group font-mono" title={tooltip || label}>
       <div className="relative z-10">
         <div className="flex items-center gap-1.5 mb-1">
           <span className="w-0.5 h-3 rounded-full" style={{ backgroundColor: accentColor }} />
@@ -76,11 +77,46 @@ function StatCard({ label, value, subValue, trend, change, color, footnote }: {
   );
 }
 
-function SectionHeader({ title, color }: { title: string; color: string }) {
+// Tooltips for BLS metrics by name
+const BLS_TOOLTIPS: Record<string, string> = {
+  // Labor Market
+  'Unemployment Rate': 'Percentage of labor force without jobs but actively seeking work (U-3)',
+  'Civilian Labor Force': 'Total employed plus unemployed persons actively seeking work (thousands)',
+  'Employment Level': 'Total number of people currently employed (thousands)',
+  'Unemployment Level': 'Total unemployed persons actively seeking work (thousands)',
+  'Nonfarm Payrolls': 'Total employees on business payrolls excluding farm workers (thousands)',
+  'Avg Hourly Earnings': 'Average hourly wage for private sector workers',
+  'Private Sector Jobs': 'Total employment in private businesses (thousands)',
+  'Goods-Producing Jobs': 'Employment in manufacturing, construction, mining (thousands)',
+
+  // JOLTS
+  'Job Openings Rate': 'Unfilled positions as percentage of total employment plus openings',
+  'Quits Rate': 'Workers voluntarily leaving jobs - higher indicates worker confidence',
+  'Hires Rate': 'Rate of new hires as percentage of employment',
+  'Retail Trade Jobs': 'Employment in retail sector (thousands)',
+
+  // Inflation (CPI)
+  'CPI All Items': 'Consumer Price Index - overall inflation measure for all goods/services',
+  'CPI Core': 'CPI excluding volatile food and energy prices - underlying inflation',
+  'Import Price Index': 'Price changes for goods imported into the US',
+  'Export Price Index': 'Price changes for goods exported from the US',
+
+  // PPI
+  'PPI All Commodities': 'Producer prices for all commodities at wholesale level',
+  'PPI Energy': 'Wholesale energy prices before retail markup',
+  'PPI Food': 'Wholesale food prices before retail markup',
+
+  // Productivity
+  'Nonfarm Productivity': 'Output per hour worked in the nonfarm business sector',
+  'Unit Labor Costs': 'Labor cost per unit of output - wage pressure indicator',
+  'ECI Wages': 'Employment Cost Index - comprehensive measure of labor costs'
+};
+
+function SectionHeader({ title, color, tooltip }: { title: string; color: string; tooltip?: string }) {
   return (
     <div className="flex items-center gap-2 mb-2 mt-4 first:mt-0">
       <div className="w-1 h-4 rounded-full" style={{ backgroundColor: color }} />
-      <h3 className="text-xs font-medium uppercase tracking-wider text-gray-400">{title}</h3>
+      <h3 className="text-xs font-medium uppercase tracking-wider text-gray-400" title={tooltip}>{title}</h3>
       <div className="flex-1 h-px bg-gray-800" />
     </div>
   );
@@ -170,7 +206,7 @@ export default function LaborPanel() {
   return (
     <div className="mb-6 animate-fade-in">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-gray-300 flex items-center gap-2">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-gray-300 flex items-center gap-2" title="Bureau of Labor Statistics data on employment, inflation, and productivity">
           <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
@@ -184,7 +220,7 @@ export default function LaborPanel() {
       {/* Labor Market */}
       {grouped.labor && grouped.labor.length > 0 && (
         <>
-          <SectionHeader title="Labor Market" color="#22d3ee" />
+          <SectionHeader title="Labor Market" color="#22d3ee" tooltip="Employment, unemployment, and labor force participation rates" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {grouped.labor.slice(0, 4).map((point) => (
               <StatCard
@@ -194,6 +230,7 @@ export default function LaborPanel() {
                 change={point.change}
                 color={getColor(point.category)}
                 footnote={point.footnote}
+                tooltip={BLS_TOOLTIPS[point.name]}
               />
             ))}
           </div>
@@ -203,7 +240,7 @@ export default function LaborPanel() {
       {/* JOLTS */}
       {grouped.jolts && grouped.jolts.length > 0 && (
         <>
-          <SectionHeader title="Job Openings (JOLTS)" color="#a78bfa" />
+          <SectionHeader title="Job Openings (JOLTS)" color="#a78bfa" tooltip="Job Openings and Labor Turnover Survey - tracks open positions, hires, and quits" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {grouped.jolts.map((point) => (
               <StatCard
@@ -213,6 +250,7 @@ export default function LaborPanel() {
                 change={point.change}
                 color={getColor(point.category)}
                 footnote={point.footnote}
+                tooltip={BLS_TOOLTIPS[point.name]}
               />
             ))}
           </div>
@@ -222,7 +260,7 @@ export default function LaborPanel() {
       {/* Inflation */}
       {grouped.inflation && grouped.inflation.length > 0 && (
         <>
-          <SectionHeader title="Inflation (CPI)" color="#f87171" />
+          <SectionHeader title="Inflation (CPI)" color="#f87171" tooltip="Consumer Price Index - measures price changes in a basket of consumer goods and services" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {grouped.inflation.map((point) => (
               <StatCard
@@ -233,6 +271,7 @@ export default function LaborPanel() {
                 color={getColor(point.category)}
                 subValue={point.seriesId.includes('CUUR') ? 'All Urban' : undefined}
                 footnote={point.footnote}
+                tooltip={BLS_TOOLTIPS[point.name]}
               />
             ))}
           </div>
@@ -242,7 +281,7 @@ export default function LaborPanel() {
       {/* Producer Prices */}
       {grouped.ppi && grouped.ppi.length > 0 && (
         <>
-          <SectionHeader title="Producer Prices (PPI)" color="#fb923c" />
+          <SectionHeader title="Producer Prices (PPI)" color="#fb923c" tooltip="Producer Price Index - wholesale-level inflation before reaching consumers" />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {grouped.ppi.map((point) => (
               <StatCard
@@ -252,6 +291,7 @@ export default function LaborPanel() {
                 change={point.change}
                 color={getColor(point.category)}
                 footnote={point.footnote}
+                tooltip={BLS_TOOLTIPS[point.name]}
               />
             ))}
           </div>
@@ -261,7 +301,7 @@ export default function LaborPanel() {
       {/* Productivity */}
       {grouped.productivity && grouped.productivity.length > 0 && (
         <>
-          <SectionHeader title="Productivity" color="#4ade80" />
+          <SectionHeader title="Productivity" color="#4ade80" tooltip="Output per hour of work - measures economic efficiency and worker output" />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {grouped.productivity.map((point) => (
               <StatCard
@@ -272,30 +312,13 @@ export default function LaborPanel() {
                 color={getColor(point.category)}
                 subValue="Quarterly"
                 footnote={point.footnote}
+                tooltip={BLS_TOOLTIPS[point.name]}
               />
             ))}
           </div>
         </>
       )}
 
-      {/* State Unemployment */}
-      {grouped.states && grouped.states.length > 0 && (
-        <>
-          <SectionHeader title="State Unemployment" color="#60a5fa" />
-          <div className="grid grid-cols-3 gap-2">
-            {grouped.states.map((point) => (
-              <StatCard
-                key={point.seriesId}
-                label={point.name.replace(' Unemployment', '')}
-                value={formatValue(point)}
-                change={point.change}
-                color={getColor(point.category)}
-                footnote={point.footnote}
-              />
-            ))}
-          </div>
-        </>
-      )}
     </div>
   );
 }

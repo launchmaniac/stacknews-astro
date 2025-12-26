@@ -34,6 +34,12 @@ function formatPrice(price: number): string {
   }).format(price);
 }
 
+const CRYPTO_TOOLTIPS: Record<string, string> = {
+  'BTC': 'Bitcoin - largest cryptocurrency by market cap, digital gold',
+  'ETH': 'Ethereum - smart contract platform, second largest crypto',
+  'SOL': 'Solana - high-speed Layer 1 blockchain for DeFi'
+};
+
 export default function CryptoPanel() {
   const [data, setData] = useState<CryptoData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -73,7 +79,7 @@ export default function CryptoPanel() {
     <div className="glass-panel p-4 rounded-xl font-mono">
       <div className="flex items-center gap-2 mb-3">
         <span className="w-1 h-4 rounded-full bg-orange-400" />
-        <h3 className="text-[11px] font-thin uppercase tracking-widest text-cyan-400/80">
+        <h3 className="text-[11px] font-thin uppercase tracking-widest text-cyan-400/80" title="Major cryptocurrency prices and 24-hour performance">
           Crypto
         </h3>
       </div>
@@ -89,6 +95,7 @@ export default function CryptoPanel() {
             <div
               key={item.symbol}
               className="flex items-center justify-between bg-slate-900/50 rounded-lg px-3 py-2 border border-slate-700/50"
+              title={CRYPTO_TOOLTIPS[shortName] || shortName}
             >
               <div className="flex items-center gap-2">
                 <span className={`w-2 h-2 rounded-full ${

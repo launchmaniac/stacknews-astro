@@ -47,7 +47,8 @@ export const FEED_CATEGORIES = [
   'EXECUTIVE',
   'NEWS',
   'CANADA',
-  'JAPAN'
+  'JAPAN',
+  'PHILIPPINES'
 ] as const;
 
 // Feed cache operations

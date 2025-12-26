@@ -19,11 +19,23 @@ const MAX_RETRIES = 2;
 
 // FRED API endpoints (more reliable than Treasury direct API from Cloudflare)
 const FRED_SERIES = {
-  debt: 'GFDEBTN',          // Federal Debt: Total Public Debt (Quarterly, Billions)
-  fedfunds: 'DFF',          // Effective Federal Funds Rate
+  // Core Treasury
+  debt: 'GFDEBTN',          // Federal Debt: Total Public Debt (Quarterly, Millions)
+  cash: 'WDTGAL',           // Treasury General Account - Wednesday Level (Weekly, Millions)
+  fedfunds: 'DFF',          // Effective Federal Funds Rate (Daily)
   t10y2y: 'T10Y2Y',         // 10-Year minus 2-Year Treasury Spread
   dgs10: 'DGS10',           // 10-Year Treasury Constant Maturity Rate
   dgs2: 'DGS2',             // 2-Year Treasury Constant Maturity Rate
+
+  // Macro Indicators (Full Economic Suite)
+  mortgage30: 'MORTGAGE30US',  // 30-Year Fixed Mortgage Rate (Weekly)
+  consumerSent: 'UMCSENT',     // Consumer Sentiment Index (Monthly)
+  housingStarts: 'HOUST',      // Housing Starts (Monthly, Thousands)
+  indProd: 'INDPRO',           // Industrial Production Index (Monthly)
+  retailSales: 'RSAFS',        // Retail Sales (Monthly, Millions)
+  gdp: 'GDPC1',                // Real GDP (Quarterly, Billions)
+  tradeBalance: 'BOPGSTB',     // Trade Balance (Monthly, Millions)
+  m2: 'M2SL',                  // M2 Money Supply (Weekly, Billions)
 };
 
 async function fetchFredSeries(seriesId: string, apiKey: string, limit: number = 10): Promise<any> {
@@ -53,22 +65,97 @@ async function fetchFredSeries(seriesId: string, apiKey: string, limit: number =
   return [];
 }
 
-async function fetchTreasuryData(apiKey: string): Promise<TreasuryData> {
-  console.log('[Treasury] Fetching data from FRED API...');
+// Helper to parse FRED observation with change calculation
+function parseFredValue(data: any[], multiplier: number = 1): { value: number; change: number } | null {
+  if (!data || data.length === 0) return null;
+  const valid = data.filter((d: any) => d.value !== '.' && !isNaN(parseFloat(d.value)));
+  if (valid.length === 0) return null;
 
-  const [debtData, rateData, spreadData] = await Promise.all([
-    fetchFredSeries(FRED_SERIES.debt, apiKey, 20),
-    fetchFredSeries(FRED_SERIES.dgs10, apiKey, 15),
-    fetchFredSeries(FRED_SERIES.t10y2y, apiKey, 15)
+  const current = parseFloat(valid[0].value) * multiplier;
+  let change = 0;
+
+  if (valid.length > 1) {
+    const prev = parseFloat(valid[1].value) * multiplier;
+    if (prev !== 0) {
+      change = ((current - prev) / Math.abs(prev)) * 100;
+    }
+  }
+
+  return { value: current, change: Math.round(change * 100) / 100 };
+}
+
+interface MacroIndicators {
+  fedFundsRate: { value: number; change: number } | null;
+  mortgageRate: { value: number; change: number } | null;
+  consumerSentiment: { value: number; change: number } | null;
+  housingStarts: { value: number; change: number } | null;
+  industrialProduction: { value: number; change: number } | null;
+  retailSales: { value: number; change: number } | null;
+  gdp: { value: number; change: number } | null;
+  tradeBalance: { value: number; change: number } | null;
+  m2MoneySupply: { value: number; change: number } | null;
+}
+
+async function fetchMacroIndicators(apiKey: string): Promise<MacroIndicators> {
+  console.log('[Treasury] Fetching macro indicators from FRED...');
+
+  const [
+    fedFundsData,
+    mortgageData,
+    sentimentData,
+    housingData,
+    indProdData,
+    retailData,
+    gdpData,
+    tradeData,
+    m2Data
+  ] = await Promise.all([
+    fetchFredSeries(FRED_SERIES.fedfunds, apiKey, 5),
+    fetchFredSeries(FRED_SERIES.mortgage30, apiKey, 5),
+    fetchFredSeries(FRED_SERIES.consumerSent, apiKey, 3),
+    fetchFredSeries(FRED_SERIES.housingStarts, apiKey, 3),
+    fetchFredSeries(FRED_SERIES.indProd, apiKey, 3),
+    fetchFredSeries(FRED_SERIES.retailSales, apiKey, 3),
+    fetchFredSeries(FRED_SERIES.gdp, apiKey, 3),
+    fetchFredSeries(FRED_SERIES.tradeBalance, apiKey, 3),
+    fetchFredSeries(FRED_SERIES.m2, apiKey, 5)
   ]);
 
-  const result: TreasuryData = {
+  return {
+    fedFundsRate: parseFredValue(fedFundsData),
+    mortgageRate: parseFredValue(mortgageData),
+    consumerSentiment: parseFredValue(sentimentData),
+    housingStarts: parseFredValue(housingData),  // Thousands of units
+    industrialProduction: parseFredValue(indProdData),  // Index
+    retailSales: parseFredValue(retailData, 0.001),  // Convert millions to billions
+    gdp: parseFredValue(gdpData),  // Already in billions
+    tradeBalance: parseFredValue(tradeData, 0.001),  // Convert millions to billions
+    m2MoneySupply: parseFredValue(m2Data)  // Already in billions
+  };
+}
+
+async function fetchTreasuryData(apiKey: string): Promise<TreasuryData & { macro: MacroIndicators; cashHistoricalAvg?: number }> {
+  console.log('[Treasury] Fetching data from FRED API...');
+
+  // Fetch core treasury data and macro indicators in parallel
+  // Get 52 weeks of cash data for 1-year historical average
+  const [debtData, cashData, rateData, spreadData, macro] = await Promise.all([
+    fetchFredSeries(FRED_SERIES.debt, apiKey, 20),
+    fetchFredSeries(FRED_SERIES.cash, apiKey, 52),
+    fetchFredSeries(FRED_SERIES.dgs10, apiKey, 15),
+    fetchFredSeries(FRED_SERIES.t10y2y, apiKey, 15),
+    fetchMacroIndicators(apiKey)
+  ]);
+
+  const result: TreasuryData & { macro: MacroIndicators; cashHistoricalAvg?: number } = {
     debt: 0,
     debtHistory: [],
-    cash: 0,  // Not available from FRED
+    cash: 0,
     gold: 0,  // Not available from FRED
     interestRate: 0,
-    ratesHistory: []
+    ratesHistory: [],
+    macro,
+    cashHistoricalAvg: undefined
   };
 
   // Parse debt data (FRED GFDEBTN is in millions, we need actual value)
@@ -80,6 +167,20 @@ async function fetchTreasuryData(apiKey: string): Promise<TreasuryData> {
     result.debtHistory = validData
       .map((d: any) => ({ value: parseFloat(d.value) * 1000000 }))
       .reverse();
+  }
+
+  // Parse Treasury General Account (TGA) cash balance
+  // FRED WDTGAL is in millions, convert to actual dollars
+  if (cashData && cashData.length > 0) {
+    const validCash = cashData.filter((d: any) => d.value !== '.' && parseFloat(d.value) > 0);
+    if (validCash.length > 0) {
+      result.cash = parseFloat(validCash[0].value) * 1000000; // Convert millions to actual
+
+      // Calculate 52-week historical average
+      const cashValues = validCash.map((d: any) => parseFloat(d.value) * 1000000);
+      const sum = cashValues.reduce((a: number, b: number) => a + b, 0);
+      result.cashHistoricalAvg = Math.round(sum / cashValues.length);
+    }
   }
 
   // Parse 10-Year Treasury rate
@@ -94,7 +195,7 @@ async function fetchTreasuryData(apiKey: string): Promise<TreasuryData> {
       .reverse();
   }
 
-  console.log(`[Treasury] Data loaded: debt=${result.debt > 0}, rate=${result.interestRate > 0}`);
+  console.log(`[Treasury] Data loaded: debt=${result.debt > 0}, cash=${result.cash > 0}, rate=${result.interestRate > 0}, macro=${Object.keys(macro).filter(k => (macro as any)[k] !== null).length} indicators`);
 
   return result;
 }

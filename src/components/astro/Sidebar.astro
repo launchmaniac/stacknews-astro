@@ -6,14 +6,9 @@ import { CATEGORIES } from '../../lib/constants';
 
 interface Props {
   activeCategory?: string;
-  debtValue?: number;
 }
 
-const { activeCategory = 'ALL', debtValue = 0 } = Astro.props;
-
-const formattedDebt = debtValue > 0
-  ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(debtValue)
-  : '';
+const { activeCategory = 'ALL' } = Astro.props;
 
 // Icon SVG paths for each category (inline to avoid JS)
 const iconPaths: Record<string, string> = {
@@ -36,6 +31,7 @@ const iconPaths: Record<string, string> = {
   'EXECUTIVE': 'M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16',
   'NEWS': 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V9a2 2 0 012-2h2a2 2 0 012 2v9a2 2 0 01-2 2h-2z',
   'CANADA': 'M12 2C8 2 4 6 4 10c0 4 4 10 8 12 4-2 8-8 8-12 0-4-4-8-8-8z',
+  'PHILIPPINES': 'M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16l-6.4 5.2L8 14l-6-4.8h7.6L12 2z',
 };
 ---
 
@@ -43,36 +39,32 @@ const iconPaths: Record<string, string> = {
   <div class="p-2 space-y-0.5 flex-1 overflow-y-auto scrollbar-thin">
     <div class="text-[9px] font-medium text-gray-500 mb-1.5 px-2 tracking-[0.2em] uppercase">Select Frequency</div>
     {CATEGORIES.map(cat => (
-      <a
-        href={cat.id === 'ALL' ? '/' : `/?category=${cat.id}`}
-        data-category={cat.id}
-        class:list={[
-          'w-full flex items-center gap-2 px-2.5 py-1 rounded-md transition-all duration-200 group relative overflow-hidden',
-          activeCategory === cat.id
-            ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]'
-            : 'text-gray-400 hover:bg-white/5 hover:text-white border border-transparent'
-        ]}
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d={iconPaths[cat.id] || iconPaths['ALL']} />
-        </svg>
-        <span class:list={['text-[11px] tracking-wide', activeCategory === cat.id ? 'font-bold' : 'font-medium']}>
-          {cat.label}
-        </span>
-        {activeCategory === cat.id && <div class="absolute right-0 top-0 bottom-0 w-0.5 bg-cyan-500" />}
-      </a>
+      'isSection' in cat && cat.isSection ? (
+        <div class="pt-3 pb-1 px-2 first:pt-0">
+          <div class="text-[9px] font-semibold text-cyan-500/80 uppercase tracking-[0.15em] border-b border-white/10 pb-1">
+            {cat.label}
+          </div>
+        </div>
+      ) : (
+        <a
+          href={cat.id === 'ALL' ? '/' : `/?category=${cat.id}`}
+          data-category={cat.id}
+          class:list={[
+            'w-full flex items-center gap-2 px-2.5 py-1 rounded-md transition-all duration-200 group relative overflow-hidden',
+            activeCategory === cat.id
+              ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]'
+              : 'text-gray-400 hover:bg-white/5 hover:text-white border border-transparent'
+          ]}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d={iconPaths[cat.id] || iconPaths['ALL']} />
+          </svg>
+          <span class:list={['text-[11px] tracking-wide', activeCategory === cat.id ? 'font-bold' : 'font-medium']}>
+            {cat.label}
+          </span>
+          {activeCategory === cat.id && <div class="absolute right-0 top-0 bottom-0 w-0.5 bg-cyan-500" />}
+        </a>
+      )
     ))}
   </div>
-
-  <!-- National Debt Widget (render only with real data) -->
-  {formattedDebt && (
-    <div class="p-2 border-t border-white/5 flex-none">
-      <div class="bg-gradient-to-br from-red-900/20 to-black border border-red-500/30 p-2 rounded-md">
-        <div class="text-[9px] text-red-400 font-medium mb-0.5 uppercase tracking-widest">National Debt</div>
-        <div class="text-base text-white font-bold tabular-nums tracking-tighter" id="debt-display">
-          {formattedDebt}
-        </div>
-      </div>
-    </div>
-  )}
 </nav>

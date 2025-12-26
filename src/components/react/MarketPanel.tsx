@@ -29,6 +29,13 @@ function formatChange(change: number, percent: number): string {
   return `${sign}${change.toFixed(2)} (${sign}${percent.toFixed(2)}%)`;
 }
 
+const INDEX_TOOLTIPS: Record<string, string> = {
+  'S&P 500': '500 large-cap US companies - primary market indicator',
+  'DOW JONES': '30 blue-chip companies, price-weighted index',
+  'NASDAQ': 'Tech-heavy index of 3000+ stocks',
+  'VIX': 'Volatility Index - expected 30-day market volatility'
+};
+
 export default function MarketPanel() {
   const [data, setData] = useState<MarketData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -68,7 +75,7 @@ export default function MarketPanel() {
     <div className="glass-panel p-4 rounded-xl font-mono">
       <div className="flex items-center gap-2 mb-3">
         <span className="w-1 h-4 rounded-full bg-blue-400" />
-        <h3 className="text-[11px] font-thin uppercase tracking-widest text-cyan-400/80">
+        <h3 className="text-[11px] font-thin uppercase tracking-widest text-cyan-400/80" title="Major U.S. equity market indices tracking broad market performance">
           Market Indices
         </h3>
       </div>
@@ -82,6 +89,7 @@ export default function MarketPanel() {
             <div
               key={item.symbol}
               className="bg-slate-900/50 rounded-lg p-3 border border-slate-700/50"
+              title={INDEX_TOOLTIPS[item.name] || item.name}
             >
               <div className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">
                 {item.name}
