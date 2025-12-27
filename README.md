@@ -56,17 +56,26 @@ All commands are run from the root of the project:
 
 Deployed to Cloudflare Pages at stacknews.org
 
-Why bindings moved to wrangler.toml
-- Cloudflare Pages reported: "Bindings for this project are being managed through wrangler.toml." To keep deployments reproducible and avoid dashboard drift, service and KV bindings are now defined in the repo and applied during deploy.
+### Architecture Overview
 
-Current configuration (bindings)
-- File: `wrangler.toml`
-  - Service Binding: `COORDINATOR` → `stacknews-coordinator`
-  - KV Binding: `STACKNEWS_KV` → `8f9f004bf39a4e92ac3c21ebf1545d68`
-- These bindings are loaded automatically by `wrangler pages deploy`.
-- If the KV namespace is recreated, update the `id` in `wrangler.toml` before deploying.
-  - Discover the namespace id via CLI:
-    - `npx wrangler kv:namespace list | jq -r '.result[] | select(.title=="STACKNEWS_KV").id'`
+```
+Browser -> Cloudflare Edge Cache -> Cloudflare Pages (thin proxy) -> Hetzner RSS Service -> Redis -> External RSS Sources
+```
+
+**Hetzner RSS Service** (December 2025): All RSS feed fetching and caching has been moved to a dedicated Hetzner server (`rss.stacknews.launchmaniac.com`). This resolves TreasuryDirect and other government feeds that block Cloudflare IPs. Cloudflare Pages acts as a thin proxy with edge caching.
+
+### Hetzner Backend
+
+- **RSS Service:** https://rss.stacknews.launchmaniac.com
+- **Repository:** https://github.com/launchmaniac/stacknews-rss
+- **Stack:** Hono + TypeScript + Redis 7
+- **Location:** `/opt/stacknews-rss/` on Hetzner server
+- **Redis:** Shared Redis at `/opt/shared-services/` with `stacknews:` key prefix
+
+### Current Bindings (wrangler.toml)
+
+- **KV Binding:** `STACKNEWS_KV` → `8f9f004bf39a4e92ac3c21ebf1545d68` (fallback cache)
+- **Secret:** `HETZNER_API_KEY` → Bearer token for Hetzner RSS service
 
 Project names and Wrangler files
 - Pages project: defined in `wrangler.jsonc` as `stacknews-astro` (used by `wrangler pages ...`).
@@ -101,30 +110,29 @@ Project names and Wrangler files
   - The Treasury and macro endpoints read the key from `locals.runtime.env.FRED_API_KEY` at runtime. No secrets are committed in source.
 
 - Caching
-  - Feed API responses include `Cache-Control: public, s-maxage=60, stale-while-revalidate=300` to reduce origin load.
+  - Feed API responses include `Cache-Control: public, s-maxage=300, stale-while-revalidate=600, stale-if-error=86400` headers.
+  - Primary cache: Cloudflare Edge Cache (5 minutes for feeds)
+  - Secondary cache: Hetzner Redis (category-specific TTLs: 3-30 minutes)
+  - Fallback: Cloudflare KV for stale data during outages
 
-    - Durable Object coordinator (recommended)
-      - Deploy the worker in `stacknews-coordinator` (see its README) to coordinate category refresh and locking.
-      - Service Binding is configured in `wrangler.toml` (`COORDINATOR` → `stacknews-coordinator`). No public URL fallback is used.
-      - Pages Functions include `X-Stacknews-Warm` on service-binding calls to the coordinator for auth consistency.
-      - Fallback behavior: if the coordinator is unavailable, the `ALL` aggregator refreshes at least one category to avoid empty payloads.
+    - Hetzner RSS Service (primary)
+      - All RSS fetching is handled by Hetzner at `rss.stacknews.launchmaniac.com`
+      - Cloudflare Pages forwards requests with Bearer authentication
+      - Background scheduler refreshes categories every 30 seconds
+      - Redis caching with distributed locks prevents thundering herd
 
 - KV fallback (optional, recommended)
   - Create (or reuse) a KV namespace titled `STACKNEWS_KV` and set its id in `wrangler.toml`.
-  - The API will use it automatically to persist per-feed data/meta, category aggregates, and treasury data as a durable fallback.
+  - Used as fallback when Hetzner is unavailable.
   - Keys:
-    - `feedmeta:<feedId>` → `{ etag?, lastModified? }`
-    - `feeddata:<feedId>` → `RSSItem[]`
     - `categorydata:<category>` → `{ feeds, stream?, ts }`
     - `treasury:v1` → `{ data, ts }`
-
-- Warm requests protection
-  - Set `WARM_SECRET` in both the coordinator worker and the Pages project. The coordinator passes `X-Stacknews-Warm` and `warm=true` to protected warm-up endpoints.
 
 Verification
 - After deploy, verify endpoints and caching:
   - `curl -sI 'https://stacknews.org/api/treasury/yield-curve.json?days=60' | egrep -i 'http/|cache-control|x-cache'`
-  - `curl -s https://stacknews.org/api/feeds.json?category=ALL | jq '._cache'`
+  - `curl -sI 'https://stacknews.org/api/feeds.json?category=TREASURY' | egrep -i 'x-cache|x-upstream'`
+  - Expected: `x-upstream: hetzner` confirms Hetzner backend is active
 - Verify security headers are present:
   - `curl -sI https://stacknews.org | egrep -i 'strict|content-security|referrer|permissions|x-frame|nosniff'`
 
@@ -144,16 +152,16 @@ Verification
 
 - Bindings (source-controlled)
   - Edit `wrangler.toml` for bindings:
-    - Service: `[[services]]` with `binding = "COORDINATOR"`, `service = "stacknews-coordinator"` (no environment pin; uses default).
     - KV: `[[kv_namespaces]]` with `binding = "STACKNEWS_KV"`, and `id = "<namespace_id>"`.
   - Re-deploy Pages to apply.
 
-    - Coordinator Worker (Durable Object)
-      - From `stacknews-coordinator/`:
-        - Deploy: `npx wrangler deploy`
-        - Set secrets: `npx wrangler secret put WARM_SECRET`
-        - Cron is defined in `wrangler.toml` (every 5 minutes) and warms caches against `TARGET_ORIGIN`.
-      - Note: The coordinator lives on Cloudflare (managed/deployed separately) and is not part of this repository; keep binding set to `stacknews-coordinator`.
+    - Hetzner RSS Service (external)
+      - Repository: https://github.com/launchmaniac/stacknews-rss
+      - Server: `/opt/stacknews-rss/` on Hetzner (5.78.152.218)
+      - Deploy: `cd /opt/stacknews-rss && git pull && docker compose --env-file .env up -d --build`
+      - Logs: `docker logs stacknews-rss -f`
+      - Health: `curl https://rss.stacknews.launchmaniac.com/health`
+      - Redis: Shared at `/opt/shared-services/` with `stacknews:` key prefix
 
     - View deployments and tail logs
   - Latest production deployment (API):

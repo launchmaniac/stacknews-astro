@@ -107,19 +107,29 @@ Release Date: December 2025
 │  └─────────────┘  └──────┬──────┘  └─────────────────────────┘ │
 └──────────────────────────┼──────────────────────────────────────┘
                            │
-           ┌───────────────┼───────────────┐
-           ↓               ↓               ↓
-┌──────────────────┐ ┌──────────────┐ ┌──────────────────┐
-│  Government APIs │ │  Market APIs │ │   RSS Feeds      │
-│                  │ │              │ │                  │
-│ - Treasury Fiscal│ │ - Yahoo Fin  │ │ - White House    │
-│ - BLS (Labor)    │ │   (indices,  │ │ - Congress       │
-│ - Census         │ │    crypto,   │ │ - Federal Reserve│
-│ - USITC EDIS     │ │    commodit) │ │ - SEC/CFTC       │
-│ - Fed Reserve    │ │              │ │ - State Dept     │
-│ - Treasury Yield │ │              │ │ - DOJ/FBI        │
-└──────────────────┘ └──────────────┘ └──────────────────┘
+         ┌─────────────────┼─────────────────┐
+         ↓                 ↓                 ↓
+┌──────────────────┐ ┌──────────────┐ ┌─────────────────────────────┐
+│  Government APIs │ │  Market APIs │ │  Hetzner RSS Service        │
+│                  │ │              │ │  (rss.stacknews.launchmaniac│
+│ - Treasury Fiscal│ │ - Yahoo Fin  │ │           .com)             │
+│ - BLS (Labor)    │ │   (indices,  │ │  ┌────────────────────────┐ │
+│ - Census         │ │    crypto,   │ │  │  Hono + TypeScript     │ │
+│ - USITC EDIS     │ │    commodit) │ │  │  Redis 7 Cache         │ │
+│ - Fed Reserve    │ │              │ │  │  Background Scheduler  │ │
+│ - Treasury Yield │ │              │ │  └──────────┬─────────────┘ │
+└──────────────────┘ └──────────────┘ │             ↓               │
+                                      │  ┌────────────────────────┐ │
+                                      │  │   750+ RSS Feeds       │ │
+                                      │  │ - White House          │ │
+                                      │  │ - Congress / Fed       │ │
+                                      │  │ - Treasury (Direct)    │ │
+                                      │  │ - SEC/CFTC/State       │ │
+                                      │  └────────────────────────┘ │
+                                      └─────────────────────────────┘
 ```
+
+**Note:** RSS feeds are fetched via Hetzner (5.78.152.218) to bypass government sites that block Cloudflare IPs (e.g., TreasuryDirect). Cloudflare Pages acts as a thin proxy with Bearer token authentication.
 
 ### Data Flow
 1. **Entry Point:** Browser requests page or API endpoint
@@ -217,12 +227,14 @@ stacknews-astro/
    - **Dependencies:** cache.ts
    - **Exports:** `fetchMarketData()`
 
-4. **Feeds Module** (`/src/lib/feeds.ts`, `/src/lib/constants.ts`)
-   - **Purpose:** RSS feed aggregation from 400+ government sources
+4. **Feeds Module** (`/src/pages/api/feeds.json.ts`)
+   - **Purpose:** Thin proxy to Hetzner RSS service (750+ government feeds)
+   - **Architecture:** Cloudflare Pages forwards to Hetzner with Bearer auth
    - **Key Files:**
-     - `constants.ts` - Feed URL definitions organized by category
-     - `feeds.ts` - RSS parsing and aggregation logic
-   - **Exports:** `fetchFeeds()`, `FEED_CATEGORIES`
+     - `feeds.json.ts` - Thin proxy to Hetzner backend
+     - `constants.ts` - Feed URL definitions (copied to Hetzner service)
+   - **Backend:** https://rss.stacknews.launchmaniac.com (Hono + Redis)
+   - **Repository:** https://github.com/launchmaniac/stacknews-rss
 
 5. **EDIS Module** (`/src/lib/edis.ts`)
    - **Purpose:** USITC trade investigation documents
@@ -264,6 +276,7 @@ stacknews-astro/
 
 | Variable Name | Required? | Default | Purpose | Example |
 |---------------|-----------|---------|---------|---------|
+| `HETZNER_API_KEY` | Yes | None | Bearer token for Hetzner RSS service | `YenWzw...` |
 | `BLS_API_KEY` | Yes | None | BLS API authentication | `abc123...` |
 | `FRED_API_KEY` | No | None | Federal Reserve data (backup) | `xyz789...` |
 | `EIA_API_KEY` | No | None | Energy Information Admin | `eia123...` |
@@ -295,17 +308,22 @@ All data is:
 3. Optionally cached client-side (localStorage)
 
 ### Caching
-- **System:** Cloudflare Edge Cache + Browser Cache + localStorage
+- **System:** Cloudflare Edge Cache + Hetzner Redis + Browser Cache + localStorage
 - **What's Cached:** All API responses
 - **TTL Strategy:**
 
-| Data Type | Server Cache | Client Cache | Rationale |
-|-----------|--------------|--------------|-----------|
-| Treasury Fiscal | 30 min | 5 min (localStorage) | Updates infrequently |
-| BLS Data | 30 min | None | Monthly releases |
-| Market Data | 60 sec | None | Real-time importance |
-| RSS Feeds | 5 min | None | Frequent updates |
-| Yield Curve | 60 min | None | Daily updates |
+| Data Type | Server Cache | Client Cache | Backend | Rationale |
+|-----------|--------------|--------------|---------|-----------|
+| Treasury Fiscal | 30 min | 5 min (localStorage) | Cloudflare | Updates infrequently |
+| BLS Data | 30 min | None | Cloudflare | Monthly releases |
+| Market Data | 60 sec | None | Cloudflare | Real-time importance |
+| RSS Feeds | 5 min (edge) | None | Hetzner Redis | Frequent updates |
+| Yield Curve | 60 min | None | Cloudflare | Daily updates |
+
+**Hetzner Redis TTLs (category-specific):**
+- TREASURY, FEDERAL RESERVE: 30 min
+- NEWS, CRYPTO: 3 min
+- All others: 5 min
 
 ---
 
@@ -315,13 +333,15 @@ All data is:
 
 | Service | Purpose | Authentication | Documentation |
 |---------|---------|----------------|---------------|
+| Hetzner RSS Service | RSS feed aggregation (750+ feeds) | Bearer Token | [github.com/launchmaniac/stacknews-rss](https://github.com/launchmaniac/stacknews-rss) |
 | Treasury FiscalData | National debt, cash, rates | None (public) | [api.fiscaldata.treasury.gov](https://api.fiscaldata.treasury.gov) |
 | BLS Public Data | Labor statistics | API Key | [bls.gov/developers](https://www.bls.gov/developers/) |
 | Yahoo Finance | Market indices, crypto | None (scraping) | Unofficial |
 | GDELT | Global news events | None (public) | [gdeltproject.org](https://www.gdeltproject.org/) |
 | USITC EDIS | Trade investigations | None (public) | [edis.usitc.gov](https://edis.usitc.gov/) |
 | NASA APIs | Solar/planetary data | API Key | [api.nasa.gov](https://api.nasa.gov/) |
-| Government RSS | 400+ news feeds | None (public) | Various .gov sites |
+
+**Note:** Government RSS feeds (White House, Congress, Fed, Treasury, etc.) are now fetched by the Hetzner RSS Service to bypass Cloudflare IP blocks.
 
 ### Webhooks
 **None** - All data is pull-based via polling.
@@ -712,9 +732,16 @@ export const GET: APIRoute = async ({ request }) => {
 
 ### Version History
 
+**v0.0.2 - December 2025**
+- Changed: RSS feeds now fetched via Hetzner backend (rss.stacknews.launchmaniac.com)
+- Added: Hetzner RSS service with Redis caching and background scheduler
+- Fixed: TreasuryDirect feeds now working (Cloudflare IPs were blocked)
+- Changed: feeds.json.ts converted to thin proxy forwarding to Hetzner
+- Added: HETZNER_API_KEY secret for Bearer authentication
+
 **v0.0.1 - December 2025**
 - Added: Initial release with Treasury, BLS, Market panels
-- Added: 400+ government RSS feed aggregation
+- Added: 750+ government RSS feed aggregation
 - Added: State unemployment heat map
 - Added: Yield curve visualization
 - Added: EDIS trade investigation feeds
@@ -736,20 +763,28 @@ export const GET: APIRoute = async ({ request }) => {
 
 ### B. API Endpoints Reference
 
-| Method | Endpoint | Purpose | Cache TTL |
-|--------|----------|---------|-----------|
-| GET | `/api/treasury-fiscal.json` | Debt, cash, rates | 30 min |
-| GET | `/api/treasury/yield-curve.json` | Yield curve data | 60 min |
-| GET | `/api/bls.json` | Labor, inflation, productivity | 30 min |
-| GET | `/api/market.json` | Indices, crypto, commodities | 60 sec |
-| GET | `/api/feeds.json` | RSS feed aggregation | 5 min |
-| GET | `/api/edis.json` | USITC trade data | 30 min |
-| GET | `/api/gdelt/events.json` | Global news events | 5 min |
-| GET | `/api/gdelt/stability.json` | Country stability | 5 min |
-| GET | `/api/nasa/solar.json` | Solar weather | 30 min |
-| GET | `/api/nasa/planetary.json` | Planetary data | 60 min |
-| GET | `/api/arxiv.json` | Research papers | 30 min |
-| GET | `/api/eia.json` | Energy data | 30 min |
+| Method | Endpoint | Purpose | Cache TTL | Backend |
+|--------|----------|---------|-----------|---------|
+| GET | `/api/treasury-fiscal.json` | Debt, cash, rates | 30 min | Cloudflare |
+| GET | `/api/treasury/yield-curve.json` | Yield curve data | 60 min | Cloudflare |
+| GET | `/api/bls.json` | Labor, inflation, productivity | 30 min | Cloudflare |
+| GET | `/api/market.json` | Indices, crypto, commodities | 60 sec | Cloudflare |
+| GET | `/api/feeds.json` | RSS feed aggregation | 5 min (edge) | Hetzner |
+| GET | `/api/edis.json` | USITC trade data | 30 min | Cloudflare |
+| GET | `/api/gdelt/events.json` | Global news events | 5 min | Cloudflare |
+| GET | `/api/gdelt/stability.json` | Country stability | 5 min | Cloudflare |
+| GET | `/api/nasa/solar.json` | Solar weather | 30 min | Cloudflare |
+| GET | `/api/nasa/planetary.json` | Planetary data | 60 min | Cloudflare |
+| GET | `/api/arxiv.json` | Research papers | 30 min | Cloudflare |
+| GET | `/api/eia.json` | Energy data | 30 min | Cloudflare |
+
+**Hetzner RSS Service Endpoints** (internal):
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `rss.stacknews.launchmaniac.com/health` | Service health |
+| GET | `rss.stacknews.launchmaniac.com/api/feeds` | Category feeds |
+| GET | `rss.stacknews.launchmaniac.com/api/feeds/categories` | Available categories |
+| GET | `rss.stacknews.launchmaniac.com/api/feeds/stream` | All feeds stream |
 
 ### C. React Component Hierarchy
 ```
@@ -775,9 +810,9 @@ index.astro
 ---
 
 **Document Maintenance:**
-- Last Updated: 2025-12-26
+- Last Updated: 2025-12-27
 - Updated By: Claude Code
-- Next Review: 2026-01-26
+- Next Review: 2026-01-27
 
 ---
 

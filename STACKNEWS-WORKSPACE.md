@@ -59,7 +59,8 @@ A real-time financial and economic data aggregator that pulls from official gove
 ### Tech Stack Summary
 - **Frontend:** Astro 5 + React 18 (Islands Architecture)
 - **Styling:** Tailwind CSS 4
-- **Hosting:** Cloudflare Pages (Edge Runtime)
+- **Hosting:** Cloudflare Pages (Edge Runtime) + Hetzner RSS Backend
+- **RSS Backend:** Hetzner server with Hono + Redis 7 (rss.stacknews.launchmaniac.com)
 - **Data Sources:**
   - Treasury FiscalData API (debt, cash, interest rates)
   - BLS API (labor, inflation, productivity)
@@ -67,9 +68,9 @@ A real-time financial and economic data aggregator that pulls from official gove
   - GDELT (global news events)
   - USITC EDIS (trade investigations)
   - NASA APIs (solar/planetary data)
-  - Government RSS feeds (White House, Congress, Fed, etc.)
+  - Government RSS feeds (White House, Congress, Fed, Treasury, etc.)
 
-*(For full technical details, see stacknews.md)*
+*(For full technical details, see STACKNEWS-Codebase-Definition.md)*
 
 ---
 
@@ -88,9 +89,9 @@ A real-time financial and economic data aggregator that pulls from official gove
 
 ---
 
-## This Week: 2025-12-26
+## This Week: 2025-12-27
 
-**Week Focus:** UX Improvements - Tooltips and Performance
+**Week Focus:** Infrastructure Migration - Hetzner RSS Backend
 
 ### In Progress
 
@@ -100,6 +101,15 @@ A real-time financial and economic data aggregator that pulls from official gove
   - **Priority:** Normal
 
 ### Completed This Week
+
+- [x] **Migrate RSS Feeds to Hetzner Backend** - 2025-12-27
+  - **What Was Done:** Created dedicated stacknews-rss service on Hetzner with Hono + Redis. Cloudflare Pages now acts as thin proxy. Resolves TreasuryDirect 406 errors (Cloudflare IPs were blocked).
+  - **Outcome:** All 750+ RSS feeds now fetching through Hetzner. TreasuryDirect announced/auctioned feeds working.
+  - **Components:**
+    - New repo: https://github.com/launchmaniac/stacknews-rss
+    - Service: https://rss.stacknews.launchmaniac.com
+    - Shared Redis: `/opt/shared-services/` with `stacknews:` key prefix
+    - Thin proxy: `/src/pages/api/feeds.json.ts` forwards to Hetzner
 
 - [x] **Add Tooltips to Overview Page Metrics** - 2025-12-26
   - **What Was Done:** Added native browser tooltips to all 8 panels (HeroMetrics, Treasury, Labor, StateUnemployment, Market, YieldCurve, Crypto, Commodities) with explanatory text for each metric
@@ -140,6 +150,25 @@ A real-time financial and economic data aggregator that pulls from official gove
 ---
 
 ## Decision Log
+
+### 2025-12-27 - Move RSS Fetching to Hetzner
+
+**Context:**
+TreasuryDirect and other government feeds return 406 errors when accessed from Cloudflare IPs. Need a solution that allows fetching from a non-blocked IP.
+
+**Decision Made:** Move all RSS feed fetching and caching to Hetzner server. Cloudflare becomes a thin proxy with edge caching.
+
+**Rationale:**
+- Hetzner IP (5.78.152.218) not blocked by government sites
+- Shared Redis enables reuse for future projects (key prefixing: `stacknews:`)
+- Existing Hetzner server already hosts n8n, minimal incremental cost
+- Cloudflare edge cache still provides fast responses globally
+
+**Implementation:**
+- New service: `stacknews-rss` (Hono + TypeScript + Redis 7)
+- Thin proxy: `feeds.json.ts` forwards to Hetzner with Bearer auth
+- Background scheduler refreshes categories every 30 seconds
+- Redis keys prefixed with `stacknews:` for multi-tenant isolation
 
 ### 2025-12-26 - Native Browser Tooltips vs Custom Component
 
@@ -233,15 +262,23 @@ CLOUDFLARE_EMAIL="office@launchmaniac.com" CLOUDFLARE_API_KEY="cf43a8e4236425634
 
 ## API Endpoints
 
-| Endpoint | Description | Cache TTL |
-|----------|-------------|-----------|
-| `/api/treasury-fiscal.json` | Debt, cash, interest rates | 30 min |
-| `/api/treasury/yield-curve.json` | Treasury yield curve | 60 min |
-| `/api/bls.json` | Labor, inflation, productivity | 30 min |
-| `/api/market.json` | Indices, crypto, commodities | 60 sec |
-| `/api/feeds.json` | Government RSS aggregation | 5 min |
-| `/api/edis.json` | USITC trade investigations | 30 min |
-| `/api/gdelt/events.json` | Global news events | 5 min |
+| Endpoint | Description | Cache TTL | Backend |
+|----------|-------------|-----------|---------|
+| `/api/treasury-fiscal.json` | Debt, cash, interest rates | 30 min | Cloudflare |
+| `/api/treasury/yield-curve.json` | Treasury yield curve | 60 min | Cloudflare |
+| `/api/bls.json` | Labor, inflation, productivity | 30 min | Cloudflare |
+| `/api/market.json` | Indices, crypto, commodities | 60 sec | Cloudflare |
+| `/api/feeds.json` | Government RSS aggregation | 5 min (edge) + Redis | Hetzner |
+| `/api/edis.json` | USITC trade investigations | 30 min | Cloudflare |
+| `/api/gdelt/events.json` | Global news events | 5 min | Cloudflare |
+
+**Hetzner RSS Service Endpoints** (internal, via proxy):
+| Endpoint | Description |
+|----------|-------------|
+| `rss.stacknews.launchmaniac.com/health` | Service health check |
+| `rss.stacknews.launchmaniac.com/api/feeds` | Category feeds (requires Bearer auth) |
+| `rss.stacknews.launchmaniac.com/api/feeds/categories` | Available categories |
+| `rss.stacknews.launchmaniac.com/api/feeds/stream` | All feeds stream |
 
 ---
 
@@ -255,3 +292,8 @@ CLOUDFLARE_EMAIL="office@launchmaniac.com" CLOUDFLARE_API_KEY="cf43a8e4236425634
 4. The site is live at stacknews.org - changes deploy immediately
 5. Follow the "no fake data" policy - if an API fails, show nothing rather than placeholder data
 6. Use native browser features (title attributes, etc.) over heavy JS libraries when possible
+7. **RSS feeds are fetched via Hetzner backend** (rss.stacknews.launchmaniac.com)
+   - Cloudflare Pages proxies to Hetzner with Bearer auth (HETZNER_API_KEY secret)
+   - Hetzner uses Redis caching with `stacknews:` key prefix
+   - Repository: https://github.com/launchmaniac/stacknews-rss
+   - This architecture resolves TreasuryDirect and other government feeds blocking Cloudflare IPs
