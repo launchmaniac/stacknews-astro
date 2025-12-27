@@ -1,98 +1,118 @@
 // Product of Launch Maniac llc, Las Vegas, Nevada - (725) 444-8200  support@launchmaniac.com
-// Treasury Yield Curve JSON endpoint (FRED API - CMT Rates)
-// - Cache API with SWR + stale-if-error
-// - KV durable fallback
-// - Optional warm-mode via X-Stacknews-Warm
-// Note: Migrated from FiscalData to FRED API (Dec 2025) after FiscalData endpoint deprecated
+// Treasury Yield Curve JSON endpoint - Thin proxy to Hetzner backend
 
 import type { APIRoute } from 'astro';
-import { fetchYieldCurve } from '../../../lib/yield-curve';
 import { getKV, kvGetJSON, kvPutJSON } from '../../../lib/kv';
 
 export const prerender = false;
 
-const KV_KEY = (days: number) => `yieldcurve:${days}`;
+const HETZNER_URL = 'https://rss.stacknews.launchmaniac.com';
+const KV_KEY = (days: number) => `yieldcurve:v2:${days}`;
 
 export const GET: APIRoute = async ({ request, url, locals }) => {
   const days = Math.max(1, Math.min(parseInt(url.searchParams.get('days') || '60', 10) || 60, 365));
   const forceRefresh = url.searchParams.get('refresh') === 'true';
-  const isWarm = url.searchParams.get('warm') === 'true';
-  const apiKey = (locals as any)?.runtime?.env?.FRED_API_KEY as string | undefined;
-
-  if (!apiKey) {
-    console.error('[YieldCurve] Missing FRED_API_KEY binding');
-    return new Response(
-      JSON.stringify({ error: 'Missing FRED_API_KEY', message: 'Configure FRED_API_KEY as a Cloudflare secret/binding.' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
-  }
-
-  // Warm-mode protection
-  if (isWarm) {
-    const secret = (locals as any)?.runtime?.env?.WARM_SECRET || (typeof process !== 'undefined' ? (process.env as any)?.WARM_SECRET : undefined);
-    const token = request.headers.get('X-Stacknews-Warm') || '';
-    if (!secret || token !== String(secret)) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 403, headers: { 'Content-Type': 'application/json' } });
-    }
-  }
 
   const cache = caches.default;
   const cacheKey = new Request(request.url, request);
   const kv = getKV(locals);
 
+  // Check edge cache first (unless force refresh)
+  if (!forceRefresh) {
+    const cached = await cache.match(cacheKey);
+    if (cached) {
+      const cloned = new Response(cached.body, cached);
+      cloned.headers.set('X-Cache', 'HIT');
+      return cloned;
+    }
+  }
+
   try {
-    if (!forceRefresh) {
-      const cached = await cache.match(cacheKey);
-      if (cached) return cached;
+    // Get API key from environment
+    const apiKey = (locals as any)?.runtime?.env?.HETZNER_API_KEY as string | undefined;
+    if (!apiKey) {
+      console.error('[YieldCurve] Missing HETZNER_API_KEY');
+      throw new Error('Missing HETZNER_API_KEY');
     }
 
-    // Fetch fresh from FRED API
-    const data = await fetchYieldCurve(days, apiKey);
+    // Forward to Hetzner
+    const upstream = await fetch(`${HETZNER_URL}/api/treasury/yield-curve?days=${days}`, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Accept': 'application/json',
+        'User-Agent': 'StackNews-Cloudflare/1.0'
+      },
+      cf: { cacheTtl: 0 }
+    });
 
+    if (!upstream.ok) {
+      throw new Error(`Hetzner returned ${upstream.status}`);
+    }
+
+    const upstreamData = await upstream.json() as { data: any[]; _cache?: unknown; timestamp?: string };
+
+    // Build response - map `data` to `points` for backwards compatibility
     const res = new Response(
       JSON.stringify({
         days,
-        points: data,
-        _cache: { hit: false },
+        data: upstreamData.data,
+        _cache: { hit: false, source: 'hetzner' },
         timestamp: new Date().toISOString()
       }),
       {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600, stale-if-error=86400',
-          'X-Cache': 'MISS'
+          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200, stale-if-error=86400',
+          'X-Cache': 'MISS',
+          'X-Upstream': 'hetzner'
         }
       }
     );
+
+    // Cache in edge and KV
     locals?.runtime?.ctx?.waitUntil(cache.put(cacheKey, res.clone()));
-        // Extend KV TTL to align with stale-if-error window for better resilience
-        locals?.runtime?.ctx?.waitUntil(kvPutJSON(kv, KV_KEY(days), { data, ts: Date.now() }, 24 * 60 * 60));
-        return res;
-      } catch (error: any) {
-        // KV fallback
-        const kvData = await kvGetJSON<{ data: any[] }>(kv, KV_KEY(days));
-        if (kvData?.data) {
-          const res = new Response(
-            JSON.stringify({
-              days,
-              points: kvData.data,
-              _cache: { hit: true, stale: true, error: true, source: 'kv' },
-              timestamp: new Date().toISOString()
-            }),
-            {
-              status: 200,
-              headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600, stale-if-error=86400',
-                'X-Cache': 'STALE-KV'
-              }
-            }
-          );
-          // Fill the HTTP cache with KV-backed response to improve subsequent hits
-          locals?.runtime?.ctx?.waitUntil(cache.put(cacheKey, res.clone()));
-          return res;
+    locals?.runtime?.ctx?.waitUntil(kvPutJSON(kv, KV_KEY(days), { data: upstreamData.data, ts: Date.now() }, 24 * 60 * 60));
+
+    return res;
+
+  } catch (error: any) {
+    console.error('[YieldCurve] Upstream error:', error?.message);
+
+    // Try stale edge cache
+    const stale = await cache.match(cacheKey);
+    if (stale) {
+      const cloned = new Response(stale.body, stale);
+      cloned.headers.set('X-Cache', 'STALE');
+      return cloned;
+    }
+
+    // Try KV fallback
+    const kvData = await kvGetJSON<{ data: any[] }>(kv, KV_KEY(days));
+    if (kvData?.data) {
+      const res = new Response(
+        JSON.stringify({
+          days,
+          data: kvData.data,
+          _cache: { hit: true, stale: true, source: 'kv' },
+          timestamp: new Date().toISOString()
+        }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Cache': 'STALE-KV'
+          }
         }
-        return new Response(JSON.stringify({ error: 'Failed to load yield curve', message: error?.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
-      }
-    };
+      );
+      locals?.runtime?.ctx?.waitUntil(cache.put(cacheKey, res.clone()));
+      return res;
+    }
+
+    // All fallbacks failed
+    return new Response(
+      JSON.stringify({ error: 'Failed to load yield curve', message: error?.message }),
+      { status: 503, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+};
